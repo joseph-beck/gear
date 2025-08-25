@@ -1,6 +1,6 @@
-build_dir = ./bin
-binary_name = gear
-pkg_path = ./cmd/cli/main.go
+BUILD_DIR = ./bin
+BINARY_NAME = gear
+PKG_PATH = ./cmd/cli/main.go
 
 ## help: get info about the targets within this makefile
 .phony: help
@@ -8,22 +8,22 @@ help:
 	@echo "gear usage:"
 	@sed -n 's/^##//p' ${MAKEFILE_LIST} | column -t -s ':' | sed -e 's/^/ /'
 	@echo "gear variables:"
-	@echo "  build_dir: ${build_dir}"
-	@echo "  binary_name: ${binary_name}"
-	@echo "  pkg_path: ${pkg_path}"
+	@echo "  BUILD_DIR: ${BUILD_DIR}"
+	@echo "  BINARY_NAME: ${BINARY_NAME}"
+	@echo "  PKG_PATH: ${PKG_PATH}"
 
 ## cli: runs the cli app in the package path
 .phony: cli
 cli:
-	@go run ${pkg_path}
+	@go run ${PKG_PATH}
 
 ## build: build the application
 .phony: build
 build:
-	@mkdir -p ${build_dir}
-	GOARCH=amd64 GOOS=darwin go build -o ${build_dir}/${binary_name}-darwin ${pkg_path}
-	GOARCH=amd64 GOOS=linux go build -o ${build_dir}/${binary_name}-linux ${pkg_path}
-	GOARCH=amd64 GOOS=windows go build -o ${build_dir}/${binary_name}-windows.exe ${pkg_path}
+	@mkdir -p ${BUILD_DIR}
+	GOARCH=amd64 GOOS=darwin go build -o ${BUILD_DIR}/${BINARY_NAME}-darwin ${PKG_PATH}
+	GOARCH=amd64 GOOS=linux go build -o ${BUILD_DIR}/${BINARY_NAME}-linux ${PKG_PATH}
+	GOARCH=amd64 GOOS=windows go build -o ${BUILD_DIR}/${BINARY_NAME}-windows.exe ${PKG_PATH}
 
 .phony: confirm
 confirm:
@@ -33,7 +33,7 @@ confirm:
 .phony: clean
 clean: confirm
 	@echo "cleaning up..."
-	@rm -rf ${build_dir}
+	@rm -rf ${BUILD_DIR}
 
 ## tidy: tidies up the module and the test cache
 .phony: tidy
