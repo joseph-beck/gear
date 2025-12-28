@@ -3,33 +3,30 @@ package main
 import (
 	"fmt"
 
-	"github.com/joseph-beck/gear/pkg/expression"
-	"github.com/joseph-beck/gear/pkg/grammar"
-	"github.com/joseph-beck/gear/pkg/parser"
-	"github.com/joseph-beck/gear/pkg/rule"
+	"github.com/joseph-beck/gear/pkg/gear"
 )
 
 func main() {
-	p := parser.New()
+	p := gear.New()
 
-	g := grammar.New()
+	g := gear.NewGrammar()
 
-	digit := rule.New("digit", expression.Choice{
-		Value: []expression.Expression{
-			expression.Char{Value: '0'},
-			expression.Char{Value: '1'},
-			expression.Char{Value: '2'},
-			expression.Char{Value: '3'},
-			expression.Char{Value: '4'},
-			expression.Char{Value: '5'},
-			expression.Char{Value: '6'},
-			expression.Char{Value: '7'},
-			expression.Char{Value: '8'},
-			expression.Char{Value: '9'},
+	digit := gear.NewRule("digit", gear.Choice{
+		Value: []gear.Expression{
+			gear.Char{Value: '0'},
+			gear.Char{Value: '1'},
+			gear.Char{Value: '2'},
+			gear.Char{Value: '3'},
+			gear.Char{Value: '4'},
+			gear.Char{Value: '5'},
+			gear.Char{Value: '6'},
+			gear.Char{Value: '7'},
+			gear.Char{Value: '8'},
+			gear.Char{Value: '9'},
 		},
 	})
-	number := rule.New("number", expression.OneOrMore{
-		Value: expression.NamedRule{
+	number := gear.NewRule("number", gear.OneOrMore{
+		Value: gear.NamedRule{
 			Value:   "digit",
 			Resolve: p.DefaultResolver,
 		},
