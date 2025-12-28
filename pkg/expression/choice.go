@@ -6,7 +6,7 @@ import (
 )
 
 type Choice struct {
-	value []Expression
+	Value []Expression
 }
 
 func (c Choice) Type() ExpressionType {
@@ -16,11 +16,11 @@ func (c Choice) Type() ExpressionType {
 func (c Choice) Evaluate(input string) (Result, error) {
 	if len(input) == 0 {
 		return Result{
-			remaining: input,
+			Remaining: input,
 		}, err.EndOfInput
 	}
 
-	for _, expr := range c.value {
+	for _, expr := range c.Value {
 		r, err := expr.Evaluate(input)
 
 		if err != nil {
@@ -28,15 +28,15 @@ func (c Choice) Evaluate(input string) (Result, error) {
 		}
 
 		tree := cst.New("choice")
-		tree.Add(r.cst)
+		tree.Add(r.CST)
 
 		return Result{
-			remaining: r.remaining,
-			cst:       tree,
+			Remaining: r.Remaining,
+			CST:       tree,
 		}, nil
 	}
 
 	return Result{
-		remaining: input,
+		Remaining: input,
 	}, err.FailedToMatch
 }

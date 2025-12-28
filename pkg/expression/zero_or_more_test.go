@@ -24,13 +24,13 @@ func TestZeroOrMoreEvaluate(t *testing.T) {
 		"match a with input b": {
 			input: "b",
 			expr: ZeroOrMore{
-				value: Char{
-					value: 'a',
+				Value: Char{
+					Value: 'a',
 				},
 			},
 			expectedResult: Result{
-				remaining: "b",
-				cst: cst.CST{
+				Remaining: "b",
+				CST: cst.CST{
 					Value: "zero_or_more",
 				},
 			},
@@ -39,13 +39,13 @@ func TestZeroOrMoreEvaluate(t *testing.T) {
 		"match a with input aaa": {
 			input: "aaa",
 			expr: ZeroOrMore{
-				value: Char{
-					value: 'a',
+				Value: Char{
+					Value: 'a',
 				},
 			},
 			expectedResult: Result{
-				remaining: "",
-				cst: cst.CST{
+				Remaining: "",
+				CST: cst.CST{
 					Value: "zero_or_more",
 					Children: []cst.CST{
 						{
@@ -80,13 +80,13 @@ func TestZeroOrMoreEvaluate(t *testing.T) {
 		"match a with input aaab": {
 			input: "aaab",
 			expr: ZeroOrMore{
-				value: Char{
-					value: 'a',
+				Value: Char{
+					Value: 'a',
 				},
 			},
 			expectedResult: Result{
-				remaining: "b",
-				cst: cst.CST{
+				Remaining: "b",
+				CST: cst.CST{
 					Value: "zero_or_more",
 					Children: []cst.CST{
 						{
@@ -121,13 +121,13 @@ func TestZeroOrMoreEvaluate(t *testing.T) {
 		"match a with input aaba": {
 			input: "aaba",
 			expr: ZeroOrMore{
-				value: Char{
-					value: 'a',
+				Value: Char{
+					Value: 'a',
 				},
 			},
 			expectedResult: Result{
-				remaining: "ba",
-				cst: cst.CST{
+				Remaining: "ba",
+				CST: cst.CST{
 					Value: "zero_or_more",
 					Children: []cst.CST{
 						{
@@ -154,12 +154,12 @@ func TestZeroOrMoreEvaluate(t *testing.T) {
 		"match zero a's with empty input": {
 			input: "",
 			expr: ZeroOrMore{
-				value: Char{
-					value: 'a',
+				Value: Char{
+					Value: 'a',
 				},
 			},
 			expectedResult: Result{
-				remaining: "",
+				Remaining: "",
 			},
 			expectedError: err.EndOfInput,
 		},

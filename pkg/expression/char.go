@@ -6,7 +6,7 @@ import (
 )
 
 type Char struct {
-	value rune
+	Value rune
 }
 
 func (c Char) Type() ExpressionType {
@@ -16,21 +16,21 @@ func (c Char) Type() ExpressionType {
 func (c Char) Evaluate(input string) (Result, error) {
 	if len(input) == 0 {
 		return Result{
-			remaining: input,
+			Remaining: input,
 		}, err.EndOfInput
 	}
 
-	if rune(input[0]) == c.value {
+	if rune(input[0]) == c.Value {
 		tree := cst.New("char")
-		tree.Add(cst.New(string(c.value)))
+		tree.Add(cst.New(string(c.Value)))
 
 		return Result{
-			remaining: input[1:],
-			cst:       tree,
+			Remaining: input[1:],
+			CST:       tree,
 		}, nil
 	}
 
 	return Result{
-		remaining: input,
+		Remaining: input,
 	}, err.FailedToMatch
 }

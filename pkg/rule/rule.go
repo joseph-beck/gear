@@ -3,10 +3,13 @@ package rule
 import "github.com/joseph-beck/gear/pkg/expression"
 
 type Rule struct {
-	name       string
-	expression expression.Expression
+	Name       string
+	Expression expression.Expression
 }
 
-func New() Rule {
-	return Rule{}
+func New(name string, expr expression.Expression) Rule {
+	return Rule{
+		Name:       name,
+		Expression: expr,
+	}
 }

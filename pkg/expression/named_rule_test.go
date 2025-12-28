@@ -24,19 +24,19 @@ func TestNamedRuleEvaluate(t *testing.T) {
 		"match named rule_a with input a": {
 			input: "a",
 			expr: NamedRule{
-				value: "rule_a",
-				resolve: func(name string) (Expression, error) {
+				Value: "rule_a",
+				Resolve: func(name string) (Expression, error) {
 					if name == "rule_a" {
 						return Char{
-							value: 'a',
+							Value: 'a',
 						}, nil
 					}
 					return nil, nil
 				},
 			},
 			expectedResult: Result{
-				remaining: "",
-				cst: cst.CST{
+				Remaining: "",
+				CST: cst.CST{
 					Value: "rule_a",
 					Children: []cst.CST{
 						{
@@ -55,33 +55,33 @@ func TestNamedRuleEvaluate(t *testing.T) {
 		"no match named rule_a with input b": {
 			input: "b",
 			expr: NamedRule{
-				value: "rule_a",
-				resolve: func(name string) (Expression, error) {
+				Value: "rule_a",
+				Resolve: func(name string) (Expression, error) {
 					if name == "rule_a" {
 						return Char{
-							value: 'a',
+							Value: 'a',
 						}, nil
 					}
 					return nil, nil
 				},
 			},
 			expectedResult: Result{
-				remaining: "b",
+				Remaining: "b",
 			},
 			expectedError: err.FailedToMatch,
 		},
 		"nested named rule_b within named rule_a": {
 			input: "b",
 			expr: NamedRule{
-				value: "rule_a",
-				resolve: func(name string) (Expression, error) {
+				Value: "rule_a",
+				Resolve: func(name string) (Expression, error) {
 					if name == "rule_a" {
 						return NamedRule{
-							value: "rule_b",
-							resolve: func(name string) (Expression, error) {
+							Value: "rule_b",
+							Resolve: func(name string) (Expression, error) {
 								if name == "rule_b" {
 									return Char{
-										value: 'b',
+										Value: 'b',
 									}, nil
 								}
 								return nil, nil
@@ -92,8 +92,8 @@ func TestNamedRuleEvaluate(t *testing.T) {
 				},
 			},
 			expectedResult: Result{
-				remaining: "",
-				cst: cst.CST{
+				Remaining: "",
+				CST: cst.CST{
 					Value: "rule_a",
 					Children: []cst.CST{
 						{
@@ -117,12 +117,12 @@ func TestNamedRuleEvaluate(t *testing.T) {
 		"named sequence rule_a with input aaa": {
 			input: "aaa",
 			expr: NamedRule{
-				value: "rule_a",
-				resolve: func(name string) (Expression, error) {
+				Value: "rule_a",
+				Resolve: func(name string) (Expression, error) {
 					if name == "rule_a" {
 						return ZeroOrMore{
-							value: Char{
-								value: 'a',
+							Value: Char{
+								Value: 'a',
 							},
 						}, nil
 					}
@@ -130,8 +130,8 @@ func TestNamedRuleEvaluate(t *testing.T) {
 				},
 			},
 			expectedResult: Result{
-				remaining: "",
-				cst: cst.CST{
+				Remaining: "",
+				CST: cst.CST{
 					Value: "rule_a",
 					Children: []cst.CST{
 						{
@@ -171,13 +171,13 @@ func TestNamedRuleEvaluate(t *testing.T) {
 		"resolve error": {
 			input: "a",
 			expr: NamedRule{
-				value: "rule_a",
-				resolve: func(name string) (Expression, error) {
+				Value: "rule_a",
+				Resolve: func(name string) (Expression, error) {
 					return nil, err.RuleNotFound
 				},
 			},
 			expectedResult: Result{
-				remaining: "a",
+				Remaining: "a",
 			},
 			expectedError: err.RuleNotFound,
 		},

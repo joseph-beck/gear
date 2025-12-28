@@ -24,18 +24,18 @@ func TestChoiceEvaluate(t *testing.T) {
 		"match a or b with input a": {
 			input: "a",
 			expr: Choice{
-				value: []Expression{
+				Value: []Expression{
 					Char{
-						value: 'a',
+						Value: 'a',
 					},
 					Char{
-						value: 'b',
+						Value: 'b',
 					},
 				},
 			},
 			expectedResult: Result{
-				remaining: "",
-				cst: cst.CST{
+				Remaining: "",
+				CST: cst.CST{
 					Value: "choice",
 					Children: []cst.CST{
 						{
@@ -54,18 +54,18 @@ func TestChoiceEvaluate(t *testing.T) {
 		"match a or b with input b": {
 			input: "b",
 			expr: Choice{
-				value: []Expression{
+				Value: []Expression{
 					Char{
-						value: 'a',
+						Value: 'a',
 					},
 					Char{
-						value: 'b',
+						Value: 'b',
 					},
 				},
 			},
 			expectedResult: Result{
-				remaining: "",
-				cst: cst.CST{
+				Remaining: "",
+				CST: cst.CST{
 					Value: "choice",
 					Children: []cst.CST{
 						{
@@ -84,52 +84,52 @@ func TestChoiceEvaluate(t *testing.T) {
 		"fail match a or b with input c": {
 			input: "c",
 			expr: Choice{
-				value: []Expression{
+				Value: []Expression{
 					Char{
-						value: 'a',
+						Value: 'a',
 					},
 					Char{
-						value: 'b',
+						Value: 'b',
 					},
 				},
 			},
 			expectedResult: Result{
-				remaining: "c",
+				Remaining: "c",
 			},
 			expectedError: err.FailedToMatch,
 		},
 		"fail match a or b with empty input": {
 			input: "",
 			expr: Choice{
-				value: []Expression{
+				Value: []Expression{
 					Char{
-						value: 'a',
+						Value: 'a',
 					},
 					Char{
-						value: 'b',
+						Value: 'b',
 					},
 				},
 			},
 			expectedResult: Result{
-				remaining: "",
+				Remaining: "",
 			},
 			expectedError: err.EndOfInput,
 		},
 		"match a or b with input ab": {
 			input: "ab",
 			expr: Choice{
-				value: []Expression{
+				Value: []Expression{
 					Char{
-						value: 'a',
+						Value: 'a',
 					},
 					Char{
-						value: 'b',
+						Value: 'b',
 					},
 				},
 			},
 			expectedResult: Result{
-				remaining: "b",
-				cst: cst.CST{
+				Remaining: "b",
+				CST: cst.CST{
 					Value: "choice",
 					Children: []cst.CST{
 						{

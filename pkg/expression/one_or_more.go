@@ -6,7 +6,7 @@ import (
 )
 
 type OneOrMore struct {
-	value Expression
+	Value Expression
 }
 
 func (z OneOrMore) Type() ExpressionType {
@@ -16,31 +16,31 @@ func (z OneOrMore) Type() ExpressionType {
 func (z OneOrMore) Evaluate(input string) (Result, error) {
 	if len(input) == 0 {
 		return Result{
-			remaining: input,
+			Remaining: input,
 		}, err.EndOfInput
 	}
 
 	tree := cst.New("one_or_more")
 
 	for {
-		r, err := z.value.Evaluate(input)
+		r, err := z.Value.Evaluate(input)
 
 		if err != nil {
 			break
 		}
 
-		input = r.remaining
-		tree.Add(r.cst)
+		input = r.Remaining
+		tree.Add(r.CST)
 	}
 
 	if len(tree.Children) == 0 {
 		return Result{
-			remaining: input,
+			Remaining: input,
 		}, err.FailedToMatch
 	}
 
 	return Result{
-		remaining: input,
-		cst:       tree,
+		Remaining: input,
+		CST:       tree,
 	}, nil
 }

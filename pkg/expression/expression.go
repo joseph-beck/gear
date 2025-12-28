@@ -20,6 +20,6 @@ type Expression interface {
 }
 
 type Result struct {
-	remaining string
-	cst       cst.CST
+	Remaining string
+	CST       cst.CST
 }

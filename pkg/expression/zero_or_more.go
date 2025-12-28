@@ -6,7 +6,7 @@ import (
 )
 
 type ZeroOrMore struct {
-	value Expression
+	Value Expression
 }
 
 func (z ZeroOrMore) Type() ExpressionType {
@@ -16,25 +16,25 @@ func (z ZeroOrMore) Type() ExpressionType {
 func (z ZeroOrMore) Evaluate(input string) (Result, error) {
 	if len(input) == 0 {
 		return Result{
-			remaining: input,
+			Remaining: input,
 		}, err.EndOfInput
 	}
 
 	tree := cst.New("zero_or_more")
 
 	for {
-		r, err := z.value.Evaluate(input)
+		r, err := z.Value.Evaluate(input)
 
 		if err != nil {
 			break
 		}
 
-		input = r.remaining
-		tree.Add(r.cst)
+		input = r.Remaining
+		tree.Add(r.CST)
 	}
 
 	return Result{
-		remaining: input,
-		cst:       tree,
+		Remaining: input,
+		CST:       tree,
 	}, nil
 }

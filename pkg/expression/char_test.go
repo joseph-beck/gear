@@ -24,11 +24,11 @@ func TestCharEvaluate(t *testing.T) {
 		"match a with a": {
 			input: "a",
 			expr: Char{
-				value: 'a',
+				Value: 'a',
 			},
 			expectedResult: Result{
-				remaining: "",
-				cst: cst.CST{
+				Remaining: "",
+				CST: cst.CST{
 					Value: "char",
 					Children: []cst.CST{
 						{
@@ -42,31 +42,31 @@ func TestCharEvaluate(t *testing.T) {
 		"fail match b with a": {
 			input: "b",
 			expr: Char{
-				value: 'a',
+				Value: 'a',
 			},
 			expectedResult: Result{
-				remaining: "b",
+				Remaining: "b",
 			},
 			expectedError: err.FailedToMatch,
 		},
 		"fail match empty input": {
 			input: "",
 			expr: Char{
-				value: 'a',
+				Value: 'a',
 			},
 			expectedResult: Result{
-				remaining: "",
+				Remaining: "",
 			},
 			expectedError: err.EndOfInput,
 		},
 		"match a with input ab": {
 			input: "ab",
 			expr: Char{
-				value: 'a',
+				Value: 'a',
 			},
 			expectedResult: Result{
-				remaining: "b",
-				cst: cst.CST{
+				Remaining: "b",
+				CST: cst.CST{
 					Value: "char",
 					Children: []cst.CST{
 						{

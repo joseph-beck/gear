@@ -24,18 +24,18 @@ func TestSequenceEvaluate(t *testing.T) {
 		"match ab with input ab": {
 			input: "ab",
 			expr: Sequence{
-				value: []Expression{
+				Value: []Expression{
 					Char{
-						value: 'a',
+						Value: 'a',
 					},
 					Char{
-						value: 'b',
+						Value: 'b',
 					},
 				},
 			},
 			expectedResult: Result{
-				remaining: "",
-				cst: cst.CST{
+				Remaining: "",
+				CST: cst.CST{
 					Value: "sequence",
 					Children: []cst.CST{
 						{
@@ -62,18 +62,18 @@ func TestSequenceEvaluate(t *testing.T) {
 		"match ab with input abc": {
 			input: "abc",
 			expr: Sequence{
-				value: []Expression{
+				Value: []Expression{
 					Char{
-						value: 'a',
+						Value: 'a',
 					},
 					Char{
-						value: 'b',
+						Value: 'b',
 					},
 				},
 			},
 			expectedResult: Result{
-				remaining: "c",
-				cst: cst.CST{
+				Remaining: "c",
+				CST: cst.CST{
 					Value: "sequence",
 					Children: []cst.CST{
 						{
@@ -100,51 +100,51 @@ func TestSequenceEvaluate(t *testing.T) {
 		"fail match ab with input a": {
 			input: "a",
 			expr: Sequence{
-				value: []Expression{
+				Value: []Expression{
 					Char{
-						value: 'a',
+						Value: 'a',
 					},
 					Char{
-						value: 'b',
+						Value: 'b',
 					},
 				},
 			},
 			expectedResult: Result{
-				remaining: "",
+				Remaining: "",
 			},
 			expectedError: err.EndOfInput,
 		},
 		"fail match ab with input b": {
 			input: "b",
 			expr: Sequence{
-				value: []Expression{
+				Value: []Expression{
 					Char{
-						value: 'a',
+						Value: 'a',
 					},
 					Char{
-						value: 'b',
+						Value: 'b',
 					},
 				},
 			},
 			expectedResult: Result{
-				remaining: "b",
+				Remaining: "b",
 			},
 			expectedError: err.FailedToMatch,
 		},
 		"fail match ab with empty input": {
 			input: "",
 			expr: Sequence{
-				value: []Expression{
+				Value: []Expression{
 					Char{
-						value: 'a',
+						Value: 'a',
 					},
 					Char{
-						value: 'b',
+						Value: 'b',
 					},
 				},
 			},
 			expectedResult: Result{
-				remaining: "",
+				Remaining: "",
 			},
 			expectedError: err.EndOfInput,
 		},

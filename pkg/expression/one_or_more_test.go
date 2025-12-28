@@ -24,13 +24,13 @@ func TestOneOrMoreEvaluate(t *testing.T) {
 		"match a with input aaa": {
 			input: "aaa",
 			expr: OneOrMore{
-				value: Char{
-					value: 'a',
+				Value: Char{
+					Value: 'a',
 				},
 			},
 			expectedResult: Result{
-				remaining: "",
-				cst: cst.CST{
+				Remaining: "",
+				CST: cst.CST{
 					Value: "one_or_more",
 					Children: []cst.CST{
 						{
@@ -65,13 +65,13 @@ func TestOneOrMoreEvaluate(t *testing.T) {
 		"match a with input aaab": {
 			input: "aaab",
 			expr: OneOrMore{
-				value: Char{
-					value: 'a',
+				Value: Char{
+					Value: 'a',
 				},
 			},
 			expectedResult: Result{
-				remaining: "b",
-				cst: cst.CST{
+				Remaining: "b",
+				CST: cst.CST{
 					Value: "one_or_more",
 					Children: []cst.CST{
 						{
@@ -106,13 +106,13 @@ func TestOneOrMoreEvaluate(t *testing.T) {
 		"match a with input aaba": {
 			input: "aaba",
 			expr: OneOrMore{
-				value: Char{
-					value: 'a',
+				Value: Char{
+					Value: 'a',
 				},
 			},
 			expectedResult: Result{
-				remaining: "ba",
-				cst: cst.CST{
+				Remaining: "ba",
+				CST: cst.CST{
 					Value: "one_or_more",
 					Children: []cst.CST{
 						{
@@ -139,24 +139,24 @@ func TestOneOrMoreEvaluate(t *testing.T) {
 		"fail match empty input": {
 			input: "",
 			expr: OneOrMore{
-				value: Char{
-					value: 'a',
+				Value: Char{
+					Value: 'a',
 				},
 			},
 			expectedResult: Result{
-				remaining: "",
+				Remaining: "",
 			},
 			expectedError: err.EndOfInput,
 		},
 		"fail match a with input b": {
 			input: "b",
 			expr: OneOrMore{
-				value: Char{
-					value: 'a',
+				Value: Char{
+					Value: 'a',
 				},
 			},
 			expectedResult: Result{
-				remaining: "b",
+				Remaining: "b",
 			},
 			expectedError: err.FailedToMatch,
 		},
