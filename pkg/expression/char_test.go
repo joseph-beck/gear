@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/joseph-beck/gear/pkg/cst"
+	"github.com/joseph-beck/gear/pkg/err"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -18,7 +19,7 @@ func TestCharEvaluate(t *testing.T) {
 		input          string
 		expr           Char
 		expectedResult Result
-		expectError    bool
+		expectedError  error
 	}{
 		"match a with a": {
 			input: "a",
@@ -36,7 +37,7 @@ func TestCharEvaluate(t *testing.T) {
 					},
 				},
 			},
-			expectError: false,
+			expectedError: nil,
 		},
 		"fail match b with a": {
 			input: "b",
@@ -46,7 +47,7 @@ func TestCharEvaluate(t *testing.T) {
 			expectedResult: Result{
 				remaining: "b",
 			},
-			expectError: true,
+			expectedError: err.FailedToMatch,
 		},
 		"fail match empty input": {
 			input: "",
@@ -56,7 +57,25 @@ func TestCharEvaluate(t *testing.T) {
 			expectedResult: Result{
 				remaining: "",
 			},
-			expectError: true,
+			expectedError: err.EndOfInput,
+		},
+		"match a with input ab": {
+			input: "ab",
+			expr: Char{
+				value: 'a',
+			},
+			expectedResult: Result{
+				remaining: "b",
+				cst: cst.CST{
+					Value: "char",
+					Children: []cst.CST{
+						{
+							Value: "a",
+						},
+					},
+				},
+			},
+			expectedError: nil,
 		},
 	}
 
@@ -66,11 +85,7 @@ func TestCharEvaluate(t *testing.T) {
 
 			assert.Equal(t, test.expectedResult, output)
 
-			if test.expectError {
-				assert.Error(t, err)
-			} else {
-				assert.NoError(t, err)
-			}
+			assert.Equal(t, test.expectedError, err)
 		})
 	}
 }
