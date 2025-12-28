@@ -1,5 +1,7 @@
 package expression
 
+import "github.com/joseph-beck/gear/pkg/cst"
+
 type ExpressionType int
 
 const (
@@ -14,5 +16,10 @@ const (
 
 type Expression interface {
 	Type() ExpressionType
-	Evaluate() (string, error)
+	Evaluate(string) (Result, error)
+}
+
+type Result struct {
+	remaining string
+	cst       cst.CST
 }
