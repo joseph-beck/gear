@@ -3,7 +3,8 @@ package expression
 type ExpressionType int
 
 const (
-	CharExpression ExpressionType = iota
+	EmptyExpression ExpressionType = iota
+	CharExpression
 	ChoiceExpression
 	SequenceExpression
 	ZeroOrMoreExpression
