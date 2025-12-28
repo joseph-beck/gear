@@ -27,8 +27,7 @@ func main() {
 	})
 	number := gear.NewRule("number", gear.OneOrMore{
 		Value: gear.NamedRule{
-			Value:   "digit",
-			Resolve: p.DefaultResolver,
+			Value: "digit",
 		},
 	})
 
@@ -42,6 +41,5 @@ func main() {
 		panic(err)
 	}
 
-	fmt.Println(r.Remaining)
 	fmt.Println(r.CST)
 }

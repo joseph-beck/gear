@@ -1,36 +1,32 @@
 package gear
 
+import "github.com/joseph-beck/gear/pkg/err"
+
 type NamedRule struct {
-	Value   string
-	Resolve func(name string) (Expression, error)
+	Value string
 }
 
 func (n NamedRule) Type() ExpressionType {
 	return NamedRuleExpression
 }
 
-func (n NamedRule) Evaluate(input string) (Result, error) {
-	rule, err := n.Resolve(n.Value)
+func (n NamedRule) Evaluate(context *Context) (Result, error) {
+	rule, ok := context.Grammar().Get(n.Value)
 
-	if err != nil {
-		return Result{
-			Remaining: input,
-		}, err
+	if !ok {
+		return Result{}, err.RuleNotFound
 	}
 
-	r, err := rule.Evaluate(input)
+	r, err := rule.Expression.Evaluate(context)
 	if err != nil {
-		return Result{
-			Remaining: input,
-		}, err
+		return Result{}, err
 	}
 
-	tree := NewCST(n.Value)
+	tree := NewCST(rule.Name)
 	tree.Children = append(tree.Children, r.CST)
 	tree.Value = n.Value
 
 	return Result{
-		Remaining: r.Remaining,
-		CST:       tree,
+		CST: tree,
 	}, nil
 }

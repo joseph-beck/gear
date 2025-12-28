@@ -12,28 +12,26 @@ func (z ZeroOrMore) Type() ExpressionType {
 	return ZeroOrMoreExpression
 }
 
-func (z ZeroOrMore) Evaluate(input string) (Result, error) {
+func (z ZeroOrMore) Evaluate(context *Context) (Result, error) {
+	input := context.Remaining()
+
 	if len(input) == 0 {
-		return Result{
-			Remaining: input,
-		}, err.EndOfInput
+		return Result{}, err.EndOfInput
 	}
 
 	tree := NewCST("zero_or_more")
 
 	for {
-		r, err := z.Value.Evaluate(input)
+		r, err := z.Value.Evaluate(context)
 
 		if err != nil {
 			break
 		}
 
-		input = r.Remaining
 		tree.Add(r.CST)
 	}
 
 	return Result{
-		Remaining: input,
-		CST:       tree,
+		CST: tree,
 	}, nil
 }

@@ -71,7 +71,6 @@ func TestParserParse(t *testing.T) {
 				return g
 			}(),
 			expectedResult: Result{
-				Remaining: "",
 				CST: CST{
 					Value: "rule_a",
 					Children: []CST{
@@ -116,7 +115,6 @@ func TestParserParse(t *testing.T) {
 				return g
 			}(),
 			expectedResult: Result{
-				Remaining: "23",
 				CST: CST{
 					Value: "digit",
 					Children: []CST{

@@ -33,7 +33,6 @@ func TestSequenceEvaluate(t *testing.T) {
 				},
 			},
 			expectedResult: Result{
-				Remaining: "",
 				CST: CST{
 					Value: "sequence",
 					Children: []CST{
@@ -71,7 +70,6 @@ func TestSequenceEvaluate(t *testing.T) {
 				},
 			},
 			expectedResult: Result{
-				Remaining: "c",
 				CST: CST{
 					Value: "sequence",
 					Children: []CST{
@@ -108,10 +106,8 @@ func TestSequenceEvaluate(t *testing.T) {
 					},
 				},
 			},
-			expectedResult: Result{
-				Remaining: "",
-			},
-			expectedError: err.EndOfInput,
+			expectedResult: Result{},
+			expectedError:  err.EndOfInput,
 		},
 		"fail match ab with input b": {
 			input: "b",
@@ -125,10 +121,8 @@ func TestSequenceEvaluate(t *testing.T) {
 					},
 				},
 			},
-			expectedResult: Result{
-				Remaining: "b",
-			},
-			expectedError: err.FailedToMatch,
+			expectedResult: Result{},
+			expectedError:  err.FailedToMatch,
 		},
 		"fail match ab with empty input": {
 			input: "",
@@ -142,16 +136,17 @@ func TestSequenceEvaluate(t *testing.T) {
 					},
 				},
 			},
-			expectedResult: Result{
-				Remaining: "",
-			},
-			expectedError: err.EndOfInput,
+			expectedResult: Result{},
+			expectedError:  err.EndOfInput,
 		},
 	}
 
 	for name, test := range tests {
 		t.Run(name, func(t *testing.T) {
-			output, err := test.expr.Evaluate(test.input)
+			context := &Context{
+				input: test.input,
+			}
+			output, err := test.expr.Evaluate(context)
 
 			assert.Equal(t, test.expectedResult, output)
 

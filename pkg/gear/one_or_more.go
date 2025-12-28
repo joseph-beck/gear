@@ -12,34 +12,30 @@ func (z OneOrMore) Type() ExpressionType {
 	return OneOrMoreExpression
 }
 
-func (z OneOrMore) Evaluate(input string) (Result, error) {
+func (z OneOrMore) Evaluate(context *Context) (Result, error) {
+	input := context.Remaining()
+
 	if len(input) == 0 {
-		return Result{
-			Remaining: input,
-		}, err.EndOfInput
+		return Result{}, err.EndOfInput
 	}
 
 	tree := NewCST("one_or_more")
 
 	for {
-		r, err := z.Value.Evaluate(input)
+		r, err := z.Value.Evaluate(context)
 
 		if err != nil {
 			break
 		}
 
-		input = r.Remaining
 		tree.Add(r.CST)
 	}
 
 	if len(tree.Children) == 0 {
-		return Result{
-			Remaining: input,
-		}, err.FailedToMatch
+		return Result{}, err.FailedToMatch
 	}
 
 	return Result{
-		Remaining: input,
-		CST:       tree,
+		CST: tree,
 	}, nil
 }

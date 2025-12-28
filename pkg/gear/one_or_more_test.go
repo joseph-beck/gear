@@ -28,7 +28,6 @@ func TestOneOrMoreEvaluate(t *testing.T) {
 				},
 			},
 			expectedResult: Result{
-				Remaining: "",
 				CST: CST{
 					Value: "one_or_more",
 					Children: []CST{
@@ -69,7 +68,6 @@ func TestOneOrMoreEvaluate(t *testing.T) {
 				},
 			},
 			expectedResult: Result{
-				Remaining: "b",
 				CST: CST{
 					Value: "one_or_more",
 					Children: []CST{
@@ -110,7 +108,6 @@ func TestOneOrMoreEvaluate(t *testing.T) {
 				},
 			},
 			expectedResult: Result{
-				Remaining: "ba",
 				CST: CST{
 					Value: "one_or_more",
 					Children: []CST{
@@ -142,10 +139,8 @@ func TestOneOrMoreEvaluate(t *testing.T) {
 					Value: 'a',
 				},
 			},
-			expectedResult: Result{
-				Remaining: "",
-			},
-			expectedError: err.EndOfInput,
+			expectedResult: Result{},
+			expectedError:  err.EndOfInput,
 		},
 		"fail match a with input b": {
 			input: "b",
@@ -154,16 +149,17 @@ func TestOneOrMoreEvaluate(t *testing.T) {
 					Value: 'a',
 				},
 			},
-			expectedResult: Result{
-				Remaining: "b",
-			},
-			expectedError: err.FailedToMatch,
+			expectedResult: Result{},
+			expectedError:  err.FailedToMatch,
 		},
 	}
 
 	for name, test := range tests {
 		t.Run(name, func(t *testing.T) {
-			output, err := test.expr.Evaluate(test.input)
+			context := &Context{
+				input: test.input,
+			}
+			output, err := test.expr.Evaluate(context)
 
 			assert.Equal(t, test.expectedResult, output)
 

@@ -26,7 +26,6 @@ func TestCharEvaluate(t *testing.T) {
 				Value: 'a',
 			},
 			expectedResult: Result{
-				Remaining: "",
 				CST: CST{
 					Value: "char",
 					Children: []CST{
@@ -43,20 +42,16 @@ func TestCharEvaluate(t *testing.T) {
 			expr: Char{
 				Value: 'a',
 			},
-			expectedResult: Result{
-				Remaining: "b",
-			},
-			expectedError: err.FailedToMatch,
+			expectedResult: Result{},
+			expectedError:  err.FailedToMatch,
 		},
 		"fail match empty input": {
 			input: "",
 			expr: Char{
 				Value: 'a',
 			},
-			expectedResult: Result{
-				Remaining: "",
-			},
-			expectedError: err.EndOfInput,
+			expectedResult: Result{},
+			expectedError:  err.EndOfInput,
 		},
 		"match a with input ab": {
 			input: "ab",
@@ -64,7 +59,6 @@ func TestCharEvaluate(t *testing.T) {
 				Value: 'a',
 			},
 			expectedResult: Result{
-				Remaining: "b",
 				CST: CST{
 					Value: "char",
 					Children: []CST{
@@ -80,7 +74,10 @@ func TestCharEvaluate(t *testing.T) {
 
 	for name, test := range tests {
 		t.Run(name, func(t *testing.T) {
-			output, err := test.expr.Evaluate(test.input)
+			context := &Context{
+				input: test.input,
+			}
+			output, err := test.expr.Evaluate(context)
 
 			assert.Equal(t, test.expectedResult, output)
 

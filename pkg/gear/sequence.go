@@ -12,29 +12,25 @@ func (s Sequence) Type() ExpressionType {
 	return SequenceExpression
 }
 
-func (s Sequence) Evaluate(input string) (Result, error) {
+func (s Sequence) Evaluate(context *Context) (Result, error) {
+	input := context.Remaining()
+
 	if len(input) == 0 {
-		return Result{
-			Remaining: input,
-		}, err.EndOfInput
+		return Result{}, err.EndOfInput
 	}
 
 	tree := NewCST("sequence")
 	for _, expr := range s.Value {
-		r, err := expr.Evaluate(input)
+		r, err := expr.Evaluate(context)
 
 		if err != nil {
-			return Result{
-				Remaining: input,
-			}, err
+			return Result{}, err
 		}
 
-		input = r.Remaining
 		tree.Add(r.CST)
 	}
 
 	return Result{
-		Remaining: input,
-		CST:       tree,
+		CST: tree,
 	}, nil
 }

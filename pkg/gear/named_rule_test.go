@@ -17,6 +17,7 @@ func TestNamedRuleEvaluate(t *testing.T) {
 	tests := map[string]struct {
 		input          string
 		expr           NamedRule
+		grammar        *Grammar
 		expectedResult Result
 		expectedError  error
 	}{
@@ -24,17 +25,15 @@ func TestNamedRuleEvaluate(t *testing.T) {
 			input: "a",
 			expr: NamedRule{
 				Value: "rule_a",
-				Resolve: func(name string) (Expression, error) {
-					if name == "rule_a" {
-						return Char{
-							Value: 'a',
-						}, nil
-					}
-					return nil, nil
-				},
 			},
+			grammar: func() *Grammar {
+				g := &Grammar{}
+				g.Add(NewRule("rule_a", Char{
+					Value: 'a',
+				}))
+				return g
+			}(),
 			expectedResult: Result{
-				Remaining: "",
 				CST: CST{
 					Value: "rule_a",
 					Children: []CST{
@@ -51,85 +50,36 @@ func TestNamedRuleEvaluate(t *testing.T) {
 			},
 			expectedError: nil,
 		},
-		"no match named rule_a with input b": {
+		"error failed to match rule_a with input b": {
 			input: "b",
 			expr: NamedRule{
 				Value: "rule_a",
-				Resolve: func(name string) (Expression, error) {
-					if name == "rule_a" {
-						return Char{
-							Value: 'a',
-						}, nil
-					}
-					return nil, nil
-				},
 			},
-			expectedResult: Result{
-				Remaining: "b",
-			},
-			expectedError: err.FailedToMatch,
-		},
-		"nested named rule_b within named rule_a": {
-			input: "b",
-			expr: NamedRule{
-				Value: "rule_a",
-				Resolve: func(name string) (Expression, error) {
-					if name == "rule_a" {
-						return NamedRule{
-							Value: "rule_b",
-							Resolve: func(name string) (Expression, error) {
-								if name == "rule_b" {
-									return Char{
-										Value: 'b',
-									}, nil
-								}
-								return nil, nil
-							},
-						}, nil
-					}
-					return nil, nil
-				},
-			},
-			expectedResult: Result{
-				Remaining: "",
-				CST: CST{
-					Value: "rule_a",
-					Children: []CST{
-						{
-							Value: "rule_b",
-							Children: []CST{
-								{
-									Value: "char",
-									Children: []CST{
-										{
-											Value: "b",
-										},
-									},
-								},
-							},
-						},
-					},
-				},
-			},
-			expectedError: nil,
+			grammar: func() *Grammar {
+				g := &Grammar{}
+				g.Add(NewRule("rule_a", Char{
+					Value: 'a',
+				}))
+				return g
+			}(),
+			expectedResult: Result{},
+			expectedError:  err.FailedToMatch,
 		},
 		"named sequence rule_a with input aaa": {
 			input: "aaa",
 			expr: NamedRule{
 				Value: "rule_a",
-				Resolve: func(name string) (Expression, error) {
-					if name == "rule_a" {
-						return ZeroOrMore{
-							Value: Char{
-								Value: 'a',
-							},
-						}, nil
-					}
-					return nil, nil
-				},
 			},
+			grammar: func() *Grammar {
+				g := &Grammar{}
+				g.Add(NewRule("rule_a", ZeroOrMore{
+					Value: Char{
+						Value: 'a',
+					},
+				}))
+				return g
+			}(),
 			expectedResult: Result{
-				Remaining: "",
 				CST: CST{
 					Value: "rule_a",
 					Children: []CST{
@@ -167,24 +117,24 @@ func TestNamedRuleEvaluate(t *testing.T) {
 			},
 			expectedError: nil,
 		},
-		"resolve error": {
+		"error rule not found": {
 			input: "a",
 			expr: NamedRule{
 				Value: "rule_a",
-				Resolve: func(name string) (Expression, error) {
-					return nil, err.RuleNotFound
-				},
 			},
-			expectedResult: Result{
-				Remaining: "a",
-			},
-			expectedError: err.RuleNotFound,
+			grammar:        &Grammar{},
+			expectedResult: Result{},
+			expectedError:  err.RuleNotFound,
 		},
 	}
 
 	for name, test := range tests {
 		t.Run(name, func(t *testing.T) {
-			output, err := test.expr.Evaluate(test.input)
+			context := &Context{
+				input:   test.input,
+				grammar: test.grammar,
+			}
+			output, err := test.expr.Evaluate(context)
 
 			assert.Equal(t, test.expectedResult, output)
 

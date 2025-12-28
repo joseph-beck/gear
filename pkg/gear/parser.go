@@ -31,7 +31,12 @@ func (p Parser) Parse(input string, rule string) (Result, error) {
 		return Result{}, err.RuleNotFound
 	}
 
-	res, err := r.Expression.Evaluate(input)
+	context := NewContext(contextCfg{
+		input:   input,
+		grammar: &p.grammar,
+	})
+
+	res, err := r.Expression.Evaluate(context)
 	if err != nil {
 		return Result{}, err
 	}
@@ -40,8 +45,7 @@ func (p Parser) Parse(input string, rule string) (Result, error) {
 	tree.Add(res.CST)
 
 	return Result{
-		Remaining: res.Remaining,
-		CST:       tree,
+		CST: tree,
 	}, nil
 }
 

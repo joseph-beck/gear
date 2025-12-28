@@ -12,15 +12,15 @@ func (c Choice) Type() ExpressionType {
 	return ChoiceExpression
 }
 
-func (c Choice) Evaluate(input string) (Result, error) {
+func (c Choice) Evaluate(context *Context) (Result, error) {
+	input := context.Remaining()
+
 	if len(input) == 0 {
-		return Result{
-			Remaining: input,
-		}, err.EndOfInput
+		return Result{}, err.EndOfInput
 	}
 
 	for _, expr := range c.Value {
-		r, err := expr.Evaluate(input)
+		r, err := expr.Evaluate(context)
 
 		if err != nil {
 			continue
@@ -30,12 +30,9 @@ func (c Choice) Evaluate(input string) (Result, error) {
 		tree.Add(r.CST)
 
 		return Result{
-			Remaining: r.Remaining,
-			CST:       tree,
+			CST: tree,
 		}, nil
 	}
 
-	return Result{
-		Remaining: input,
-	}, err.FailedToMatch
+	return Result{}, err.FailedToMatch
 }

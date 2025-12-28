@@ -33,7 +33,6 @@ func TestChoiceEvaluate(t *testing.T) {
 				},
 			},
 			expectedResult: Result{
-				Remaining: "",
 				CST: CST{
 					Value: "choice",
 					Children: []CST{
@@ -63,7 +62,6 @@ func TestChoiceEvaluate(t *testing.T) {
 				},
 			},
 			expectedResult: Result{
-				Remaining: "",
 				CST: CST{
 					Value: "choice",
 					Children: []CST{
@@ -92,10 +90,8 @@ func TestChoiceEvaluate(t *testing.T) {
 					},
 				},
 			},
-			expectedResult: Result{
-				Remaining: "c",
-			},
-			expectedError: err.FailedToMatch,
+			expectedResult: Result{},
+			expectedError:  err.FailedToMatch,
 		},
 		"fail match a or b with empty input": {
 			input: "",
@@ -109,10 +105,8 @@ func TestChoiceEvaluate(t *testing.T) {
 					},
 				},
 			},
-			expectedResult: Result{
-				Remaining: "",
-			},
-			expectedError: err.EndOfInput,
+			expectedResult: Result{},
+			expectedError:  err.EndOfInput,
 		},
 		"match a or b with input ab": {
 			input: "ab",
@@ -127,7 +121,6 @@ func TestChoiceEvaluate(t *testing.T) {
 				},
 			},
 			expectedResult: Result{
-				Remaining: "b",
 				CST: CST{
 					Value: "choice",
 					Children: []CST{
@@ -148,7 +141,10 @@ func TestChoiceEvaluate(t *testing.T) {
 
 	for name, test := range tests {
 		t.Run(name, func(t *testing.T) {
-			output, err := test.expr.Evaluate(test.input)
+			context := &Context{
+				input: test.input,
+			}
+			output, err := test.expr.Evaluate(context)
 
 			assert.Equal(t, test.expectedResult, output)
 
