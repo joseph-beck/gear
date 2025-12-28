@@ -1,6 +1,8 @@
 package expression
 
-import "github.com/joseph-beck/gear/pkg/cst"
+import (
+	"github.com/joseph-beck/gear/pkg/cst"
+)
 
 type ExpressionType int
 
