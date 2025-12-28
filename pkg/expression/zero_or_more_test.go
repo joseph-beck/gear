@@ -21,7 +21,7 @@ func TestZeroOrMoreEvaluate(t *testing.T) {
 		expectedResult Result
 		expectedError  error
 	}{
-		"match zero a's": {
+		"match a with input b": {
 			input: "b",
 			expr: ZeroOrMore{
 				value: Char{
@@ -36,7 +36,7 @@ func TestZeroOrMoreEvaluate(t *testing.T) {
 			},
 			expectedError: nil,
 		},
-		"match three a against aaa": {
+		"match a with input aaa": {
 			input: "aaa",
 			expr: ZeroOrMore{
 				value: Char{
@@ -77,7 +77,7 @@ func TestZeroOrMoreEvaluate(t *testing.T) {
 			},
 			expectedError: nil,
 		},
-		"match three a against aaab": {
+		"match a with input aaab": {
 			input: "aaab",
 			expr: ZeroOrMore{
 				value: Char{
@@ -118,7 +118,7 @@ func TestZeroOrMoreEvaluate(t *testing.T) {
 			},
 			expectedError: nil,
 		},
-		"match three a against aaba": {
+		"match a with input aaba": {
 			input: "aaba",
 			expr: ZeroOrMore{
 				value: Char{
