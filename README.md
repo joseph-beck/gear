@@ -7,13 +7,13 @@
 
 ## about
 
-a peg parser implementation written in go
+a peg parsing library written in go
 
 ## getting started
 
 ```bash
-# 1. make sure go is install
-# go to https://go.dev/doc/install for a guide
+# 1. make sure go is installed
+# go to https://go.dev/doc/install for to install
 
 # 2. install go packages
 make install
