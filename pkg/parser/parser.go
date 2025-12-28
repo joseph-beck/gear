@@ -23,6 +23,10 @@ func New(g ...grammar.Grammar) Parser {
 	}
 }
 
+func (p *Parser) SetGrammar(g grammar.Grammar) {
+	p.grammar = g
+}
+
 func (p Parser) Parse(input string, rule string) (expression.Result, error) {
 	r, ok := p.grammar.Get(rule)
 
