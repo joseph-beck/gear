@@ -4,7 +4,7 @@ type Char struct {
 	value rune
 }
 
-func (c Char) Type() int {
+func (c Char) Type() ExpressionType {
 	return CharExpression
 }
 

@@ -1,14 +1,17 @@
 package expression
 
+type ExpressionType int
+
 const (
-	CharExpression = iota + 1
+	CharExpression ExpressionType = iota
 	ChoiceExpression
 	SequenceExpression
 	ZeroOrMoreExpression
 	OneOrMoreExpression
+	NamedRuleExpression
 )
 
 type Expression interface {
-	Type()
+	Type() ExpressionType
 	Evaluate() (string, error)
 }

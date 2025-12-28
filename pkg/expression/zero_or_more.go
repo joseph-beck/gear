@@ -4,7 +4,7 @@ type ZeroOrMore struct {
 	value Expression
 }
 
-func (z ZeroOrMore) Type() int {
+func (z ZeroOrMore) Type() ExpressionType {
 	return ZeroOrMoreExpression
 }
 

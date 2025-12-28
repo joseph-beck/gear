@@ -4,7 +4,7 @@ type Choice struct {
 	value []Expression
 }
 
-func (c Choice) Type() int {
+func (c Choice) Type() ExpressionType {
 	return ChoiceExpression
 }
 

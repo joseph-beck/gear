@@ -4,7 +4,7 @@ type Sequence struct {
 	value []Expression
 }
 
-func (s Sequence) Type() int {
+func (s Sequence) Type() ExpressionType {
 	return SequenceExpression
 }
 
