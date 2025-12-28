@@ -1,11 +1,12 @@
 package expression
 
-type Empty struct{}
+type Empty struct {
+}
 
 func (e Empty) Type() ExpressionType {
 	return EmptyExpression
 }
 
-func (e Empty) Evaluate() (string, error) {
-	return "", nil
+func (e Empty) Evaluate(input string) (Result, error) {
+	return Result{}, nil
 }
