@@ -21,7 +21,7 @@ func TestNamedRuleEvaluate(t *testing.T) {
 		expectedResult Result
 		expectedError  error
 	}{
-		"left recursive rule rule_a with input aaa": {
+		"match left recursive rule rule_a with input aaa": {
 			input: "aaa",
 			expr: &NamedRule{
 				Value: "rule_a",
@@ -214,7 +214,7 @@ func TestNamedRuleEvaluate(t *testing.T) {
 			expectedResult: Result{},
 			expectedError:  errs.FailedToMatch,
 		},
-		"named sequence rule_a with input aaa": {
+		"match named sequence rule_a with input aaa": {
 			input: "aaa",
 			expr: &NamedRule{
 				Value: "rule_a",
