@@ -10,7 +10,6 @@ func main() {
 	p := gear.New()
 	g := gear.NewGrammar()
 
-	// digit ← '0' | '1' | ... | '9'
 	digit := gear.NewRule("digit", &gear.Choice{
 		Value: []gear.Expression{
 			&gear.Char{Value: '0'},

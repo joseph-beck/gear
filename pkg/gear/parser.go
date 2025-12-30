@@ -23,7 +23,7 @@ func (p *Parser) SetGrammar(g Grammar) {
 }
 
 func (p *Parser) Parse(input string, rule string) (Result, error) {
-	r, ok := p.grammar.Get(rule)
+	_, ok := p.grammar.Get(rule)
 
 	if !ok {
 		return Result{}, errs.RuleNotFound
@@ -32,17 +32,14 @@ func (p *Parser) Parse(input string, rule string) (Result, error) {
 	context := NewContext(input)
 	context.grammar = &p.grammar
 
-	res, err := r.Expression.Evaluate(context, 0)
+	// Use NamedRule to ensure left-recursion handling at the top level
+	namedRule := &NamedRule{Value: rule}
+	res, err := namedRule.Evaluate(context, 0)
 	if err != nil {
 		return Result{}, err
 	}
 
-	tree := NewCST(rule)
-	tree.Add(res.CST)
-
-	return Result{
-		CST: tree,
-	}, nil
+	return res, nil
 }
 
 func (p *Parser) DefaultResolver(name string) (Expression, error) {

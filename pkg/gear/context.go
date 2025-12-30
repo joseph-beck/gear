@@ -1,22 +1,21 @@
 package gear
 
 type Context struct {
-	input   string
-	grammar *Grammar
-	packrat Packrat
-}
+	input string
 
-type contextCfg struct {
-	input   string
 	grammar *Grammar
+
+	packrat Packrat
+
+	seeding bool
 }
 
 func NewContext(input string) *Context {
-
 	return &Context{
 		input:   input,
 		grammar: &Grammar{},
 		packrat: NewPackrat(),
+		seeding: false,
 	}
 }
 
@@ -25,6 +24,7 @@ func (ctx *Context) Clone() *Context {
 		input:   ctx.input,
 		grammar: ctx.grammar,
 		packrat: ctx.packrat,
+		seeding: ctx.seeding,
 	}
 }
 
@@ -42,4 +42,12 @@ func (ctx *Context) Grammar() *Grammar {
 
 func (ctx *Context) Packrat() *Packrat {
 	return &ctx.packrat
+}
+
+func (ctx *Context) Seeding() bool {
+	return ctx.seeding
+}
+
+func (ctx *Context) SetSeeding(seeding bool) {
+	ctx.seeding = seeding
 }

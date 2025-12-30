@@ -13,8 +13,11 @@ func (o *OneOrMore) Type() ExpressionType {
 }
 
 func (o *OneOrMore) Evaluate(context *Context, pos uint) (Result, error) {
-	if r, err, ok := context.Packrat().Get(o, pos); ok {
-		return r, err
+	// Only use memoization if we're not in growth mode
+	if !context.Seeding() {
+		if r, err, ok := context.Packrat().Get(o, pos); ok {
+			return r, err
+		}
 	}
 
 	tree := NewCST("one_or_more")
@@ -22,12 +25,16 @@ func (o *OneOrMore) Evaluate(context *Context, pos uint) (Result, error) {
 
 	first, err := o.Value.Evaluate(context, current)
 	if err != nil {
-		context.Packrat().Put(o, pos, Result{}, err)
+		if !context.Seeding() {
+			context.Packrat().Put(o, pos, Result{}, err)
+		}
 		return Result{}, err
 	}
 
 	if first.Next == current {
-		context.Packrat().Put(o, pos, Result{}, errs.FailedToMatch)
+		if !context.Seeding() {
+			context.Packrat().Put(o, pos, Result{}, errs.FailedToMatch)
+		}
 		return Result{}, errs.FailedToMatch
 	}
 
@@ -53,6 +60,9 @@ func (o *OneOrMore) Evaluate(context *Context, pos uint) (Result, error) {
 		CST:  tree,
 	}
 
-	context.Packrat().Put(o, pos, result, nil)
+	// Only memoize if not growing
+	if !context.Seeding() {
+		context.Packrat().Put(o, pos, result, nil)
+	}
 	return result, nil
 }

@@ -11,8 +11,10 @@ func (c *Choice) Type() ExpressionType {
 }
 
 func (c *Choice) Evaluate(context *Context, pos uint) (Result, error) {
-	if r, err, ok := context.Packrat().Get(c, pos); ok {
-		return r, err
+	if !context.Seeding() {
+		if r, err, ok := context.Packrat().Get(c, pos); ok {
+			return r, err
+		}
 	}
 
 	for _, expr := range c.Value {
@@ -26,12 +28,16 @@ func (c *Choice) Evaluate(context *Context, pos uint) (Result, error) {
 				CST:  tree,
 			}
 
-			context.Packrat().Put(c, pos, result, nil)
+			if !context.Seeding() {
+				context.Packrat().Put(c, pos, result, nil)
+			}
 			return result, nil
 		}
 	}
 
 	e := errs.FailedToMatch
-	context.Packrat().Put(c, pos, Result{}, e)
+	if !context.Seeding() {
+		context.Packrat().Put(c, pos, Result{}, e)
+	}
 	return Result{}, e
 }
