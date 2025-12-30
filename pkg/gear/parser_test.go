@@ -71,23 +71,23 @@ func TestParserParse(t *testing.T) {
 				return g
 			}(),
 			expectedResult: Result{
-				CST: CST{
-					Value: "rule_a",
-					Children: []CST{
+				CST: cst{
+					value: "rule_a",
+					children: []cst{
 						{
-							Value: "char",
-							Children: []CST{
+							value: "char",
+							children: []cst{
 								{
-									Value: "a",
+									value: "a",
 								},
 							},
-							Label: Label{
-								Expression: true,
+							label: label{
+								expression: true,
 							},
 						},
 					},
-					Label: Label{
-						Expression: true,
+					label: label{
+						expression: true,
 					},
 				},
 			},
@@ -121,31 +121,31 @@ func TestParserParse(t *testing.T) {
 				return g
 			}(),
 			expectedResult: Result{
-				CST: CST{
-					Value: "digit",
-					Children: []CST{
+				CST: cst{
+					value: "digit",
+					children: []cst{
 						{
-							Value: "choice",
-							Children: []CST{
+							value: "choice",
+							children: []cst{
 								{
-									Value: "char",
-									Children: []CST{
+									value: "char",
+									children: []cst{
 										{
-											Value: "1",
+											value: "1",
 										},
 									},
-									Label: Label{
-										Expression: true,
+									label: label{
+										expression: true,
 									},
 								},
 							},
-							Label: Label{
-								Expression: true,
+							label: label{
+								expression: true,
 							},
 						},
 					},
-					Label: Label{
-						Expression: true,
+					label: label{
+						expression: true,
 					},
 				},
 			},
@@ -155,7 +155,9 @@ func TestParserParse(t *testing.T) {
 
 	for name, test := range tests {
 		t.Run(name, func(t *testing.T) {
-			parser := New(test.grammar)
+			parser := New(ParserParam{
+				Grammar: test.grammar,
+			})
 
 			output, err := parser.Parse(test.input, test.rule)
 

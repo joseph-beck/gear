@@ -27,10 +27,10 @@ func (c *Choice) Evaluate(ctx *Context, pos uint) (Result, error) {
 			continue
 		}
 
-		tree := NewCST(cstParam{
-			value: "choice",
-			label: NewLabel(labelParam{
-				expression: true,
+		tree := NewCST(CSTParam{
+			Value: "choice",
+			Label: NewLabel(LabelParam{
+				Expression: true,
 			}),
 		})
 		tree.Add(r.CST)

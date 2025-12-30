@@ -27,15 +27,15 @@ func TestCharEvaluate(t *testing.T) {
 			},
 			expectedResult: Result{
 				Next: 1,
-				CST: CST{
-					Value: "char",
-					Children: []CST{
+				CST: cst{
+					value: "char",
+					children: []cst{
 						{
-							Value: "a",
+							value: "a",
 						},
 					},
-					Label: Label{
-						Expression: true,
+					label: label{
+						expression: true,
 					},
 				},
 			},
@@ -63,15 +63,15 @@ func TestCharEvaluate(t *testing.T) {
 				Value: 'a',
 			},
 			expectedResult: Result{
-				CST: CST{
-					Value: "char",
-					Children: []CST{
+				CST: cst{
+					value: "char",
+					children: []cst{
 						{
-							Value: "a",
+							value: "a",
 						},
 					},
-					Label: Label{
-						Expression: true,
+					label: label{
+						expression: true,
 					},
 				},
 			},

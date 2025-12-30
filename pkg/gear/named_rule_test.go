@@ -53,112 +53,112 @@ func TestNamedRuleEvaluate(t *testing.T) {
 				return g
 			}(),
 			expectedResult: Result{
-				CST: CST{
-					Value: "rule_a",
-					Children: []CST{
+				CST: cst{
+					value: "rule_a",
+					children: []cst{
 						{
-							Value: "choice",
-							Children: []CST{
+							value: "choice",
+							children: []cst{
 								{
-									Value: "sequence",
-									Children: []CST{
+									value: "sequence",
+									children: []cst{
 										{
-											Value: "rule_a",
-											Children: []CST{
+											value: "rule_a",
+											children: []cst{
 												{
-													Value: "choice",
-													Children: []CST{
+													value: "choice",
+													children: []cst{
 														{
-															Value: "sequence",
-															Children: []CST{
+															value: "sequence",
+															children: []cst{
 																{
-																	Value: "rule_a",
-																	Children: []CST{
+																	value: "rule_a",
+																	children: []cst{
 																		{
-																			Value: "choice",
-																			Children: []CST{
+																			value: "choice",
+																			children: []cst{
 																				{
-																					Value: "sequence",
-																					Children: []CST{
+																					value: "sequence",
+																					children: []cst{
 																						{
-																							Value: "",
+																							value: "",
 																						},
 																						{
-																							Value: "char",
-																							Children: []CST{
+																							value: "char",
+																							children: []cst{
 																								{
-																									Value: "a",
+																									value: "a",
 																								},
 																							},
-																							Label: Label{
-																								Expression: true,
+																							label: label{
+																								expression: true,
 																							},
 																						},
 																					},
-																					Label: Label{
-																						Expression: true,
+																					label: label{
+																						expression: true,
 																					},
 																				},
 																			},
-																			Label: Label{
-																				Expression: true,
+																			label: label{
+																				expression: true,
 																			},
 																		},
 																	},
-																	Label: Label{
-																		Expression: true,
+																	label: label{
+																		expression: true,
 																	},
 																},
 																{
-																	Value: "char",
-																	Children: []CST{
+																	value: "char",
+																	children: []cst{
 																		{
-																			Value: "a",
+																			value: "a",
 																		},
 																	},
-																	Label: Label{
-																		Expression: true,
+																	label: label{
+																		expression: true,
 																	},
 																},
 															},
-															Label: Label{
-																Expression: true,
+															label: label{
+																expression: true,
 															},
 														},
 													},
-													Label: Label{
-														Expression: true,
+													label: label{
+														expression: true,
 													},
 												},
 											},
-											Label: Label{
-												Expression: true,
+											label: label{
+												expression: true,
 											},
 										},
 										{
-											Value: "char",
-											Children: []CST{
+											value: "char",
+											children: []cst{
 												{
-													Value: "a",
+													value: "a",
 												},
 											},
-											Label: Label{
-												Expression: true,
+											label: label{
+												expression: true,
 											},
 										},
 									},
-									Label: Label{
-										Expression: true,
+									label: label{
+										expression: true,
 									},
 								},
 							},
-							Label: Label{
-								Expression: true,
+							label: label{
+								expression: true,
 							},
 						},
 					},
-					Label: Label{
-						Expression: true,
+					label: label{
+						expression: true,
 					},
 				},
 			},
@@ -177,23 +177,23 @@ func TestNamedRuleEvaluate(t *testing.T) {
 				return g
 			}(),
 			expectedResult: Result{
-				CST: CST{
-					Value: "rule_a",
-					Children: []CST{
+				CST: cst{
+					value: "rule_a",
+					children: []cst{
 						{
-							Value: "char",
-							Children: []CST{
+							value: "char",
+							children: []cst{
 								{
-									Value: "a",
+									value: "a",
 								},
 							},
-							Label: Label{
-								Expression: true,
+							label: label{
+								expression: true,
 							},
 						},
 					},
-					Label: Label{
-						Expression: true,
+					label: label{
+						expression: true,
 					},
 				},
 			},
@@ -229,53 +229,53 @@ func TestNamedRuleEvaluate(t *testing.T) {
 				return g
 			}(),
 			expectedResult: Result{
-				CST: CST{
-					Value: "rule_a",
-					Children: []CST{
+				CST: cst{
+					value: "rule_a",
+					children: []cst{
 						{
-							Value: "zero_or_more",
-							Children: []CST{
+							value: "zero_or_more",
+							children: []cst{
 								{
-									Value: "char",
-									Children: []CST{
+									value: "char",
+									children: []cst{
 										{
-											Value: "a",
+											value: "a",
 										},
 									},
-									Label: Label{
-										Expression: true,
+									label: label{
+										expression: true,
 									},
 								},
 								{
-									Value: "char",
-									Children: []CST{
+									value: "char",
+									children: []cst{
 										{
-											Value: "a",
+											value: "a",
 										},
 									},
-									Label: Label{
-										Expression: true,
+									label: label{
+										expression: true,
 									},
 								},
 								{
-									Value: "char",
-									Children: []CST{
+									value: "char",
+									children: []cst{
 										{
-											Value: "a",
+											value: "a",
 										},
 									},
-									Label: Label{
-										Expression: true,
+									label: label{
+										expression: true,
 									},
 								},
 							},
-							Label: Label{
-								Expression: true,
+							label: label{
+								expression: true,
 							},
 						},
 					},
-					Label: Label{
-						Expression: true,
+					label: label{
+						expression: true,
 					},
 				},
 			},

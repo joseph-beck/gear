@@ -28,10 +28,10 @@ func TestZeroOrMoreEvaluate(t *testing.T) {
 				},
 			},
 			expectedResult: Result{
-				CST: CST{
-					Value: "zero_or_more",
-					Label: Label{
-						Expression: true,
+				CST: cst{
+					value: "zero_or_more",
+					label: label{
+						expression: true,
 					},
 				},
 			},
@@ -45,45 +45,45 @@ func TestZeroOrMoreEvaluate(t *testing.T) {
 				},
 			},
 			expectedResult: Result{
-				CST: CST{
-					Value: "zero_or_more",
-					Children: []CST{
+				CST: cst{
+					value: "zero_or_more",
+					children: []cst{
 						{
-							Value: "char",
-							Children: []CST{
+							value: "char",
+							children: []cst{
 								{
-									Value: "a",
+									value: "a",
 								},
 							},
-							Label: Label{
-								Expression: true,
+							label: label{
+								expression: true,
 							},
 						},
 						{
-							Value: "char",
-							Children: []CST{
+							value: "char",
+							children: []cst{
 								{
-									Value: "a",
+									value: "a",
 								},
 							},
-							Label: Label{
-								Expression: true,
+							label: label{
+								expression: true,
 							},
 						},
 						{
-							Value: "char",
-							Children: []CST{
+							value: "char",
+							children: []cst{
 								{
-									Value: "a",
+									value: "a",
 								},
 							},
-							Label: Label{
-								Expression: true,
+							label: label{
+								expression: true,
 							},
 						},
 					},
-					Label: Label{
-						Expression: true,
+					label: label{
+						expression: true,
 					},
 				},
 			},
@@ -97,45 +97,45 @@ func TestZeroOrMoreEvaluate(t *testing.T) {
 				},
 			},
 			expectedResult: Result{
-				CST: CST{
-					Value: "zero_or_more",
-					Children: []CST{
+				CST: cst{
+					value: "zero_or_more",
+					children: []cst{
 						{
-							Value: "char",
-							Children: []CST{
+							value: "char",
+							children: []cst{
 								{
-									Value: "a",
+									value: "a",
 								},
 							},
-							Label: Label{
-								Expression: true,
+							label: label{
+								expression: true,
 							},
 						},
 						{
-							Value: "char",
-							Children: []CST{
+							value: "char",
+							children: []cst{
 								{
-									Value: "a",
+									value: "a",
 								},
 							},
-							Label: Label{
-								Expression: true,
+							label: label{
+								expression: true,
 							},
 						},
 						{
-							Value: "char",
-							Children: []CST{
+							value: "char",
+							children: []cst{
 								{
-									Value: "a",
+									value: "a",
 								},
 							},
-							Label: Label{
-								Expression: true,
+							label: label{
+								expression: true,
 							},
 						},
 					},
-					Label: Label{
-						Expression: true,
+					label: label{
+						expression: true,
 					},
 				},
 			},
@@ -149,34 +149,34 @@ func TestZeroOrMoreEvaluate(t *testing.T) {
 				},
 			},
 			expectedResult: Result{
-				CST: CST{
-					Value: "zero_or_more",
-					Children: []CST{
+				CST: cst{
+					value: "zero_or_more",
+					children: []cst{
 						{
-							Value: "char",
-							Children: []CST{
+							value: "char",
+							children: []cst{
 								{
-									Value: "a",
+									value: "a",
 								},
 							},
-							Label: Label{
-								Expression: true,
+							label: label{
+								expression: true,
 							},
 						},
 						{
-							Value: "char",
-							Children: []CST{
+							value: "char",
+							children: []cst{
 								{
-									Value: "a",
+									value: "a",
 								},
 							},
-							Label: Label{
-								Expression: true,
+							label: label{
+								expression: true,
 							},
 						},
 					},
-					Label: Label{
-						Expression: true,
+					label: label{
+						expression: true,
 					},
 				},
 			},

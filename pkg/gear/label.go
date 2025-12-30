@@ -1,23 +1,23 @@
 package gear
 
-type Label struct {
-	Hidden     bool
-	Expression bool
-}
-
-type labelParam struct {
+type label struct {
 	hidden     bool
 	expression bool
 }
 
-func NewLabel(param ...labelParam) Label {
+type LabelParam struct {
+	Hidden     bool
+	Expression bool
+}
+
+func NewLabel(param ...LabelParam) label {
 	if len(param) == 0 {
-		return Label{}
+		return label{}
 	}
 
 	p := param[0]
-	return Label{
-		Hidden:     p.hidden,
-		Expression: p.expression,
+	return label{
+		hidden:     p.Hidden,
+		expression: p.Expression,
 	}
 }

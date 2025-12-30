@@ -23,10 +23,10 @@ func (o *OneOrMore) Evaluate(ctx *Context, pos uint) (Result, error) {
 		return Result{}, errs.EndOfInput
 	}
 
-	tree := NewCST(cstParam{
-		value: "one_or_more",
-		label: NewLabel(labelParam{
-			expression: true,
+	tree := NewCST(CSTParam{
+		Value: "one_or_more",
+		Label: NewLabel(LabelParam{
+			Expression: true,
 		}),
 	})
 	current := pos

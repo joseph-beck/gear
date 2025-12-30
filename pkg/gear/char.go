@@ -21,14 +21,14 @@ func (c *Char) Evaluate(ctx *Context, pos uint) (Result, error) {
 		return Result{}, errs.FailedToMatch
 	}
 
-	tree := NewCST(cstParam{
-		value: "char",
-		label: NewLabel(labelParam{
-			expression: true,
+	tree := NewCST(CSTParam{
+		Value: "char",
+		Label: NewLabel(LabelParam{
+			Expression: true,
 		}),
 	})
-	tree.Add(NewCST(cstParam{
-		value: string(c.Value),
+	tree.Add(NewCST(CSTParam{
+		Value: string(c.Value),
 	}))
 
 	result := Result{

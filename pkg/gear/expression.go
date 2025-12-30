@@ -19,5 +19,5 @@ type Expression interface {
 
 type Result struct {
 	Next uint
-	CST  CST
+	CST  cst
 }

@@ -33,23 +33,23 @@ func TestChoiceEvaluate(t *testing.T) {
 				},
 			},
 			expectedResult: Result{
-				CST: CST{
-					Value: "choice",
-					Children: []CST{
+				CST: cst{
+					value: "choice",
+					children: []cst{
 						{
-							Value: "char",
-							Children: []CST{
+							value: "char",
+							children: []cst{
 								{
-									Value: "a",
+									value: "a",
 								},
 							},
-							Label: Label{
-								Expression: true,
+							label: label{
+								expression: true,
 							},
 						},
 					},
-					Label: Label{
-						Expression: true,
+					label: label{
+						expression: true,
 					},
 				},
 			},
@@ -68,23 +68,23 @@ func TestChoiceEvaluate(t *testing.T) {
 				},
 			},
 			expectedResult: Result{
-				CST: CST{
-					Value: "choice",
-					Children: []CST{
+				CST: cst{
+					value: "choice",
+					children: []cst{
 						{
-							Value: "char",
-							Children: []CST{
+							value: "char",
+							children: []cst{
 								{
-									Value: "b",
+									value: "b",
 								},
 							},
-							Label: Label{
-								Expression: true,
+							label: label{
+								expression: true,
 							},
 						},
 					},
-					Label: Label{
-						Expression: true,
+					label: label{
+						expression: true,
 					},
 				},
 			},
@@ -133,23 +133,23 @@ func TestChoiceEvaluate(t *testing.T) {
 				},
 			},
 			expectedResult: Result{
-				CST: CST{
-					Value: "choice",
-					Children: []CST{
+				CST: cst{
+					value: "choice",
+					children: []cst{
 						{
-							Value: "char",
-							Children: []CST{
+							value: "char",
+							children: []cst{
 								{
-									Value: "a",
+									value: "a",
 								},
 							},
-							Label: Label{
-								Expression: true,
+							label: label{
+								expression: true,
 							},
 						},
 					},
-					Label: Label{
-						Expression: true,
+					label: label{
+						expression: true,
 					},
 				},
 			},
