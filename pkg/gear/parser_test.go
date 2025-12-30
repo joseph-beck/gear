@@ -81,7 +81,13 @@ func TestParserParse(t *testing.T) {
 									Value: "a",
 								},
 							},
+							Label: Label{
+								Expression: true,
+							},
 						},
+					},
+					Label: Label{
+						Expression: true,
 					},
 				},
 			},
@@ -128,9 +134,18 @@ func TestParserParse(t *testing.T) {
 											Value: "1",
 										},
 									},
+									Label: Label{
+										Expression: true,
+									},
 								},
 							},
+							Label: Label{
+								Expression: true,
+							},
 						},
+					},
+					Label: Label{
+						Expression: true,
 					},
 				},
 			},
