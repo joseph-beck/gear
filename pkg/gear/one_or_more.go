@@ -19,6 +19,10 @@ func (o *OneOrMore) Evaluate(ctx *Context, pos uint) (Result, error) {
 		}
 	}
 
+	if pos >= uint(len(ctx.Input())) {
+		return Result{}, errs.EndOfInput
+	}
+
 	tree := NewCST("one_or_more")
 	current := pos
 
