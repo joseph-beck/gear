@@ -25,6 +25,8 @@ import (
 )
 ```
 
+for examples see [examples](/example/)
+
 ## getting started
 
 ```bash
