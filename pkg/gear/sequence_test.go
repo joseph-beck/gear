@@ -43,6 +43,9 @@ func TestSequenceEvaluate(t *testing.T) {
 									Value: "a",
 								},
 							},
+							Label: Label{
+								Expression: true,
+							},
 						},
 						{
 							Value: "char",
@@ -51,7 +54,13 @@ func TestSequenceEvaluate(t *testing.T) {
 									Value: "b",
 								},
 							},
+							Label: Label{
+								Expression: true,
+							},
 						},
+					},
+					Label: Label{
+						Expression: true,
 					},
 				},
 			},
@@ -80,6 +89,9 @@ func TestSequenceEvaluate(t *testing.T) {
 									Value: "a",
 								},
 							},
+							Label: Label{
+								Expression: true,
+							},
 						},
 						{
 							Value: "char",
@@ -88,7 +100,13 @@ func TestSequenceEvaluate(t *testing.T) {
 									Value: "b",
 								},
 							},
+							Label: Label{
+								Expression: true,
+							},
 						},
+					},
+					Label: Label{
+						Expression: true,
 					},
 				},
 			},

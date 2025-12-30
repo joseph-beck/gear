@@ -43,7 +43,13 @@ func TestChoiceEvaluate(t *testing.T) {
 									Value: "a",
 								},
 							},
+							Label: Label{
+								Expression: true,
+							},
 						},
+					},
+					Label: Label{
+						Expression: true,
 					},
 				},
 			},
@@ -72,7 +78,13 @@ func TestChoiceEvaluate(t *testing.T) {
 									Value: "b",
 								},
 							},
+							Label: Label{
+								Expression: true,
+							},
 						},
+					},
+					Label: Label{
+						Expression: true,
 					},
 				},
 			},
@@ -131,7 +143,13 @@ func TestChoiceEvaluate(t *testing.T) {
 									Value: "a",
 								},
 							},
+							Label: Label{
+								Expression: true,
+							},
 						},
+					},
+					Label: Label{
+						Expression: true,
 					},
 				},
 			},

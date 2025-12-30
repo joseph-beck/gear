@@ -34,6 +34,9 @@ func TestCharEvaluate(t *testing.T) {
 							Value: "a",
 						},
 					},
+					Label: Label{
+						Expression: true,
+					},
 				},
 			},
 			expectedError: nil,
@@ -66,6 +69,9 @@ func TestCharEvaluate(t *testing.T) {
 						{
 							Value: "a",
 						},
+					},
+					Label: Label{
+						Expression: true,
 					},
 				},
 			},

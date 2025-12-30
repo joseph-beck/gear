@@ -21,7 +21,12 @@ func (s *Sequence) Evaluate(ctx *Context, pos uint) (Result, error) {
 		return Result{}, errs.EndOfInput
 	}
 
-	tree := NewCST("sequence")
+	tree := NewCST(cstParam{
+		value: "sequence",
+		label: NewLabel(labelParam{
+			expression: true,
+		}),
+	})
 	current := pos
 
 	for _, expr := range s.Value {

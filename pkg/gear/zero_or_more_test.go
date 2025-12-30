@@ -30,6 +30,9 @@ func TestZeroOrMoreEvaluate(t *testing.T) {
 			expectedResult: Result{
 				CST: CST{
 					Value: "zero_or_more",
+					Label: Label{
+						Expression: true,
+					},
 				},
 			},
 			expectedError: nil,
@@ -52,13 +55,8 @@ func TestZeroOrMoreEvaluate(t *testing.T) {
 									Value: "a",
 								},
 							},
-						},
-						{
-							Value: "char",
-							Children: []CST{
-								{
-									Value: "a",
-								},
+							Label: Label{
+								Expression: true,
 							},
 						},
 						{
@@ -68,7 +66,24 @@ func TestZeroOrMoreEvaluate(t *testing.T) {
 									Value: "a",
 								},
 							},
+							Label: Label{
+								Expression: true,
+							},
 						},
+						{
+							Value: "char",
+							Children: []CST{
+								{
+									Value: "a",
+								},
+							},
+							Label: Label{
+								Expression: true,
+							},
+						},
+					},
+					Label: Label{
+						Expression: true,
 					},
 				},
 			},
@@ -92,13 +107,8 @@ func TestZeroOrMoreEvaluate(t *testing.T) {
 									Value: "a",
 								},
 							},
-						},
-						{
-							Value: "char",
-							Children: []CST{
-								{
-									Value: "a",
-								},
+							Label: Label{
+								Expression: true,
 							},
 						},
 						{
@@ -108,7 +118,24 @@ func TestZeroOrMoreEvaluate(t *testing.T) {
 									Value: "a",
 								},
 							},
+							Label: Label{
+								Expression: true,
+							},
 						},
+						{
+							Value: "char",
+							Children: []CST{
+								{
+									Value: "a",
+								},
+							},
+							Label: Label{
+								Expression: true,
+							},
+						},
+					},
+					Label: Label{
+						Expression: true,
 					},
 				},
 			},
@@ -132,6 +159,9 @@ func TestZeroOrMoreEvaluate(t *testing.T) {
 									Value: "a",
 								},
 							},
+							Label: Label{
+								Expression: true,
+							},
 						},
 						{
 							Value: "char",
@@ -140,7 +170,13 @@ func TestZeroOrMoreEvaluate(t *testing.T) {
 									Value: "a",
 								},
 							},
+							Label: Label{
+								Expression: true,
+							},
 						},
+					},
+					Label: Label{
+						Expression: true,
 					},
 				},
 			},

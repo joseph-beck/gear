@@ -31,7 +31,12 @@ func (n *NamedRule) Evaluate(ctx *Context, pos uint) (Result, error) {
 		return Result{}, err
 	}
 
-	tree := NewCST(rule.Name)
+	tree := NewCST(cstParam{
+		value: rule.Name,
+		label: NewLabel(labelParam{
+			expression: true,
+		}),
+	})
 	tree.Children = append(tree.Children, r.CST)
 	tree.Value = n.Value
 
@@ -59,7 +64,12 @@ func (n *NamedRule) Evaluate(ctx *Context, pos uint) (Result, error) {
 
 		ctx.SetSeeding(false)
 
-		tree := NewCST(rule.Name)
+		tree := NewCST(cstParam{
+			value: rule.Name,
+			label: NewLabel(labelParam{
+				expression: true,
+			}),
+		})
 		tree.Children = append(tree.Children, r.CST)
 		tree.Value = n.Value
 
