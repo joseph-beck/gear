@@ -3,7 +3,7 @@ package gear
 import (
 	"testing"
 
-	"github.com/joseph-beck/gear/pkg/err"
+	"github.com/joseph-beck/gear/pkg/errs"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -16,16 +16,17 @@ func TestCharType(t *testing.T) {
 func TestCharEvaluate(t *testing.T) {
 	tests := map[string]struct {
 		input          string
-		expr           Char
+		expr           Expression
 		expectedResult Result
 		expectedError  error
 	}{
 		"match a with a": {
 			input: "a",
-			expr: Char{
+			expr: &Char{
 				Value: 'a',
 			},
 			expectedResult: Result{
+				Next: 1,
 				CST: CST{
 					Value: "char",
 					Children: []CST{
@@ -39,23 +40,23 @@ func TestCharEvaluate(t *testing.T) {
 		},
 		"fail match b with a": {
 			input: "b",
-			expr: Char{
+			expr: &Char{
 				Value: 'a',
 			},
 			expectedResult: Result{},
-			expectedError:  err.FailedToMatch,
+			expectedError:  errs.FailedToMatch,
 		},
 		"fail match empty input": {
 			input: "",
-			expr: Char{
+			expr: &Char{
 				Value: 'a',
 			},
 			expectedResult: Result{},
-			expectedError:  err.EndOfInput,
+			expectedError:  errs.EndOfInput,
 		},
 		"match a with input ab": {
 			input: "ab",
-			expr: Char{
+			expr: &Char{
 				Value: 'a',
 			},
 			expectedResult: Result{
@@ -74,12 +75,11 @@ func TestCharEvaluate(t *testing.T) {
 
 	for name, test := range tests {
 		t.Run(name, func(t *testing.T) {
-			context := &Context{
-				input: test.input,
-			}
-			output, err := test.expr.Evaluate(context)
+			context := NewContext(test.input)
 
-			assert.Equal(t, test.expectedResult, output)
+			output, err := test.expr.Evaluate(context, 0)
+
+			assert.Equal(t, test.expectedResult.CST, output.CST)
 
 			assert.Equal(t, test.expectedError, err)
 		})

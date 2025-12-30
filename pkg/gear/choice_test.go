@@ -3,7 +3,7 @@ package gear
 import (
 	"testing"
 
-	"github.com/joseph-beck/gear/pkg/err"
+	"github.com/joseph-beck/gear/pkg/errs"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -16,18 +16,18 @@ func TestChoiceType(t *testing.T) {
 func TestChoiceEvaluate(t *testing.T) {
 	tests := map[string]struct {
 		input          string
-		expr           Choice
+		expr           Expression
 		expectedResult Result
 		expectedError  error
 	}{
 		"match a or b with input a": {
 			input: "a",
-			expr: Choice{
+			expr: &Choice{
 				Value: []Expression{
-					Char{
+					&Char{
 						Value: 'a',
 					},
-					Char{
+					&Char{
 						Value: 'b',
 					},
 				},
@@ -51,12 +51,12 @@ func TestChoiceEvaluate(t *testing.T) {
 		},
 		"match a or b with input b": {
 			input: "b",
-			expr: Choice{
+			expr: &Choice{
 				Value: []Expression{
-					Char{
+					&Char{
 						Value: 'a',
 					},
-					Char{
+					&Char{
 						Value: 'b',
 					},
 				},
@@ -80,42 +80,42 @@ func TestChoiceEvaluate(t *testing.T) {
 		},
 		"fail match a or b with input c": {
 			input: "c",
-			expr: Choice{
+			expr: &Choice{
 				Value: []Expression{
-					Char{
+					&Char{
 						Value: 'a',
 					},
-					Char{
+					&Char{
 						Value: 'b',
 					},
 				},
 			},
 			expectedResult: Result{},
-			expectedError:  err.FailedToMatch,
+			expectedError:  errs.FailedToMatch,
 		},
 		"fail match a or b with empty input": {
 			input: "",
-			expr: Choice{
+			expr: &Choice{
 				Value: []Expression{
-					Char{
+					&Char{
 						Value: 'a',
 					},
-					Char{
+					&Char{
 						Value: 'b',
 					},
 				},
 			},
 			expectedResult: Result{},
-			expectedError:  err.EndOfInput,
+			expectedError:  errs.EndOfInput,
 		},
 		"match a or b with input ab": {
 			input: "ab",
-			expr: Choice{
+			expr: &Choice{
 				Value: []Expression{
-					Char{
+					&Char{
 						Value: 'a',
 					},
-					Char{
+					&Char{
 						Value: 'b',
 					},
 				},
@@ -141,12 +141,11 @@ func TestChoiceEvaluate(t *testing.T) {
 
 	for name, test := range tests {
 		t.Run(name, func(t *testing.T) {
-			context := &Context{
-				input: test.input,
-			}
-			output, err := test.expr.Evaluate(context)
+			context := NewContext(test.input)
 
-			assert.Equal(t, test.expectedResult, output)
+			output, err := test.expr.Evaluate(context, 0)
+
+			assert.Equal(t, test.expectedResult.CST, output.CST)
 
 			assert.Equal(t, test.expectedError, err)
 		})

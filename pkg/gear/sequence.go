@@ -1,36 +1,37 @@
 package gear
 
-import (
-	"github.com/joseph-beck/gear/pkg/err"
-)
-
 type Sequence struct {
 	Value []Expression
 }
 
-func (s Sequence) Type() ExpressionType {
+func (s *Sequence) Type() ExpressionType {
 	return SequenceExpression
 }
 
-func (s Sequence) Evaluate(context *Context) (Result, error) {
-	input := context.Remaining()
-
-	if len(input) == 0 {
-		return Result{}, err.EndOfInput
+func (s *Sequence) Evaluate(context *Context, pos uint) (Result, error) {
+	if r, err, ok := context.Packrat().Get(s, pos); ok {
+		return r, err
 	}
 
 	tree := NewCST("sequence")
-	for _, expr := range s.Value {
-		r, err := expr.Evaluate(context)
+	current := pos
 
+	for _, expr := range s.Value {
+		r, err := expr.Evaluate(context, current)
 		if err != nil {
+			context.Packrat().Put(s, pos, Result{}, err)
 			return Result{}, err
 		}
 
 		tree.Add(r.CST)
+		current = r.Next
 	}
 
-	return Result{
-		CST: tree,
-	}, nil
+	result := Result{
+		Next: current,
+		CST:  tree,
+	}
+
+	context.Packrat().Put(s, pos, result, nil)
+	return result, nil
 }

@@ -1,8 +1,6 @@
 package gear
 
-import (
-	"github.com/joseph-beck/gear/pkg/err"
-)
+import "github.com/joseph-beck/gear/pkg/errs"
 
 type Parser struct {
 	grammar Grammar
@@ -24,19 +22,17 @@ func (p *Parser) SetGrammar(g Grammar) {
 	p.grammar = g
 }
 
-func (p Parser) Parse(input string, rule string) (Result, error) {
+func (p *Parser) Parse(input string, rule string) (Result, error) {
 	r, ok := p.grammar.Get(rule)
 
 	if !ok {
-		return Result{}, err.RuleNotFound
+		return Result{}, errs.RuleNotFound
 	}
 
-	context := NewContext(contextCfg{
-		input:   input,
-		grammar: &p.grammar,
-	})
+	context := NewContext(input)
+	context.grammar = &p.grammar
 
-	res, err := r.Expression.Evaluate(context)
+	res, err := r.Expression.Evaluate(context, 0)
 	if err != nil {
 		return Result{}, err
 	}
@@ -53,7 +49,7 @@ func (p *Parser) DefaultResolver(name string) (Expression, error) {
 	r, ok := p.grammar.Get(name)
 
 	if !ok {
-		return nil, err.RuleNotFound
+		return nil, errs.RuleNotFound
 	}
 
 	return r.Expression, nil

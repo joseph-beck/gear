@@ -1,34 +1,33 @@
 package gear
 
-import (
-	"github.com/joseph-beck/gear/pkg/err"
-)
+import "github.com/joseph-beck/gear/pkg/errs"
 
 type Char struct {
 	Value rune
 }
 
-func (c Char) Type() ExpressionType {
+func (c *Char) Type() ExpressionType {
 	return CharExpression
 }
 
-func (c Char) Evaluate(context *Context) (Result, error) {
-	input := context.Remaining()
+func (c *Char) Evaluate(context *Context, pos uint) (Result, error) {
+	input := context.Input()
 
-	if len(input) == 0 {
-		return Result{}, err.EndOfInput
+	if pos >= uint(len(input)) {
+		return Result{}, errs.EndOfInput
 	}
 
-	if rune(input[0]) == c.Value {
-		tree := NewCST("char")
-		tree.Add(NewCST(string(c.Value)))
-
-		context.SetPosition(context.Position() + 1)
-
-		return Result{
-			CST: tree,
-		}, nil
+	if rune(input[pos]) != c.Value {
+		return Result{}, errs.FailedToMatch
 	}
 
-	return Result{}, err.FailedToMatch
+	tree := NewCST("char")
+	tree.Add(NewCST(string(c.Value)))
+
+	result := Result{
+		Next: pos + 1,
+		CST:  tree,
+	}
+
+	return result, nil
 }

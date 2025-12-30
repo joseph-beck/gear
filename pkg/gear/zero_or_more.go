@@ -1,37 +1,40 @@
 package gear
 
-import (
-	"github.com/joseph-beck/gear/pkg/err"
-)
-
 type ZeroOrMore struct {
 	Value Expression
 }
 
-func (z ZeroOrMore) Type() ExpressionType {
+func (z *ZeroOrMore) Type() ExpressionType {
 	return ZeroOrMoreExpression
 }
 
-func (z ZeroOrMore) Evaluate(context *Context) (Result, error) {
-	input := context.Remaining()
-
-	if len(input) == 0 {
-		return Result{}, err.EndOfInput
+func (z *ZeroOrMore) Evaluate(context *Context, pos uint) (Result, error) {
+	if r, err, ok := context.Packrat().Get(z, pos); ok {
+		return r, err
 	}
 
 	tree := NewCST("zero_or_more")
+	current := pos
 
 	for {
-		r, err := z.Value.Evaluate(context)
-
+		r, err := z.Value.Evaluate(context, current)
 		if err != nil {
 			break
 		}
 
+		if r.Next == current {
+			break
+		}
+
 		tree.Add(r.CST)
+		current = r.Next
 	}
 
-	return Result{
-		CST: tree,
-	}, nil
+	result := Result{
+		Next: current,
+		CST:  tree,
+	}
+
+	context.Packrat().Put(z, pos, result, nil)
+	return result, nil
 }

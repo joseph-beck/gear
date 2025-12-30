@@ -14,9 +14,10 @@ const (
 
 type Expression interface {
 	Type() ExpressionType
-	Evaluate(*Context) (Result, error)
+	Evaluate(*Context, uint) (Result, error)
 }
 
 type Result struct {
-	CST CST
+	Next uint
+	CST  CST
 }

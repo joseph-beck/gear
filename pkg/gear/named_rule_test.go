@@ -3,7 +3,7 @@ package gear
 import (
 	"testing"
 
-	"github.com/joseph-beck/gear/pkg/err"
+	"github.com/joseph-beck/gear/pkg/errs"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -16,19 +16,19 @@ func TestNamedRuleType(t *testing.T) {
 func TestNamedRuleEvaluate(t *testing.T) {
 	tests := map[string]struct {
 		input          string
-		expr           NamedRule
+		expr           Expression
 		grammar        *Grammar
 		expectedResult Result
 		expectedError  error
 	}{
 		"match named rule_a with input a": {
 			input: "a",
-			expr: NamedRule{
+			expr: &NamedRule{
 				Value: "rule_a",
 			},
 			grammar: func() *Grammar {
 				g := &Grammar{}
-				g.Add(NewRule("rule_a", Char{
+				g.Add(NewRule("rule_a", &Char{
 					Value: 'a',
 				}))
 				return g
@@ -52,28 +52,28 @@ func TestNamedRuleEvaluate(t *testing.T) {
 		},
 		"error failed to match rule_a with input b": {
 			input: "b",
-			expr: NamedRule{
+			expr: &NamedRule{
 				Value: "rule_a",
 			},
 			grammar: func() *Grammar {
 				g := &Grammar{}
-				g.Add(NewRule("rule_a", Char{
+				g.Add(NewRule("rule_a", &Char{
 					Value: 'a',
 				}))
 				return g
 			}(),
 			expectedResult: Result{},
-			expectedError:  err.FailedToMatch,
+			expectedError:  errs.FailedToMatch,
 		},
 		"named sequence rule_a with input aaa": {
 			input: "aaa",
-			expr: NamedRule{
+			expr: &NamedRule{
 				Value: "rule_a",
 			},
 			grammar: func() *Grammar {
 				g := &Grammar{}
-				g.Add(NewRule("rule_a", ZeroOrMore{
-					Value: Char{
+				g.Add(NewRule("rule_a", &ZeroOrMore{
+					Value: &Char{
 						Value: 'a',
 					},
 				}))
@@ -119,24 +119,23 @@ func TestNamedRuleEvaluate(t *testing.T) {
 		},
 		"error rule not found": {
 			input: "a",
-			expr: NamedRule{
+			expr: &NamedRule{
 				Value: "rule_a",
 			},
 			grammar:        &Grammar{},
 			expectedResult: Result{},
-			expectedError:  err.RuleNotFound,
+			expectedError:  errs.RuleNotFound,
 		},
 	}
 
 	for name, test := range tests {
 		t.Run(name, func(t *testing.T) {
-			context := &Context{
-				input:   test.input,
-				grammar: test.grammar,
-			}
-			output, err := test.expr.Evaluate(context)
+			context := NewContext(test.input)
+			context.grammar = test.grammar
 
-			assert.Equal(t, test.expectedResult, output)
+			output, err := test.expr.Evaluate(context, 0)
+
+			assert.Equal(t, test.expectedResult.CST, output.CST)
 
 			assert.Equal(t, test.expectedError, err)
 		})

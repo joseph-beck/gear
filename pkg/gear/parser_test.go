@@ -3,7 +3,7 @@ package gear
 import (
 	"testing"
 
-	"github.com/joseph-beck/gear/pkg/err"
+	"github.com/joseph-beck/gear/pkg/errs"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -20,7 +20,7 @@ func TestParserParse(t *testing.T) {
 			rule:           "rule",
 			grammar:        NewGrammar(),
 			expectedResult: Result{},
-			expectedError:  err.RuleNotFound,
+			expectedError:  errs.RuleNotFound,
 		},
 		"error failed to match": {
 			input: "abc",
@@ -28,7 +28,7 @@ func TestParserParse(t *testing.T) {
 			grammar: func() Grammar {
 				g := NewGrammar()
 
-				r := NewRule("rule", Char{
+				r := NewRule("rule", &Char{
 					Value: 'x',
 				})
 
@@ -37,7 +37,7 @@ func TestParserParse(t *testing.T) {
 				return g
 			}(),
 			expectedResult: Result{},
-			expectedError:  err.FailedToMatch,
+			expectedError:  errs.FailedToMatch,
 		},
 		"error end of input": {
 			input: "",
@@ -45,7 +45,7 @@ func TestParserParse(t *testing.T) {
 			grammar: func() Grammar {
 				g := NewGrammar()
 
-				r := NewRule("rule", Char{
+				r := NewRule("rule", &Char{
 					Value: 'x',
 				})
 
@@ -54,7 +54,7 @@ func TestParserParse(t *testing.T) {
 				return g
 			}(),
 			expectedResult: Result{},
-			expectedError:  err.EndOfInput,
+			expectedError:  errs.EndOfInput,
 		},
 		"match char rule": {
 			input: "a",
@@ -62,7 +62,7 @@ func TestParserParse(t *testing.T) {
 			grammar: func() Grammar {
 				g := NewGrammar()
 
-				r := NewRule("rule_a", Char{
+				r := NewRule("rule_a", &Char{
 					Value: 'a',
 				})
 
@@ -93,18 +93,18 @@ func TestParserParse(t *testing.T) {
 			grammar: func() Grammar {
 				g := NewGrammar()
 
-				digit := NewRule("digit", Choice{
+				digit := NewRule("digit", &Choice{
 					Value: []Expression{
-						Char{
+						&Char{
 							Value: '0',
 						},
-						Char{
+						&Char{
 							Value: '1',
 						},
-						Char{
+						&Char{
 							Value: '2',
 						},
-						Char{
+						&Char{
 							Value: '3',
 						},
 					},
@@ -144,7 +144,7 @@ func TestParserParse(t *testing.T) {
 
 			output, err := parser.Parse(test.input, test.rule)
 
-			assert.Equal(t, test.expectedResult, output)
+			assert.Equal(t, test.expectedResult.CST, output.CST)
 
 			assert.Equal(t, test.expectedError, err)
 		})

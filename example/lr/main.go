@@ -8,9 +8,9 @@ import (
 
 func main() {
 	p := gear.New()
-
 	g := gear.NewGrammar()
 
+	// digit ← '0' | '1' | ... | '9'
 	digit := gear.NewRule("digit", &gear.Choice{
 		Value: []gear.Expression{
 			&gear.Char{Value: '0'},
@@ -25,18 +25,35 @@ func main() {
 			&gear.Char{Value: '9'},
 		},
 	})
-	number := gear.NewRule("number", &gear.OneOrMore{
-		Value: &gear.NamedRule{
-			Value: "digit",
+
+	expr := gear.NewRule("expr", &gear.Choice{
+		Value: []gear.Expression{
+			&gear.Sequence{
+				Value: []gear.Expression{
+					&gear.NamedRule{
+						Value: "expr",
+					},
+					&gear.Char{
+						Value: '+',
+					},
+					&gear.NamedRule{
+						Value: "digit",
+					},
+				},
+			},
+			&gear.NamedRule{
+				Value: "digit",
+			},
 		},
 	})
 
 	g.Add(digit)
-	g.Add(number)
+	g.Add(expr)
 
 	p.SetGrammar(g)
 
-	r, err := p.Parse("123123", "number")
+	r, err := p.Parse("1+2+3", "expr")
+
 	if err != nil {
 		panic(err)
 	}

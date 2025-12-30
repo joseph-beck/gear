@@ -3,7 +3,7 @@ package gear
 import (
 	"testing"
 
-	"github.com/joseph-beck/gear/pkg/err"
+	"github.com/joseph-beck/gear/pkg/errs"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -16,14 +16,14 @@ func TestOneOrMoreType(t *testing.T) {
 func TestOneOrMoreEvaluate(t *testing.T) {
 	tests := map[string]struct {
 		input          string
-		expr           OneOrMore
+		expr           Expression
 		expectedResult Result
 		expectedError  error
 	}{
 		"match a with input aaa": {
 			input: "aaa",
-			expr: OneOrMore{
-				Value: Char{
+			expr: &OneOrMore{
+				Value: &Char{
 					Value: 'a',
 				},
 			},
@@ -62,8 +62,8 @@ func TestOneOrMoreEvaluate(t *testing.T) {
 		},
 		"match a with input aaab": {
 			input: "aaab",
-			expr: OneOrMore{
-				Value: Char{
+			expr: &OneOrMore{
+				Value: &Char{
 					Value: 'a',
 				},
 			},
@@ -102,8 +102,8 @@ func TestOneOrMoreEvaluate(t *testing.T) {
 		},
 		"match a with input aaba": {
 			input: "aaba",
-			expr: OneOrMore{
-				Value: Char{
+			expr: &OneOrMore{
+				Value: &Char{
 					Value: 'a',
 				},
 			},
@@ -134,34 +134,33 @@ func TestOneOrMoreEvaluate(t *testing.T) {
 		},
 		"fail match empty input": {
 			input: "",
-			expr: OneOrMore{
-				Value: Char{
+			expr: &OneOrMore{
+				Value: &Char{
 					Value: 'a',
 				},
 			},
 			expectedResult: Result{},
-			expectedError:  err.EndOfInput,
+			expectedError:  errs.EndOfInput,
 		},
 		"fail match a with input b": {
 			input: "b",
-			expr: OneOrMore{
-				Value: Char{
+			expr: &OneOrMore{
+				Value: &Char{
 					Value: 'a',
 				},
 			},
 			expectedResult: Result{},
-			expectedError:  err.FailedToMatch,
+			expectedError:  errs.FailedToMatch,
 		},
 	}
 
 	for name, test := range tests {
 		t.Run(name, func(t *testing.T) {
-			context := &Context{
-				input: test.input,
-			}
-			output, err := test.expr.Evaluate(context)
+			context := NewContext(test.input)
 
-			assert.Equal(t, test.expectedResult, output)
+			output, err := test.expr.Evaluate(context, 0)
+
+			assert.Equal(t, test.expectedResult.CST, output.CST)
 
 			assert.Equal(t, test.expectedError, err)
 		})

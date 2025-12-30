@@ -1,9 +1,9 @@
 package gear
 
 type Context struct {
-	input    string
-	position uint
-	grammar  *Grammar
+	input   string
+	grammar *Grammar
+	packrat Packrat
 }
 
 type contextCfg struct {
@@ -11,27 +11,20 @@ type contextCfg struct {
 	grammar *Grammar
 }
 
-func NewContext(cfg ...contextCfg) *Context {
-	if len(cfg) > 0 {
-		return &Context{
-			input:    cfg[0].input,
-			position: 0,
-			grammar:  cfg[0].grammar,
-		}
-	}
+func NewContext(input string) *Context {
 
 	return &Context{
-		input:    "",
-		position: 0,
-		grammar:  &Grammar{},
+		input:   input,
+		grammar: &Grammar{},
+		packrat: NewPackrat(),
 	}
 }
 
 func (ctx *Context) Clone() *Context {
 	return &Context{
-		input:    ctx.input,
-		position: ctx.position,
-		grammar:  ctx.grammar,
+		input:   ctx.input,
+		grammar: ctx.grammar,
+		packrat: ctx.packrat,
 	}
 }
 
@@ -43,18 +36,10 @@ func (ctx *Context) SetInput(input string) {
 	ctx.input = input
 }
 
-func (ctx *Context) Remaining() string {
-	return ctx.input[ctx.position:]
-}
-
-func (ctx Context) Position() uint {
-	return ctx.position
-}
-
-func (ctx *Context) SetPosition(pos uint) {
-	ctx.position = pos
-}
-
 func (ctx *Context) Grammar() *Grammar {
 	return ctx.grammar
+}
+
+func (ctx *Context) Packrat() *Packrat {
+	return &ctx.packrat
 }
