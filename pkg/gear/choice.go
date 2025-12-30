@@ -17,6 +17,10 @@ func (c *Choice) Evaluate(ctx *Context, pos uint) (Result, error) {
 		}
 	}
 
+	if pos >= uint(len(ctx.Input())) {
+		return Result{}, errs.EndOfInput
+	}
+
 	for _, expr := range c.Value {
 		r, err := expr.Evaluate(ctx, pos)
 		if err != nil {
