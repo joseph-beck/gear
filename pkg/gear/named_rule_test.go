@@ -21,6 +21,149 @@ func TestNamedRuleEvaluate(t *testing.T) {
 		expectedResult Result
 		expectedError  error
 	}{
+		"match left recursive rule rule_a with input aaa": {
+			input: "aaa",
+			expr: &NamedRule{
+				Value: "rule_a",
+			},
+			grammar: func() *Grammar {
+				g := &Grammar{}
+
+				g.Add(NewRule(
+					"rule_a",
+					&Choice{
+						Value: []Expression{
+							&Sequence{
+								Value: []Expression{
+									&NamedRule{
+										Value: "rule_a",
+									},
+									&Char{
+										Value: 'a',
+									},
+								},
+							},
+							&Char{
+								Value: 'a',
+							},
+						},
+					},
+				))
+
+				return g
+			}(),
+			expectedResult: Result{
+				CST: cst{
+					value: "rule_a",
+					children: []cst{
+						{
+							value: "choice",
+							children: []cst{
+								{
+									value: "sequence",
+									children: []cst{
+										{
+											value: "rule_a",
+											children: []cst{
+												{
+													value: "choice",
+													children: []cst{
+														{
+															value: "sequence",
+															children: []cst{
+																{
+																	value: "rule_a",
+																	children: []cst{
+																		{
+																			value: "choice",
+																			children: []cst{
+																				{
+																					value: "sequence",
+																					children: []cst{
+																						{
+																							value: "",
+																						},
+																						{
+																							value: "char",
+																							children: []cst{
+																								{
+																									value: "a",
+																								},
+																							},
+																							label: label{
+																								expression: true,
+																							},
+																						},
+																					},
+																					label: label{
+																						expression: true,
+																					},
+																				},
+																			},
+																			label: label{
+																				expression: true,
+																			},
+																		},
+																	},
+																	label: label{
+																		expression: true,
+																	},
+																},
+																{
+																	value: "char",
+																	children: []cst{
+																		{
+																			value: "a",
+																		},
+																	},
+																	label: label{
+																		expression: true,
+																	},
+																},
+															},
+															label: label{
+																expression: true,
+															},
+														},
+													},
+													label: label{
+														expression: true,
+													},
+												},
+											},
+											label: label{
+												expression: true,
+											},
+										},
+										{
+											value: "char",
+											children: []cst{
+												{
+													value: "a",
+												},
+											},
+											label: label{
+												expression: true,
+											},
+										},
+									},
+									label: label{
+										expression: true,
+									},
+								},
+							},
+							label: label{
+								expression: true,
+							},
+						},
+					},
+					label: label{
+						expression: true,
+					},
+				},
+			},
+			expectedError: nil,
+		},
 		"match named rule_a with input a": {
 			input: "a",
 			expr: &NamedRule{
@@ -34,17 +177,23 @@ func TestNamedRuleEvaluate(t *testing.T) {
 				return g
 			}(),
 			expectedResult: Result{
-				CST: CST{
-					Value: "rule_a",
-					Children: []CST{
+				CST: cst{
+					value: "rule_a",
+					children: []cst{
 						{
-							Value: "char",
-							Children: []CST{
+							value: "char",
+							children: []cst{
 								{
-									Value: "a",
+									value: "a",
 								},
 							},
+							label: label{
+								expression: true,
+							},
 						},
+					},
+					label: label{
+						expression: true,
 					},
 				},
 			},
@@ -65,7 +214,7 @@ func TestNamedRuleEvaluate(t *testing.T) {
 			expectedResult: Result{},
 			expectedError:  errs.FailedToMatch,
 		},
-		"named sequence rule_a with input aaa": {
+		"match named sequence rule_a with input aaa": {
 			input: "aaa",
 			expr: &NamedRule{
 				Value: "rule_a",
@@ -80,38 +229,53 @@ func TestNamedRuleEvaluate(t *testing.T) {
 				return g
 			}(),
 			expectedResult: Result{
-				CST: CST{
-					Value: "rule_a",
-					Children: []CST{
+				CST: cst{
+					value: "rule_a",
+					children: []cst{
 						{
-							Value: "zero_or_more",
-							Children: []CST{
+							value: "zero_or_more",
+							children: []cst{
 								{
-									Value: "char",
-									Children: []CST{
+									value: "char",
+									children: []cst{
 										{
-											Value: "a",
+											value: "a",
 										},
+									},
+									label: label{
+										expression: true,
 									},
 								},
 								{
-									Value: "char",
-									Children: []CST{
+									value: "char",
+									children: []cst{
 										{
-											Value: "a",
+											value: "a",
 										},
+									},
+									label: label{
+										expression: true,
 									},
 								},
 								{
-									Value: "char",
-									Children: []CST{
+									value: "char",
+									children: []cst{
 										{
-											Value: "a",
+											value: "a",
 										},
+									},
+									label: label{
+										expression: true,
 									},
 								},
 							},
+							label: label{
+								expression: true,
+							},
 						},
+					},
+					label: label{
+						expression: true,
 					},
 				},
 			},

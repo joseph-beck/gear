@@ -28,33 +28,45 @@ func TestOneOrMoreEvaluate(t *testing.T) {
 				},
 			},
 			expectedResult: Result{
-				CST: CST{
-					Value: "one_or_more",
-					Children: []CST{
+				CST: cst{
+					value: "one_or_more",
+					children: []cst{
 						{
-							Value: "char",
-							Children: []CST{
+							value: "char",
+							children: []cst{
 								{
-									Value: "a",
+									value: "a",
 								},
+							},
+							label: label{
+								expression: true,
 							},
 						},
 						{
-							Value: "char",
-							Children: []CST{
+							value: "char",
+							children: []cst{
 								{
-									Value: "a",
+									value: "a",
 								},
+							},
+							label: label{
+								expression: true,
 							},
 						},
 						{
-							Value: "char",
-							Children: []CST{
+							value: "char",
+							children: []cst{
 								{
-									Value: "a",
+									value: "a",
 								},
 							},
+							label: label{
+								expression: true,
+							},
 						},
+					},
+					label: label{
+						expression: true,
 					},
 				},
 			},
@@ -68,33 +80,45 @@ func TestOneOrMoreEvaluate(t *testing.T) {
 				},
 			},
 			expectedResult: Result{
-				CST: CST{
-					Value: "one_or_more",
-					Children: []CST{
+				CST: cst{
+					value: "one_or_more",
+					children: []cst{
 						{
-							Value: "char",
-							Children: []CST{
+							value: "char",
+							children: []cst{
 								{
-									Value: "a",
+									value: "a",
 								},
+							},
+							label: label{
+								expression: true,
 							},
 						},
 						{
-							Value: "char",
-							Children: []CST{
+							value: "char",
+							children: []cst{
 								{
-									Value: "a",
+									value: "a",
 								},
+							},
+							label: label{
+								expression: true,
 							},
 						},
 						{
-							Value: "char",
-							Children: []CST{
+							value: "char",
+							children: []cst{
 								{
-									Value: "a",
+									value: "a",
 								},
 							},
+							label: label{
+								expression: true,
+							},
 						},
+					},
+					label: label{
+						expression: true,
 					},
 				},
 			},
@@ -108,25 +132,34 @@ func TestOneOrMoreEvaluate(t *testing.T) {
 				},
 			},
 			expectedResult: Result{
-				CST: CST{
-					Value: "one_or_more",
-					Children: []CST{
+				CST: cst{
+					value: "one_or_more",
+					children: []cst{
 						{
-							Value: "char",
-							Children: []CST{
+							value: "char",
+							children: []cst{
 								{
-									Value: "a",
+									value: "a",
 								},
+							},
+							label: label{
+								expression: true,
 							},
 						},
 						{
-							Value: "char",
-							Children: []CST{
+							value: "char",
+							children: []cst{
 								{
-									Value: "a",
+									value: "a",
 								},
 							},
+							label: label{
+								expression: true,
+							},
 						},
+					},
+					label: label{
+						expression: true,
 					},
 				},
 			},

@@ -21,7 +21,12 @@ func (z *ZeroOrMore) Evaluate(ctx *Context, pos uint) (Result, error) {
 		return Result{}, errs.EndOfInput
 	}
 
-	tree := NewCST("zero_or_more")
+	tree := NewCST(CSTParam{
+		Value: "zero_or_more",
+		Label: NewLabel(LabelParam{
+			Expression: true,
+		}),
+	})
 	current := pos
 
 	for {

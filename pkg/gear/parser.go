@@ -6,15 +6,21 @@ type Parser struct {
 	grammar Grammar
 }
 
-func New(g ...Grammar) Parser {
-	if len(g) > 0 {
+type ParserParam struct {
+	Grammar Grammar
+}
+
+func New(param ...ParserParam) Parser {
+	if len(param) == 0 {
+
 		return Parser{
-			grammar: g[0],
+			grammar: NewGrammar(),
 		}
 	}
 
+	p := param[0]
 	return Parser{
-		grammar: NewGrammar(),
+		grammar: p.Grammar,
 	}
 }
 

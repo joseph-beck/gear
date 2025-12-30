@@ -33,25 +33,34 @@ func TestSequenceEvaluate(t *testing.T) {
 				},
 			},
 			expectedResult: Result{
-				CST: CST{
-					Value: "sequence",
-					Children: []CST{
+				CST: cst{
+					value: "sequence",
+					children: []cst{
 						{
-							Value: "char",
-							Children: []CST{
+							value: "char",
+							children: []cst{
 								{
-									Value: "a",
+									value: "a",
 								},
+							},
+							label: label{
+								expression: true,
 							},
 						},
 						{
-							Value: "char",
-							Children: []CST{
+							value: "char",
+							children: []cst{
 								{
-									Value: "b",
+									value: "b",
 								},
 							},
+							label: label{
+								expression: true,
+							},
 						},
+					},
+					label: label{
+						expression: true,
 					},
 				},
 			},
@@ -70,25 +79,34 @@ func TestSequenceEvaluate(t *testing.T) {
 				},
 			},
 			expectedResult: Result{
-				CST: CST{
-					Value: "sequence",
-					Children: []CST{
+				CST: cst{
+					value: "sequence",
+					children: []cst{
 						{
-							Value: "char",
-							Children: []CST{
+							value: "char",
+							children: []cst{
 								{
-									Value: "a",
+									value: "a",
 								},
+							},
+							label: label{
+								expression: true,
 							},
 						},
 						{
-							Value: "char",
-							Children: []CST{
+							value: "char",
+							children: []cst{
 								{
-									Value: "b",
+									value: "b",
 								},
 							},
+							label: label{
+								expression: true,
+							},
 						},
+					},
+					label: label{
+						expression: true,
 					},
 				},
 			},
