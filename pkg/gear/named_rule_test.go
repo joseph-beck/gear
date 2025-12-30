@@ -21,6 +21,149 @@ func TestNamedRuleEvaluate(t *testing.T) {
 		expectedResult Result
 		expectedError  error
 	}{
+		"left recursive rule rule_a with input aaa": {
+			input: "aaa",
+			expr: &NamedRule{
+				Value: "rule_a",
+			},
+			grammar: func() *Grammar {
+				g := &Grammar{}
+
+				g.Add(NewRule(
+					"rule_a",
+					&Choice{
+						Value: []Expression{
+							&Sequence{
+								Value: []Expression{
+									&NamedRule{
+										Value: "rule_a",
+									},
+									&Char{
+										Value: 'a',
+									},
+								},
+							},
+							&Char{
+								Value: 'a',
+							},
+						},
+					},
+				))
+
+				return g
+			}(),
+			expectedResult: Result{
+				CST: CST{
+					Value: "rule_a",
+					Children: []CST{
+						{
+							Value: "choice",
+							Children: []CST{
+								{
+									Value: "sequence",
+									Children: []CST{
+										{
+											Value: "rule_a",
+											Children: []CST{
+												{
+													Value: "choice",
+													Children: []CST{
+														{
+															Value: "sequence",
+															Children: []CST{
+																{
+																	Value: "rule_a",
+																	Children: []CST{
+																		{
+																			Value: "choice",
+																			Children: []CST{
+																				{
+																					Value: "sequence",
+																					Children: []CST{
+																						{
+																							Value: "",
+																						},
+																						{
+																							Value: "char",
+																							Children: []CST{
+																								{
+																									Value: "a",
+																								},
+																							},
+																							Label: Label{
+																								Expression: true,
+																							},
+																						},
+																					},
+																					Label: Label{
+																						Expression: true,
+																					},
+																				},
+																			},
+																			Label: Label{
+																				Expression: true,
+																			},
+																		},
+																	},
+																	Label: Label{
+																		Expression: true,
+																	},
+																},
+																{
+																	Value: "char",
+																	Children: []CST{
+																		{
+																			Value: "a",
+																		},
+																	},
+																	Label: Label{
+																		Expression: true,
+																	},
+																},
+															},
+															Label: Label{
+																Expression: true,
+															},
+														},
+													},
+													Label: Label{
+														Expression: true,
+													},
+												},
+											},
+											Label: Label{
+												Expression: true,
+											},
+										},
+										{
+											Value: "char",
+											Children: []CST{
+												{
+													Value: "a",
+												},
+											},
+											Label: Label{
+												Expression: true,
+											},
+										},
+									},
+									Label: Label{
+										Expression: true,
+									},
+								},
+							},
+							Label: Label{
+								Expression: true,
+							},
+						},
+					},
+					Label: Label{
+						Expression: true,
+					},
+				},
+			},
+			expectedError: nil,
+		},
 		"match named rule_a with input a": {
 			input: "a",
 			expr: &NamedRule{
