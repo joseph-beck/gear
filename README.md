@@ -7,7 +7,23 @@
 
 ## about
 
-a peg parsing library written in go
+a peg parsing library written in go using packrat parsing to parse left recursive expressions!
+
+## usage
+
+to install `gear`
+
+```bash
+# install gear in your project
+$ go get -u github.com/joseph-beck/gear
+```
+
+```go
+// import with
+import (
+    "github.com/joseph-beck/gear/pkg/gear"
+)
+```
 
 ## getting started
 
