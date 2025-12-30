@@ -2,32 +2,36 @@ package gear
 
 import "fmt"
 
+type Key string
+
 type PackratKey struct {
-	// For NamedRules, this is "named:ruleName", for others it's the pointer address
-	ruleKey string
-	// Position of the key in the input
+	// For NamedRules, this is the name of the rule.
+	// For any other expression it's the pointer address.
+	key Key
+	// Position of the key in the input.
 	pos uint
 }
 
 func NewPackratKey(expr Expression, pos uint) PackratKey {
-	if nr, ok := expr.(*NamedRule); ok {
+	if rule, ok := expr.(*NamedRule); ok {
 		return PackratKey{
-			ruleKey: "named:" + nr.Value,
-			pos:     pos,
+			key: Key(rule.Value),
+			pos: pos,
 		}
 	}
 
 	return PackratKey{
-		ruleKey: fmt.Sprintf("%p", expr),
-		pos:     pos,
+		key: Key(fmt.Sprintf("%p", expr)),
+		pos: pos,
 	}
 }
 
 type PackratEntry struct {
+	// Result of the packrat entry.
 	result Result
-
+	// Error of the packrat entry, if any.
 	err error
-
+	// Is this entry currently being seeded?
 	seeding bool
 }
 
@@ -63,9 +67,9 @@ func (p *Packrat) Put(expr Expression, pos uint, result Result, err error) {
 
 func (p *Packrat) Mark(expr Expression, pos uint) bool {
 	key := NewPackratKey(expr, pos)
-	entry, exists := p.memo[key]
+	entry, ok := p.memo[key]
 
-	if exists && entry.seeding {
+	if ok && entry.seeding {
 		return true
 	}
 
@@ -78,18 +82,20 @@ func (p *Packrat) Mark(expr Expression, pos uint) bool {
 
 func (p *Packrat) Update(expr Expression, pos uint, result Result, err error) {
 	key := NewPackratKey(expr, pos)
-	entry := p.memo[key]
+	entry, _ := p.memo[key]
+
 	if entry != nil && entry.seeding {
 		entry.result = result
 		entry.err = err
 	}
 }
 
-func (p *Packrat) Clear(pos uint, except Expression) {
-	exceptKey := NewPackratKey(except, pos)
-	for key := range p.memo {
-		if key.pos == pos && key != exceptKey {
-			delete(p.memo, key)
+func (p *Packrat) Clear(expr Expression, pos uint) {
+	key := NewPackratKey(expr, pos)
+
+	for k := range p.memo {
+		if k.pos == pos && k != key {
+			delete(p.memo, k)
 		}
 	}
 }
