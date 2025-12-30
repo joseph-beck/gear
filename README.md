@@ -5,6 +5,15 @@
 ![GitHub License](https://img.shields.io/github/license/joseph-beck/gear)
 ![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/joseph-beck/gear?label=go)
 
+```txt                     
+    ▄▄             ▄    
+ ▄████ ▄█▀█▄ ▄▀▀█▄ ████▄
+ ██ ██ ██▄█▀ ▄█▀██ ██   
+▄▀████▄▀█▄▄▄▄▀█▄██▄█▀   
+    ██                  
+  ▀▀▀                   
+```
+
 ## about
 
 a peg parsing library written in go using packrat parsing to parse left recursive expressions!
