@@ -8,10 +8,10 @@ func (z *ZeroOrMore) Type() ExpressionType {
 	return ZeroOrMoreExpression
 }
 
-func (z *ZeroOrMore) Evaluate(context *Context, pos uint) (Result, error) {
+func (z *ZeroOrMore) Evaluate(ctx *Context, pos uint) (Result, error) {
 	// Only use memoization if we're not in growth mode
-	if !context.Seeding() {
-		if r, err, ok := context.Packrat().Get(z, pos); ok {
+	if !ctx.Seeding() {
+		if r, err, ok := ctx.Packrat().Get(z, pos); ok {
 			return r, err
 		}
 	}
@@ -20,7 +20,7 @@ func (z *ZeroOrMore) Evaluate(context *Context, pos uint) (Result, error) {
 	current := pos
 
 	for {
-		r, err := z.Value.Evaluate(context, current)
+		r, err := z.Value.Evaluate(ctx, current)
 		if err != nil {
 			break
 		}
@@ -39,8 +39,8 @@ func (z *ZeroOrMore) Evaluate(context *Context, pos uint) (Result, error) {
 	}
 
 	// Only memoize if not growing
-	if !context.Seeding() {
-		context.Packrat().Put(z, pos, result, nil)
+	if !ctx.Seeding() {
+		ctx.Packrat().Put(z, pos, result, nil)
 	}
 	return result, nil
 }

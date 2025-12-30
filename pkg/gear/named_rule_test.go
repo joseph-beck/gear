@@ -130,10 +130,10 @@ func TestNamedRuleEvaluate(t *testing.T) {
 
 	for name, test := range tests {
 		t.Run(name, func(t *testing.T) {
-			context := NewContext(test.input)
-			context.grammar = test.grammar
+			ctx := NewContext(test.input)
+			ctx.grammar = test.grammar
 
-			output, err := test.expr.Evaluate(context, 0)
+			output, err := test.expr.Evaluate(ctx, 0)
 
 			assert.Equal(t, test.expectedResult.CST, output.CST)
 

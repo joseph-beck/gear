@@ -143,9 +143,9 @@ func TestSequenceEvaluate(t *testing.T) {
 
 	for name, test := range tests {
 		t.Run(name, func(t *testing.T) {
-			context := NewContext(test.input)
+			ctx := NewContext(test.input)
 
-			output, err := test.expr.Evaluate(context, 0)
+			output, err := test.expr.Evaluate(ctx, 0)
 
 			assert.Equal(t, test.expectedResult.CST, output.CST)
 

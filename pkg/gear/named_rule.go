@@ -10,24 +10,24 @@ func (n *NamedRule) Type() ExpressionType {
 	return NamedRuleExpression
 }
 
-func (n *NamedRule) Evaluate(context *Context, pos uint) (Result, error) {
-	if r, err, ok := context.Packrat().Get(n, pos); ok {
+func (n *NamedRule) Evaluate(ctx *Context, pos uint) (Result, error) {
+	if r, err, ok := ctx.Packrat().Get(n, pos); ok {
 		return r, err
 	}
 
-	if context.Packrat().Mark(n, pos) {
+	if ctx.Packrat().Mark(n, pos) {
 		return Result{}, errs.FailedToMatch
 	}
 
-	rule, ok := context.Grammar().Get(n.Value)
+	rule, ok := ctx.Grammar().Get(n.Value)
 	if !ok {
 		return Result{}, errs.RuleNotFound
 	}
 
-	r, err := rule.Expression.Evaluate(context, pos)
+	r, err := rule.Expression.Evaluate(ctx, pos)
 
 	if err != nil {
-		context.Packrat().Put(n, pos, Result{}, err)
+		ctx.Packrat().Put(n, pos, Result{}, err)
 		return Result{}, err
 	}
 
@@ -40,24 +40,24 @@ func (n *NamedRule) Evaluate(context *Context, pos uint) (Result, error) {
 		CST:  tree,
 	}
 
-	context.Packrat().Update(n, pos, result, nil)
-	context.Packrat().Put(n, pos, result, nil)
+	ctx.Packrat().Update(n, pos, result, nil)
+	ctx.Packrat().Put(n, pos, result, nil)
 
 	for {
 		last := result
-		context.Packrat().Clear(n, pos)
-		context.Packrat().Put(n, pos, last, nil)
+		ctx.Packrat().Clear(n, pos)
+		ctx.Packrat().Put(n, pos, last, nil)
 
-		context.SetSeeding(true)
+		ctx.SetSeeding(true)
 
-		r, err := rule.Expression.Evaluate(context, pos)
+		r, err := rule.Expression.Evaluate(ctx, pos)
 
 		if err != nil || r.Next <= result.Next {
-			context.Packrat().Put(n, pos, result, nil)
+			ctx.Packrat().Put(n, pos, result, nil)
 			break
 		}
 
-		context.SetSeeding(false)
+		ctx.SetSeeding(false)
 
 		tree := NewCST(rule.Name)
 		tree.Children = append(tree.Children, r.CST)
@@ -68,7 +68,7 @@ func (n *NamedRule) Evaluate(context *Context, pos uint) (Result, error) {
 			CST:  tree,
 		}
 
-		context.Packrat().Put(n, pos, result, nil)
+		ctx.Packrat().Put(n, pos, result, nil)
 	}
 
 	return result, nil

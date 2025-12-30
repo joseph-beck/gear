@@ -10,15 +10,15 @@ func (c *Choice) Type() ExpressionType {
 	return ChoiceExpression
 }
 
-func (c *Choice) Evaluate(context *Context, pos uint) (Result, error) {
-	if !context.Seeding() {
-		if r, err, ok := context.Packrat().Get(c, pos); ok {
+func (c *Choice) Evaluate(ctx *Context, pos uint) (Result, error) {
+	if !ctx.Seeding() {
+		if r, err, ok := ctx.Packrat().Get(c, pos); ok {
 			return r, err
 		}
 	}
 
 	for _, expr := range c.Value {
-		r, err := expr.Evaluate(context, pos)
+		r, err := expr.Evaluate(ctx, pos)
 		if err == nil {
 			tree := NewCST("choice")
 			tree.Add(r.CST)
@@ -28,16 +28,16 @@ func (c *Choice) Evaluate(context *Context, pos uint) (Result, error) {
 				CST:  tree,
 			}
 
-			if !context.Seeding() {
-				context.Packrat().Put(c, pos, result, nil)
+			if !ctx.Seeding() {
+				ctx.Packrat().Put(c, pos, result, nil)
 			}
 			return result, nil
 		}
 	}
 
 	e := errs.FailedToMatch
-	if !context.Seeding() {
-		context.Packrat().Put(c, pos, Result{}, e)
+	if !ctx.Seeding() {
+		ctx.Packrat().Put(c, pos, Result{}, e)
 	}
 	return Result{}, e
 }

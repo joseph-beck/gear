@@ -8,10 +8,10 @@ func (s *Sequence) Type() ExpressionType {
 	return SequenceExpression
 }
 
-func (s *Sequence) Evaluate(context *Context, pos uint) (Result, error) {
+func (s *Sequence) Evaluate(ctx *Context, pos uint) (Result, error) {
 	// Only use memoization if we're not in growth mode
-	if !context.Seeding() {
-		if r, err, ok := context.Packrat().Get(s, pos); ok {
+	if !ctx.Seeding() {
+		if r, err, ok := ctx.Packrat().Get(s, pos); ok {
 			return r, err
 		}
 	}
@@ -20,10 +20,10 @@ func (s *Sequence) Evaluate(context *Context, pos uint) (Result, error) {
 	current := pos
 
 	for _, expr := range s.Value {
-		r, err := expr.Evaluate(context, current)
+		r, err := expr.Evaluate(ctx, current)
 		if err != nil {
-			if !context.Seeding() {
-				context.Packrat().Put(s, pos, Result{}, err)
+			if !ctx.Seeding() {
+				ctx.Packrat().Put(s, pos, Result{}, err)
 			}
 			return Result{}, err
 		}
@@ -38,8 +38,8 @@ func (s *Sequence) Evaluate(context *Context, pos uint) (Result, error) {
 	}
 
 	// Only memoize if not growing
-	if !context.Seeding() {
-		context.Packrat().Put(s, pos, result, nil)
+	if !ctx.Seeding() {
+		ctx.Packrat().Put(s, pos, result, nil)
 	}
 	return result, nil
 }

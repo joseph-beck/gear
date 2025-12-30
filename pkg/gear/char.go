@@ -10,8 +10,8 @@ func (c *Char) Type() ExpressionType {
 	return CharExpression
 }
 
-func (c *Char) Evaluate(context *Context, pos uint) (Result, error) {
-	input := context.Input()
+func (c *Char) Evaluate(ctx *Context, pos uint) (Result, error) {
+	input := ctx.Input()
 
 	if pos >= uint(len(input)) {
 		return Result{}, errs.EndOfInput
