@@ -1,5 +1,7 @@
 package gear
 
+import "github.com/joseph-beck/gear/pkg/errs"
+
 type ZeroOrMore struct {
 	Value Expression
 }
@@ -13,6 +15,10 @@ func (z *ZeroOrMore) Evaluate(ctx *Context, pos uint) (Result, error) {
 		if r, err, ok := ctx.Packrat().Get(z, pos); ok {
 			return r, err
 		}
+	}
+
+	if pos >= uint(len(ctx.Input())) {
+		return Result{}, errs.EndOfInput
 	}
 
 	tree := NewCST("zero_or_more")
