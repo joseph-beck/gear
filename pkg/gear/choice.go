@@ -19,25 +19,29 @@ func (c *Choice) Evaluate(ctx *Context, pos uint) (Result, error) {
 
 	for _, expr := range c.Value {
 		r, err := expr.Evaluate(ctx, pos)
-		if err == nil {
-			tree := NewCST("choice")
-			tree.Add(r.CST)
-
-			result := Result{
-				Next: r.Next,
-				CST:  tree,
-			}
-
-			if !ctx.Seeding() {
-				ctx.Packrat().Put(c, pos, result, nil)
-			}
-			return result, nil
+		if err != nil {
+			continue
 		}
+
+		tree := NewCST("choice")
+		tree.Add(r.CST)
+
+		result := Result{
+			Next: r.Next,
+			CST:  tree,
+		}
+
+		if !ctx.Seeding() {
+			ctx.Packrat().Put(c, pos, result, nil)
+		}
+
+		return result, nil
 	}
 
-	e := errs.FailedToMatch
+	err := errs.FailedToMatch
 	if !ctx.Seeding() {
-		ctx.Packrat().Put(c, pos, Result{}, e)
+		ctx.Packrat().Put(c, pos, Result{}, err)
 	}
-	return Result{}, e
+
+	return Result{}, err
 }

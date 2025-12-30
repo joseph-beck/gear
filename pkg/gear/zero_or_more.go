@@ -9,7 +9,6 @@ func (z *ZeroOrMore) Type() ExpressionType {
 }
 
 func (z *ZeroOrMore) Evaluate(ctx *Context, pos uint) (Result, error) {
-	// Only use memoization if we're not in growth mode
 	if !ctx.Seeding() {
 		if r, err, ok := ctx.Packrat().Get(z, pos); ok {
 			return r, err
@@ -38,9 +37,9 @@ func (z *ZeroOrMore) Evaluate(ctx *Context, pos uint) (Result, error) {
 		CST:  tree,
 	}
 
-	// Only memoize if not growing
 	if !ctx.Seeding() {
 		ctx.Packrat().Put(z, pos, result, nil)
 	}
+
 	return result, nil
 }

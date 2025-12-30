@@ -32,22 +32,14 @@ func (p *Parser) Parse(input string, rule string) (Result, error) {
 	ctx := NewContext(input)
 	ctx.grammar = &p.grammar
 
-	// Use NamedRule to ensure left-recursion handling at the top level
-	namedRule := &NamedRule{Value: rule}
-	res, err := namedRule.Evaluate(ctx, 0)
+	named := &NamedRule{
+		Value: rule,
+	}
+
+	res, err := named.Evaluate(ctx, 0)
 	if err != nil {
 		return Result{}, err
 	}
 
 	return res, nil
-}
-
-func (p *Parser) DefaultResolver(name string) (Expression, error) {
-	r, ok := p.grammar.Get(name)
-
-	if !ok {
-		return nil, errs.RuleNotFound
-	}
-
-	return r.Expression, nil
 }
