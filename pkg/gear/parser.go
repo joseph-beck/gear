@@ -10,6 +10,11 @@ type ParserParam struct {
 	Grammar Grammar
 }
 
+type ParserResult struct {
+	CST       cst
+	Remaining string
+}
+
 func New(param ...ParserParam) Parser {
 	if len(param) == 0 {
 
@@ -28,11 +33,11 @@ func (p *Parser) SetGrammar(g Grammar) {
 	p.grammar = g
 }
 
-func (p *Parser) Parse(input string, rule string) (Result, error) {
+func (p *Parser) Parse(input string, rule string) (ParserResult, error) {
 	_, ok := p.grammar.Get(rule)
 
 	if !ok {
-		return Result{}, errs.RuleNotFound
+		return ParserResult{}, errs.RuleNotFound
 	}
 
 	ctx := NewContext(input)
@@ -44,8 +49,13 @@ func (p *Parser) Parse(input string, rule string) (Result, error) {
 
 	res, err := named.Evaluate(ctx, 0)
 	if err != nil {
-		return Result{}, err
+		return ParserResult{}, err
 	}
 
-	return res, nil
+	remaining := input[res.Next:]
+
+	return ParserResult{
+		CST:       res.CST,
+		Remaining: remaining,
+	}, nil
 }

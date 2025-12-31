@@ -12,14 +12,14 @@ func TestParserParse(t *testing.T) {
 		input          string
 		rule           string
 		grammar        Grammar
-		expectedResult Result
+		expectedResult ParserResult
 		expectedError  error
 	}{
 		"error rule not found": {
 			input:          "abc",
 			rule:           "rule",
 			grammar:        NewGrammar(),
-			expectedResult: Result{},
+			expectedResult: ParserResult{},
 			expectedError:  errs.RuleNotFound,
 		},
 		"error failed to match": {
@@ -36,7 +36,7 @@ func TestParserParse(t *testing.T) {
 
 				return g
 			}(),
-			expectedResult: Result{},
+			expectedResult: ParserResult{},
 			expectedError:  errs.FailedToMatch,
 		},
 		"error end of input": {
@@ -53,7 +53,7 @@ func TestParserParse(t *testing.T) {
 
 				return g
 			}(),
-			expectedResult: Result{},
+			expectedResult: ParserResult{},
 			expectedError:  errs.EndOfInput,
 		},
 		"match char rule": {
@@ -70,7 +70,7 @@ func TestParserParse(t *testing.T) {
 
 				return g
 			}(),
-			expectedResult: Result{
+			expectedResult: ParserResult{
 				CST: cst{
 					value: "rule_a",
 					children: []cst{
@@ -90,6 +90,45 @@ func TestParserParse(t *testing.T) {
 						expression: true,
 					},
 				},
+				Remaining: "",
+			},
+			expectedError: nil,
+		},
+		"match char rule with remaining b": {
+			input: "ab",
+			rule:  "rule_a",
+			grammar: func() Grammar {
+				g := NewGrammar()
+
+				r := NewRule("rule_a", &Char{
+					Value: 'a',
+				})
+
+				g.Add(r)
+
+				return g
+			}(),
+			expectedResult: ParserResult{
+				CST: cst{
+					value: "rule_a",
+					children: []cst{
+						{
+							value: "char",
+							children: []cst{
+								{
+									value: "a",
+								},
+							},
+							label: label{
+								expression: true,
+							},
+						},
+					},
+					label: label{
+						expression: true,
+					},
+				},
+				Remaining: "b",
 			},
 			expectedError: nil,
 		},
@@ -120,7 +159,7 @@ func TestParserParse(t *testing.T) {
 
 				return g
 			}(),
-			expectedResult: Result{
+			expectedResult: ParserResult{
 				CST: cst{
 					value: "digit",
 					children: []cst{
@@ -148,6 +187,7 @@ func TestParserParse(t *testing.T) {
 						expression: true,
 					},
 				},
+				Remaining: "23",
 			},
 			expectedError: nil,
 		},
