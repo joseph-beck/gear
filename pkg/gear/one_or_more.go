@@ -1,9 +1,5 @@
 package gear
 
-import (
-	"github.com/joseph-beck/gear/pkg/errs"
-)
-
 type OneOrMore struct {
 	Value Expression
 }
@@ -20,7 +16,7 @@ func (o *OneOrMore) Evaluate(ctx *Context, pos uint) (Result, error) {
 	}
 
 	if pos >= uint(len(ctx.Input())) {
-		return Result{}, errs.EndOfInput
+		return Result{}, ErrEndOfInput
 	}
 
 	tree := NewCST(CSTParam{
@@ -41,9 +37,9 @@ func (o *OneOrMore) Evaluate(ctx *Context, pos uint) (Result, error) {
 
 	if first.Next == current {
 		if !ctx.Seeding() {
-			ctx.Packrat().Put(o, pos, Result{}, errs.FailedToMatch)
+			ctx.Packrat().Put(o, pos, Result{}, ErrFailedToMatch)
 		}
-		return Result{}, errs.FailedToMatch
+		return Result{}, ErrFailedToMatch
 	}
 
 	tree.Add(first.CST)

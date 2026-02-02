@@ -3,7 +3,6 @@ package gear
 import (
 	"testing"
 
-	"github.com/joseph-beck/gear/pkg/errs"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -173,7 +172,7 @@ func TestOneOrMoreEvaluate(t *testing.T) {
 				},
 			},
 			expectedResult: Result{},
-			expectedError:  errs.EndOfInput,
+			expectedError:  ErrEndOfInput,
 		},
 		"fail match a with input b": {
 			input: "b",
@@ -183,7 +182,7 @@ func TestOneOrMoreEvaluate(t *testing.T) {
 				},
 			},
 			expectedResult: Result{},
-			expectedError:  errs.FailedToMatch,
+			expectedError:  ErrFailedToMatch,
 		},
 	}
 

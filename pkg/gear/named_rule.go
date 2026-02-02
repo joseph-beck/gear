@@ -1,7 +1,5 @@
 package gear
 
-import "github.com/joseph-beck/gear/pkg/errs"
-
 type NamedRule struct {
 	Value string
 }
@@ -16,12 +14,12 @@ func (n *NamedRule) Evaluate(ctx *Context, pos uint) (Result, error) {
 	}
 
 	if ctx.Packrat().Mark(n, pos) {
-		return Result{}, errs.FailedToMatch
+		return Result{}, ErrFailedToMatch
 	}
 
 	rule, ok := ctx.Grammar().Get(n.Value)
 	if !ok {
-		return Result{}, errs.RuleNotFound
+		return Result{}, ErrRuleNotFound
 	}
 
 	r, err := rule.Expression.Evaluate(ctx, pos)

@@ -1,7 +1,5 @@
 package gear
 
-import "github.com/joseph-beck/gear/pkg/errs"
-
 type Char struct {
 	Value rune
 }
@@ -14,11 +12,11 @@ func (c *Char) Evaluate(ctx *Context, pos uint) (Result, error) {
 	input := ctx.Input()
 
 	if pos >= uint(len(input)) {
-		return Result{}, errs.EndOfInput
+		return Result{}, ErrEndOfInput
 	}
 
 	if rune(input[pos]) != c.Value {
-		return Result{}, errs.FailedToMatch
+		return Result{}, ErrFailedToMatch
 	}
 
 	tree := NewCST(CSTParam{

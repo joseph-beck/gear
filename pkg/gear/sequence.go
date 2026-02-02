@@ -1,7 +1,5 @@
 package gear
 
-import "github.com/joseph-beck/gear/pkg/errs"
-
 type Sequence struct {
 	Value []Expression
 }
@@ -18,7 +16,7 @@ func (s *Sequence) Evaluate(ctx *Context, pos uint) (Result, error) {
 	}
 
 	if pos >= uint(len(ctx.Input())) {
-		return Result{}, errs.EndOfInput
+		return Result{}, ErrEndOfInput
 	}
 
 	tree := NewCST(CSTParam{
