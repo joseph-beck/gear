@@ -1,7 +1,5 @@
 package gear
 
-import "github.com/joseph-beck/gear/pkg/errs"
-
 type Choice struct {
 	Value []Expression
 }
@@ -18,7 +16,7 @@ func (c *Choice) Evaluate(ctx *Context, pos uint) (Result, error) {
 	}
 
 	if pos >= uint(len(ctx.Input())) {
-		return Result{}, errs.EndOfInput
+		return Result{}, ErrEndOfInput
 	}
 
 	for _, expr := range c.Value {
@@ -47,7 +45,7 @@ func (c *Choice) Evaluate(ctx *Context, pos uint) (Result, error) {
 		return result, nil
 	}
 
-	err := errs.FailedToMatch
+	err := ErrFailedToMatch
 	if !ctx.Seeding() {
 		ctx.Packrat().Put(c, pos, Result{}, err)
 	}

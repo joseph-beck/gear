@@ -1,7 +1,5 @@
 package gear
 
-import "github.com/joseph-beck/gear/pkg/errs"
-
 type Parser struct {
 	grammar Grammar
 }
@@ -37,7 +35,7 @@ func (p *Parser) Parse(input string, rule string) (ParserResult, error) {
 	_, ok := p.grammar.Get(rule)
 
 	if !ok {
-		return ParserResult{}, errs.RuleNotFound
+		return ParserResult{}, ErrRuleNotFound
 	}
 
 	ctx := NewContext(input)

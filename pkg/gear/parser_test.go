@@ -3,7 +3,6 @@ package gear
 import (
 	"testing"
 
-	"github.com/joseph-beck/gear/pkg/errs"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -20,7 +19,7 @@ func TestParserParse(t *testing.T) {
 			rule:           "rule",
 			grammar:        NewGrammar(),
 			expectedResult: ParserResult{},
-			expectedError:  errs.RuleNotFound,
+			expectedError:  ErrRuleNotFound,
 		},
 		"error failed to match": {
 			input: "abc",
@@ -37,7 +36,7 @@ func TestParserParse(t *testing.T) {
 				return g
 			}(),
 			expectedResult: ParserResult{},
-			expectedError:  errs.FailedToMatch,
+			expectedError:  ErrFailedToMatch,
 		},
 		"error end of input": {
 			input: "",
@@ -54,7 +53,7 @@ func TestParserParse(t *testing.T) {
 				return g
 			}(),
 			expectedResult: ParserResult{},
-			expectedError:  errs.EndOfInput,
+			expectedError:  ErrEndOfInput,
 		},
 		"match char rule": {
 			input: "a",

@@ -3,7 +3,6 @@ package gear
 import (
 	"testing"
 
-	"github.com/joseph-beck/gear/pkg/errs"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -212,7 +211,7 @@ func TestNamedRuleEvaluate(t *testing.T) {
 				return g
 			}(),
 			expectedResult: Result{},
-			expectedError:  errs.FailedToMatch,
+			expectedError:  ErrFailedToMatch,
 		},
 		"match named sequence rule_a with input aaa": {
 			input: "aaa",
@@ -288,7 +287,7 @@ func TestNamedRuleEvaluate(t *testing.T) {
 			},
 			grammar:        &Grammar{},
 			expectedResult: Result{},
-			expectedError:  errs.RuleNotFound,
+			expectedError:  ErrRuleNotFound,
 		},
 	}
 

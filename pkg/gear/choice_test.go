@@ -3,7 +3,6 @@ package gear
 import (
 	"testing"
 
-	"github.com/joseph-beck/gear/pkg/errs"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -103,7 +102,7 @@ func TestChoiceEvaluate(t *testing.T) {
 				},
 			},
 			expectedResult: Result{},
-			expectedError:  errs.FailedToMatch,
+			expectedError:  ErrFailedToMatch,
 		},
 		"fail match a or b with empty input": {
 			input: "",
@@ -118,7 +117,7 @@ func TestChoiceEvaluate(t *testing.T) {
 				},
 			},
 			expectedResult: Result{},
-			expectedError:  errs.EndOfInput,
+			expectedError:  ErrEndOfInput,
 		},
 		"match a or b with input ab": {
 			input: "ab",
