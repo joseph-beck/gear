@@ -320,45 +320,10 @@ func BenchmarkParserParseArithmeticExpression(b *testing.B) {
 	b.ReportAllocs()
 
 	for b.Loop() {
-		digit := &Choice{
-			Value: []Expression{
-				&Char{
-					Value: '0',
-				},
-				&Char{
-					Value: '1',
-				},
-				&Char{
-					Value: '2',
-				},
-				&Char{
-					Value: '3',
-				},
-				&Char{
-					Value: '4',
-				},
-				&Char{
-					Value: '5',
-				},
-				&Char{
-					Value: '6',
-				},
-				&Char{
-					Value: '7',
-				},
-				&Char{
-					Value: '8',
-				},
-				&Char{
-					Value: '9',
-				},
-			},
-		}
-
 		number := NewRule(
 			"number",
 			&OneOrMore{
-				Value: digit,
+				Value: Digit,
 			},
 		)
 
@@ -443,5 +408,94 @@ func BenchmarkParserParseArithmeticExpression(b *testing.B) {
 		})
 
 		_, _ = parser.Parse("1+(2*3)", "arithmetic_expression")
+	}
+}
+
+func BenchmarkNumber(b *testing.B) {
+	b.ReportAllocs()
+
+	for b.Loop() {
+		number := NewRule(
+			"number",
+			&OneOrMore{
+				Value: Digit,
+			},
+		)
+
+		g := NewGrammar()
+
+		g.Add(number)
+
+		parser := New(ParserParam{
+			Grammar: g,
+		})
+
+		_, _ = parser.Parse("100000000", "number")
+	}
+}
+
+func BenchmarkWord(b *testing.B) {
+	b.ReportAllocs()
+
+	for b.Loop() {
+		word := NewRule(
+			"word",
+			&OneOrMore{
+				Value: Letter,
+			},
+		)
+
+		g := NewGrammar()
+
+		g.Add(word)
+
+		parser := New(ParserParam{
+			Grammar: g,
+		})
+
+		_, _ = parser.Parse("helloworld", "word")
+	}
+}
+
+func BenchmarkSentence(b *testing.B) {
+	b.ReportAllocs()
+
+	for b.Loop() {
+		sentence := NewRule(
+			"sentence",
+			&OneOrMore{
+				Value: &Sequence{
+					Value: []Expression{
+						Letter,
+						&Choice{
+							Value: []Expression{
+								&Char{
+									Value: ' ',
+								},
+								&Char{
+									Value: ',',
+								},
+								&Char{
+									Value: '.',
+								},
+							},
+						},
+					},
+				},
+			},
+		)
+
+		g := NewGrammar()
+
+		g.Add(sentence)
+
+		parser := New(ParserParam{
+			Grammar: g,
+		})
+
+		_, _ = parser.Parse(
+			"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur at tellus eros. Donec semper tempus facilisis. Mauris elementum non quam in aliquet. Nulla massa ligula, vehicula in aliquam varius, venenatis ut quam. Nam feugiat enim nec euismod pretium. Proin accumsan iaculis dolor id dignissim. Sed mollis sit amet mi a tincidunt. Proin at felis eget nisl cursus venenatis molestie nec augue. Morbi ut mauris nec risus gravida fringilla vehicula vitae orci. Pellentesque accumsan et mauris id ultricies. Donec tincidunt lorem tortor, id imperdiet lorem imperdiet ut. Pellentesque non quam at sem suscipit vestibulum eget non risus. Mauris auctor volutpat leo, vel interdum velit posuere sed. Donec ultricies justo non leo vestibulum, eu vehicula arcu commodo.",
+			"sentence",
+		)
 	}
 }
