@@ -15,10 +15,6 @@ func (z *ZeroOrMore) Evaluate(ctx *Context, pos uint) (Result, error) {
 		}
 	}
 
-	if pos >= uint(len(ctx.Input())) {
-		return Result{}, ErrEndOfInput
-	}
-
 	tree := NewCST(CSTParam{
 		Value: "zero_or_more",
 		Label: NewLabel(LabelParam{
