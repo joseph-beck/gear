@@ -188,8 +188,16 @@ func TestZeroOrMoreEvaluate(t *testing.T) {
 					Value: 'a',
 				},
 			},
-			expectedResult: Result{},
-			expectedError:  ErrEndOfInput,
+			expectedResult: Result{
+				CST: cst{
+					value:    "zero_or_more",
+					children: []cst(nil),
+					label: label{
+						expression: true,
+					},
+				},
+			},
+			expectedError: nil,
 		},
 	}
 
