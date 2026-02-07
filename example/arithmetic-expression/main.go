@@ -133,8 +133,7 @@ func main() {
 		Grammar: g,
 	})
 
-	input := "1+(2*3)"
-	result, err := parser.Parse(input, "arithmetic_expression")
+	result, err := parser.Parse("1+(2*3)", "arithmetic_expression")
 
 	if err != nil {
 		panic(err)

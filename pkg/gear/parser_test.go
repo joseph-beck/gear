@@ -215,9 +215,15 @@ func BenchmarkParserParseDirectLeftRecursion(b *testing.B) {
 
 		number := NewRule("number", &Choice{
 			Value: []Expression{
-				&Char{Value: '1'},
-				&Char{Value: '2'},
-				&Char{Value: '3'},
+				&Char{
+					Value: '1',
+				},
+				&Char{
+					Value: '2',
+				},
+				&Char{
+					Value: '3',
+				},
 			},
 		})
 
@@ -225,12 +231,20 @@ func BenchmarkParserParseDirectLeftRecursion(b *testing.B) {
 			Value: []Expression{
 				&Sequence{
 					Value: []Expression{
-						&NamedRule{Value: "expr"},
-						&Char{Value: '+'},
-						&NamedRule{Value: "number"},
+						&NamedRule{
+							Value: "expr",
+						},
+						&Char{
+							Value: '+',
+						},
+						&NamedRule{
+							Value: "number",
+						},
 					},
 				},
-				&NamedRule{Value: "number"},
+				&NamedRule{
+					Value: "number",
+				},
 			},
 		})
 
@@ -253,24 +267,40 @@ func BenchmarkParserParseIndirectLeftRecursion(b *testing.B) {
 
 		number := NewRule("number", &Choice{
 			Value: []Expression{
-				&Char{Value: '1'},
-				&Char{Value: '2'},
-				&Char{Value: '3'},
+				&Char{
+					Value: '1',
+				},
+				&Char{
+					Value: '2',
+				},
+				&Char{
+					Value: '3',
+				},
 			},
 		})
 
-		x := NewRule("x", &NamedRule{Value: "expr"})
+		x := NewRule("x", &NamedRule{
+			Value: "expr",
+		})
 
 		expr := NewRule("expr", &Choice{
 			Value: []Expression{
 				&Sequence{
 					Value: []Expression{
-						&NamedRule{Value: "x"},
-						&Char{Value: '+'},
-						&NamedRule{Value: "number"},
+						&NamedRule{
+							Value: "x",
+						},
+						&Char{
+							Value: '+',
+						},
+						&NamedRule{
+							Value: "number",
+						},
 					},
 				},
-				&NamedRule{Value: "number"},
+				&NamedRule{
+					Value: "number",
+				},
 			},
 		})
 
@@ -283,5 +313,135 @@ func BenchmarkParserParseIndirectLeftRecursion(b *testing.B) {
 		})
 
 		_, _ = parser.Parse("1+2+3", "expr")
+	}
+}
+
+func BenchmarkParserParseArithmeticExpression(b *testing.B) {
+	b.ReportAllocs()
+
+	for b.Loop() {
+		digit := &Choice{
+			Value: []Expression{
+				&Char{
+					Value: '0',
+				},
+				&Char{
+					Value: '1',
+				},
+				&Char{
+					Value: '2',
+				},
+				&Char{
+					Value: '3',
+				},
+				&Char{
+					Value: '4',
+				},
+				&Char{
+					Value: '5',
+				},
+				&Char{
+					Value: '6',
+				},
+				&Char{
+					Value: '7',
+				},
+				&Char{
+					Value: '8',
+				},
+				&Char{
+					Value: '9',
+				},
+			},
+		}
+
+		number := NewRule(
+			"number",
+			&OneOrMore{
+				Value: digit,
+			},
+		)
+
+		factor := NewRule(
+			"factor",
+			&Choice{
+				Value: []Expression{
+					&NamedRule{
+						Value: "number",
+					},
+					&Sequence{
+						Value: []Expression{
+							&Char{
+								Value: '(',
+							},
+							&NamedRule{
+								Value: "arithmetic_expression",
+							},
+							&Char{
+								Value: ')',
+							},
+						},
+					},
+				},
+			},
+		)
+
+		term := NewRule(
+			"term",
+			&Sequence{
+				Value: []Expression{
+					&NamedRule{
+						Value: "factor",
+					},
+					&ZeroOrMore{
+						Value: &Sequence{
+							Value: []Expression{
+								&Char{
+									Value: '*',
+								},
+								&NamedRule{
+									Value: "factor",
+								},
+							},
+						},
+					},
+				},
+			},
+		)
+
+		arithmeticExpression := NewRule(
+			"arithmetic_expression", &Sequence{
+				Value: []Expression{
+					&NamedRule{
+						Value: "term",
+					},
+					&ZeroOrMore{
+						Value: &Sequence{
+							Value: []Expression{
+								&Char{
+									Value: '+',
+								},
+								&NamedRule{
+									Value: "term",
+								},
+							},
+						},
+					},
+				},
+			},
+		)
+
+		g := NewGrammar()
+
+		g.Add(number)
+		g.Add(factor)
+		g.Add(term)
+		g.Add(arithmeticExpression)
+
+		parser := New(ParserParam{
+			Grammar: g,
+		})
+
+		_, _ = parser.Parse("1+(2*3)", "arithmetic_expression")
 	}
 }
