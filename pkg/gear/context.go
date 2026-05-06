@@ -1,13 +1,13 @@
 package gear
 
 type Context struct {
-	input string
-
+	input   string
 	grammar *Grammar
-
 	packrat Packrat
-
 	seeding bool
+	history History
+	rule    string
+	depth   int
 }
 
 func NewContext(input string) *Context {
@@ -25,6 +25,8 @@ func (ctx *Context) Clone() *Context {
 		grammar: ctx.grammar,
 		packrat: ctx.packrat,
 		seeding: ctx.seeding,
+		rule:    ctx.rule,
+		depth:   ctx.depth,
 	}
 }
 
@@ -50,4 +52,28 @@ func (ctx *Context) Seeding() bool {
 
 func (ctx *Context) SetSeeding(seeding bool) {
 	ctx.seeding = seeding
+}
+
+func (ctx *Context) History() History {
+	return ctx.history
+}
+
+func (ctx *Context) SetHistory(history History) {
+	ctx.history = history
+}
+
+func (ctx *Context) Rule() string {
+	return ctx.rule
+}
+
+func (ctx *Context) SetRule(rule string) {
+	ctx.rule = rule
+}
+
+func (ctx *Context) Depth() int {
+	return ctx.depth
+}
+
+func (ctx *Context) SetDepth(depth int) {
+	ctx.depth = depth
 }
