@@ -8,65 +8,33 @@ func (o *OneOrMore) Type() ExpressionType {
 	return OneOrMoreExpression
 }
 
-func (o *OneOrMore) Evaluate(ctx *Context, pos uint) (Result, error) {
-	if !ctx.Seeding() {
-		if r, err, ok := ctx.Packrat().Get(o, pos); ok {
-			return r, err
-		}
-	}
-
-	if pos >= uint(len(ctx.Input())) {
+func (o *OneOrMore) Evaluate(ctx *Context) (Result, error) {
+	if ctx.pos >= uint(len(ctx.input)) {
 		return Result{}, ErrEndOfInput
 	}
 
-	tree := NewCST(CSTParam{
-		Value: "one_or_more",
-		Label: NewLabel(LabelParam{
-			Expression: true,
-		}),
-	})
-	current := pos
-
-	first, err := o.Value.Evaluate(ctx, current)
-	if err != nil {
-		if !ctx.Seeding() {
-			ctx.Packrat().Put(o, pos, Result{}, err)
-		}
-		return Result{}, err
-	}
-
-	if first.Next == current {
-		if !ctx.Seeding() {
-			ctx.Packrat().Put(o, pos, Result{}, ErrFailedToMatch)
-		}
-		return Result{}, ErrFailedToMatch
-	}
-
-	tree.Add(first.CST)
-	current = first.Next
+	children := make([]CST, 0)
 
 	for {
-		r, err := o.Value.Evaluate(ctx, current)
+		res, err := o.Value.Evaluate(ctx)
 		if err != nil {
 			break
 		}
 
-		if r.Next == current {
-			break
-		}
-
-		tree.Add(r.CST)
-		current = r.Next
+		children = append(children, res.CST)
 	}
 
-	result := Result{
-		Next: current,
-		CST:  tree,
+	if len(children) == 0 {
+		return Result{}, ErrFailedToMatch
 	}
 
-	if !ctx.Seeding() {
-		ctx.Packrat().Put(o, pos, result, nil)
-	}
-
-	return result, nil
+	return Result{
+		CST: NewCST(CSTParam{
+			Value:    "one_or_more",
+			Children: children,
+			Label: NewLabel(LabelParam{
+				Expression: true,
+			}),
+		}),
+	}, nil
 }

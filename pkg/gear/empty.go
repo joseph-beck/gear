@@ -7,6 +7,6 @@ func (e Empty) Type() ExpressionType {
 	return EmptyExpression
 }
 
-func (e Empty) Evaluate(input string) (Result, error) {
+func (e Empty) Evaluate(ctx *Context) (Result, error) {
 	return Result{}, nil
 }

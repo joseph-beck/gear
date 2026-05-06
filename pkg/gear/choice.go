@@ -8,19 +8,25 @@ func (c *Choice) Type() ExpressionType {
 	return ChoiceExpression
 }
 
-func (c *Choice) Evaluate(ctx *Context, pos uint) (Result, error) {
-	if !ctx.Seeding() {
-		if r, err, ok := ctx.Packrat().Get(c, pos); ok {
-			return r, err
-		}
-	}
-
-	if pos >= uint(len(ctx.Input())) {
+func (c *Choice) Evaluate(ctx *Context) (Result, error) {
+	if ctx.pos >= uint(len(ctx.input)) {
 		return Result{}, ErrEndOfInput
 	}
 
-	for _, expr := range c.Value {
-		r, err := expr.Evaluate(ctx, pos)
+	for i, expr := range c.Value {
+		current_ctx := ctx.Clone()
+
+		artifact := NewArtifact(current_ctx.rule, i, current_ctx.depth)
+
+		history := current_ctx.history
+
+		if history.Prod(artifact) {
+			continue
+		}
+
+		history.Preserve(artifact)
+
+		result, err := expr.Evaluate(current_ctx)
 		if err != nil {
 			continue
 		}
@@ -31,24 +37,13 @@ func (c *Choice) Evaluate(ctx *Context, pos uint) (Result, error) {
 				Expression: true,
 			}),
 		})
-		tree.Add(r.CST)
 
-		result := Result{
-			Next: r.Next,
-			CST:  tree,
-		}
+		tree.Add(result.CST)
 
-		if !ctx.Seeding() {
-			ctx.Packrat().Put(c, pos, result, nil)
-		}
-
-		return result, nil
+		return Result{
+			CST: tree,
+		}, nil
 	}
 
-	err := ErrFailedToMatch
-	if !ctx.Seeding() {
-		ctx.Packrat().Put(c, pos, Result{}, err)
-	}
-
-	return Result{}, err
+	return Result{}, ErrFailedToMatch
 }

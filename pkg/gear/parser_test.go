@@ -6,7 +6,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestParserParse(t *testing.T) {
+func TestParser_Parse(t *testing.T) {
 	tests := map[string]struct {
 		input          string
 		rule           string
@@ -70,12 +70,12 @@ func TestParserParse(t *testing.T) {
 				return g
 			}(),
 			expectedResult: ParserResult{
-				CST: cst{
+				CST: CST{
 					value: "rule_a",
-					children: []cst{
+					children: []CST{
 						{
 							value: "char",
-							children: []cst{
+							children: []CST{
 								{
 									value: "a",
 								},
@@ -108,12 +108,12 @@ func TestParserParse(t *testing.T) {
 				return g
 			}(),
 			expectedResult: ParserResult{
-				CST: cst{
+				CST: CST{
 					value: "rule_a",
-					children: []cst{
+					children: []CST{
 						{
 							value: "char",
-							children: []cst{
+							children: []CST{
 								{
 									value: "a",
 								},
@@ -159,15 +159,15 @@ func TestParserParse(t *testing.T) {
 				return g
 			}(),
 			expectedResult: ParserResult{
-				CST: cst{
+				CST: CST{
 					value: "digit",
-					children: []cst{
+					children: []CST{
 						{
 							value: "choice",
-							children: []cst{
+							children: []CST{
 								{
 									value: "char",
-									children: []cst{
+									children: []CST{
 										{
 											value: "1",
 										},
@@ -207,7 +207,7 @@ func TestParserParse(t *testing.T) {
 	}
 }
 
-func BenchmarkParserParseDirectLeftRecursion(b *testing.B) {
+func BenchmarkParser_ParseDirectLeftRecursion(b *testing.B) {
 	b.ReportAllocs()
 
 	for b.Loop() {
@@ -259,7 +259,7 @@ func BenchmarkParserParseDirectLeftRecursion(b *testing.B) {
 	}
 }
 
-func BenchmarkParserParseIndirectLeftRecursion(b *testing.B) {
+func BenchmarkParser_ParseIndirectLeftRecursion(b *testing.B) {
 	b.ReportAllocs()
 
 	for b.Loop() {
@@ -316,7 +316,7 @@ func BenchmarkParserParseIndirectLeftRecursion(b *testing.B) {
 	}
 }
 
-func BenchmarkParserParseArithmeticExpression(b *testing.B) {
+func BenchmarkParser_ParseArithmeticExpression(b *testing.B) {
 	b.ReportAllocs()
 
 	for b.Loop() {

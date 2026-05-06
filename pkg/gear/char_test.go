@@ -6,13 +6,13 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestCharType(t *testing.T) {
+func TestChar_Type(t *testing.T) {
 	expr := Char{}
 
 	assert.Equal(t, CharExpression, expr.Type())
 }
 
-func TestCharEvaluate(t *testing.T) {
+func TestChar_Evaluate(t *testing.T) {
 	tests := map[string]struct {
 		input          string
 		expr           Expression
@@ -25,10 +25,9 @@ func TestCharEvaluate(t *testing.T) {
 				Value: 'a',
 			},
 			expectedResult: Result{
-				Next: 1,
-				CST: cst{
+				CST: CST{
 					value: "char",
-					children: []cst{
+					children: []CST{
 						{
 							value: "a",
 						},
@@ -62,9 +61,9 @@ func TestCharEvaluate(t *testing.T) {
 				Value: 'a',
 			},
 			expectedResult: Result{
-				CST: cst{
+				CST: CST{
 					value: "char",
-					children: []cst{
+					children: []CST{
 						{
 							value: "a",
 						},
@@ -82,7 +81,7 @@ func TestCharEvaluate(t *testing.T) {
 		t.Run(name, func(t *testing.T) {
 			ctx := NewContext(test.input)
 
-			output, err := test.expr.Evaluate(ctx, 0)
+			output, err := test.expr.Evaluate(ctx)
 
 			assert.Equal(t, test.expectedResult.CST, output.CST)
 

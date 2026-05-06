@@ -1,7 +1,7 @@
 package gear
 
 type Parser struct {
-	grammar Grammar
+	grammar *Grammar
 }
 
 type ParserParam struct {
@@ -9,26 +9,23 @@ type ParserParam struct {
 }
 
 type ParserResult struct {
-	CST       cst
+	CST       CST
 	Remaining string
 }
 
 func New(param ...ParserParam) Parser {
 	if len(param) == 0 {
+		grammar := NewGrammar()
 
 		return Parser{
-			grammar: NewGrammar(),
+			grammar: &grammar,
 		}
 	}
 
 	p := param[0]
 	return Parser{
-		grammar: p.Grammar,
+		grammar: &p.Grammar,
 	}
-}
-
-func (p *Parser) SetGrammar(g Grammar) {
-	p.grammar = g
 }
 
 func (p *Parser) Parse(input string, rule string) (ParserResult, error) {
@@ -39,18 +36,18 @@ func (p *Parser) Parse(input string, rule string) (ParserResult, error) {
 	}
 
 	ctx := NewContext(input)
-	ctx.grammar = &p.grammar
+	ctx.grammar = p.grammar
 
 	named := &NamedRule{
 		Value: rule,
 	}
 
-	res, err := named.Evaluate(ctx, 0)
+	res, err := named.Evaluate(ctx)
 	if err != nil {
 		return ParserResult{}, err
 	}
 
-	remaining := input[res.Next:]
+	remaining := input[ctx.pos:]
 
 	return ParserResult{
 		CST:       res.CST,

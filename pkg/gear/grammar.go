@@ -19,6 +19,15 @@ func NewGrammar(param ...GrammarParam) Grammar {
 	}
 }
 
+func (g Grammar) Clone() Grammar {
+	rules := make([]Rule, len(g.rules))
+	copy(rules, g.rules)
+
+	return Grammar{
+		rules: rules,
+	}
+}
+
 func (g Grammar) Get(name string) (Rule, bool) {
 	for _, r := range g.rules {
 		if r.Name == name {

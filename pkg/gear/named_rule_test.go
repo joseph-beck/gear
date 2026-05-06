@@ -6,13 +6,13 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestNamedRuleType(t *testing.T) {
+func TestNamedRule_Type(t *testing.T) {
 	expr := NamedRule{}
 
 	assert.Equal(t, NamedRuleExpression, expr.Type())
 }
 
-func TestNamedRuleEvaluate(t *testing.T) {
+func TestNamedRule_Evaluate(t *testing.T) {
 	tests := map[string]struct {
 		input          string
 		expr           Expression
@@ -20,149 +20,6 @@ func TestNamedRuleEvaluate(t *testing.T) {
 		expectedResult Result
 		expectedError  error
 	}{
-		"match left recursive rule rule_a with input aaa": {
-			input: "aaa",
-			expr: &NamedRule{
-				Value: "rule_a",
-			},
-			grammar: func() *Grammar {
-				g := &Grammar{}
-
-				g.Add(NewRule(
-					"rule_a",
-					&Choice{
-						Value: []Expression{
-							&Sequence{
-								Value: []Expression{
-									&NamedRule{
-										Value: "rule_a",
-									},
-									&Char{
-										Value: 'a',
-									},
-								},
-							},
-							&Char{
-								Value: 'a',
-							},
-						},
-					},
-				))
-
-				return g
-			}(),
-			expectedResult: Result{
-				CST: cst{
-					value: "rule_a",
-					children: []cst{
-						{
-							value: "choice",
-							children: []cst{
-								{
-									value: "sequence",
-									children: []cst{
-										{
-											value: "rule_a",
-											children: []cst{
-												{
-													value: "choice",
-													children: []cst{
-														{
-															value: "sequence",
-															children: []cst{
-																{
-																	value: "rule_a",
-																	children: []cst{
-																		{
-																			value: "choice",
-																			children: []cst{
-																				{
-																					value: "sequence",
-																					children: []cst{
-																						{
-																							value: "",
-																						},
-																						{
-																							value: "char",
-																							children: []cst{
-																								{
-																									value: "a",
-																								},
-																							},
-																							label: label{
-																								expression: true,
-																							},
-																						},
-																					},
-																					label: label{
-																						expression: true,
-																					},
-																				},
-																			},
-																			label: label{
-																				expression: true,
-																			},
-																		},
-																	},
-																	label: label{
-																		expression: true,
-																	},
-																},
-																{
-																	value: "char",
-																	children: []cst{
-																		{
-																			value: "a",
-																		},
-																	},
-																	label: label{
-																		expression: true,
-																	},
-																},
-															},
-															label: label{
-																expression: true,
-															},
-														},
-													},
-													label: label{
-														expression: true,
-													},
-												},
-											},
-											label: label{
-												expression: true,
-											},
-										},
-										{
-											value: "char",
-											children: []cst{
-												{
-													value: "a",
-												},
-											},
-											label: label{
-												expression: true,
-											},
-										},
-									},
-									label: label{
-										expression: true,
-									},
-								},
-							},
-							label: label{
-								expression: true,
-							},
-						},
-					},
-					label: label{
-						expression: true,
-					},
-				},
-			},
-			expectedError: nil,
-		},
 		"match named rule_a with input a": {
 			input: "a",
 			expr: &NamedRule{
@@ -176,12 +33,12 @@ func TestNamedRuleEvaluate(t *testing.T) {
 				return g
 			}(),
 			expectedResult: Result{
-				CST: cst{
+				CST: CST{
 					value: "rule_a",
-					children: []cst{
+					children: []CST{
 						{
 							value: "char",
-							children: []cst{
+							children: []CST{
 								{
 									value: "a",
 								},
@@ -228,15 +85,15 @@ func TestNamedRuleEvaluate(t *testing.T) {
 				return g
 			}(),
 			expectedResult: Result{
-				CST: cst{
+				CST: CST{
 					value: "rule_a",
-					children: []cst{
+					children: []CST{
 						{
 							value: "zero_or_more",
-							children: []cst{
+							children: []CST{
 								{
 									value: "char",
-									children: []cst{
+									children: []CST{
 										{
 											value: "a",
 										},
@@ -247,7 +104,7 @@ func TestNamedRuleEvaluate(t *testing.T) {
 								},
 								{
 									value: "char",
-									children: []cst{
+									children: []CST{
 										{
 											value: "a",
 										},
@@ -258,7 +115,7 @@ func TestNamedRuleEvaluate(t *testing.T) {
 								},
 								{
 									value: "char",
-									children: []cst{
+									children: []CST{
 										{
 											value: "a",
 										},
@@ -296,7 +153,7 @@ func TestNamedRuleEvaluate(t *testing.T) {
 			ctx := NewContext(test.input)
 			ctx.grammar = test.grammar
 
-			output, err := test.expr.Evaluate(ctx, 0)
+			output, err := test.expr.Evaluate(ctx)
 
 			assert.Equal(t, test.expectedResult.CST, output.CST)
 

@@ -6,13 +6,13 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestChoiceType(t *testing.T) {
+func TestChoice_Type(t *testing.T) {
 	expr := Choice{}
 
 	assert.Equal(t, ChoiceExpression, expr.Type())
 }
 
-func TestChoiceEvaluate(t *testing.T) {
+func TestChoice_Evaluate(t *testing.T) {
 	tests := map[string]struct {
 		input          string
 		expr           Expression
@@ -32,12 +32,12 @@ func TestChoiceEvaluate(t *testing.T) {
 				},
 			},
 			expectedResult: Result{
-				CST: cst{
+				CST: CST{
 					value: "choice",
-					children: []cst{
+					children: []CST{
 						{
 							value: "char",
-							children: []cst{
+							children: []CST{
 								{
 									value: "a",
 								},
@@ -67,12 +67,12 @@ func TestChoiceEvaluate(t *testing.T) {
 				},
 			},
 			expectedResult: Result{
-				CST: cst{
+				CST: CST{
 					value: "choice",
-					children: []cst{
+					children: []CST{
 						{
 							value: "char",
-							children: []cst{
+							children: []CST{
 								{
 									value: "b",
 								},
@@ -132,12 +132,12 @@ func TestChoiceEvaluate(t *testing.T) {
 				},
 			},
 			expectedResult: Result{
-				CST: cst{
+				CST: CST{
 					value: "choice",
-					children: []cst{
+					children: []CST{
 						{
 							value: "char",
-							children: []cst{
+							children: []CST{
 								{
 									value: "a",
 								},
@@ -160,7 +160,7 @@ func TestChoiceEvaluate(t *testing.T) {
 		t.Run(name, func(t *testing.T) {
 			ctx := NewContext(test.input)
 
-			output, err := test.expr.Evaluate(ctx, 0)
+			output, err := test.expr.Evaluate(ctx)
 
 			assert.Equal(t, test.expectedResult.CST, output.CST)
 
