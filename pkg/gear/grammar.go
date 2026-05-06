@@ -8,13 +8,13 @@ type GrammarParam struct {
 	Rules []Rule
 }
 
-func NewGrammar(param ...GrammarParam) Grammar {
+func NewGrammar(param ...GrammarParam) *Grammar {
 	if len(param) == 0 {
-		return Grammar{}
+		return &Grammar{}
 	}
 
 	p := param[0]
-	return Grammar{
+	return &Grammar{
 		rules: p.Rules,
 	}
 }

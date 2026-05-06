@@ -35,8 +35,8 @@ type Packrat struct {
 	memo map[PackratKey]*PackratEntry
 }
 
-func NewPackrat() Packrat {
-	return Packrat{
+func NewPackrat() *Packrat {
+	return &Packrat{
 		memo: make(map[PackratKey]*PackratEntry),
 	}
 }

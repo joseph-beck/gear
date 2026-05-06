@@ -4,7 +4,7 @@ type Context struct {
 	input   string
 	pos     uint
 	grammar *Grammar
-	packrat Packrat
+	packrat *Packrat
 	history *History
 	rule    string
 	depth   int
@@ -14,7 +14,7 @@ func NewContext(input string) *Context {
 	return &Context{
 		input:   input,
 		pos:     0,
-		grammar: &Grammar{},
+		grammar: NewGrammar(),
 		packrat: NewPackrat(),
 		history: &History{},
 		rule:    "",

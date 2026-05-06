@@ -1,11 +1,11 @@
 package gear
 
 type Parser struct {
-	grammar Grammar
+	grammar *Grammar
 }
 
 type ParserParam struct {
-	Grammar Grammar
+	Grammar *Grammar
 }
 
 type ParserResult struct {
@@ -27,10 +27,6 @@ func New(param ...ParserParam) Parser {
 	}
 }
 
-func (p *Parser) SetGrammar(g Grammar) {
-	p.grammar = g
-}
-
 func (p *Parser) Parse(input string, rule string) (ParserResult, error) {
 	_, ok := p.grammar.Get(rule)
 
@@ -39,7 +35,7 @@ func (p *Parser) Parse(input string, rule string) (ParserResult, error) {
 	}
 
 	ctx := NewContext(input)
-	ctx.grammar = &p.grammar
+	ctx.grammar = p.grammar
 
 	named := &NamedRule{
 		Value: rule,
