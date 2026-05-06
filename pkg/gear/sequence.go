@@ -8,47 +8,29 @@ func (s *Sequence) Type() ExpressionType {
 	return SequenceExpression
 }
 
-func (s *Sequence) Evaluate(ctx *Context, pos uint) (Result, error) {
-	if !ctx.Seeding() {
-		if r, err, ok := ctx.Packrat().Get(s, pos); ok {
-			return r, err
-		}
-	}
-
-	if pos >= uint(len(ctx.Input())) {
-		return Result{}, ErrEndOfInput
-	}
-
-	tree := NewCST(CSTParam{
-		Value: "sequence",
-		Label: NewLabel(LabelParam{
-			Expression: true,
-		}),
-	})
-	current := pos
+func (s *Sequence) Evaluate(ctx *Context) (Result, error) {
+	children := make([]CST, 0)
 
 	for _, expr := range s.Value {
-		r, err := expr.Evaluate(ctx, current)
-		if err != nil {
-			if !ctx.Seeding() {
-				ctx.Packrat().Put(s, pos, Result{}, err)
-			}
-
-			return Result{}, err
+		if ctx.pos >= uint(len(ctx.input)) {
+			return Result{}, ErrEndOfInput
 		}
 
-		tree.Add(r.CST)
-		current = r.Next
+		res, err := expr.Evaluate(ctx)
+		if err != nil {
+			return Result{}, ErrFailedToMatch
+		}
+
+		children = append(children, res.CST)
 	}
 
-	result := Result{
-		Next: current,
-		CST:  tree,
-	}
-
-	if !ctx.Seeding() {
-		ctx.Packrat().Put(s, pos, result, nil)
-	}
-
-	return result, nil
+	return Result{
+		CST: NewCST(CSTParam{
+			Value:    "sequence",
+			Children: children,
+			Label: NewLabel(LabelParam{
+				Expression: true,
+			}),
+		}),
+	}, nil
 }

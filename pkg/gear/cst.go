@@ -1,30 +1,31 @@
 package gear
 
-type cst struct {
+type CST struct {
 	value    string
-	children []cst
+	children []CST
 	label    label
 }
 
 type CSTParam struct {
 	Value    string
-	Children []cst
+	Children []CST
 	Label    label
 }
 
-func NewCST(param ...CSTParam) cst {
+func NewCST(param ...CSTParam) CST {
 	if len(param) == 0 {
-		return cst{}
+		return CST{}
 	}
 
 	p := param[0]
-	return cst{
+
+	return CST{
 		value:    p.Value,
 		children: p.Children,
 		label:    p.Label,
 	}
 }
 
-func (c *cst) Add(cst cst) {
+func (c *CST) Add(cst CST) {
 	c.children = append(c.children, cst)
 }

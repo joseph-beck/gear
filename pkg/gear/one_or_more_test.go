@@ -6,13 +6,13 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestOneOrMoreType(t *testing.T) {
+func TestOneOrMore_Type(t *testing.T) {
 	expr := OneOrMore{}
 
 	assert.Equal(t, OneOrMoreExpression, expr.Type())
 }
 
-func TestOneOrMoreEvaluate(t *testing.T) {
+func TestOneOrMore_Evaluate(t *testing.T) {
 	tests := map[string]struct {
 		input          string
 		expr           Expression
@@ -27,12 +27,12 @@ func TestOneOrMoreEvaluate(t *testing.T) {
 				},
 			},
 			expectedResult: Result{
-				CST: cst{
+				CST: CST{
 					value: "one_or_more",
-					children: []cst{
+					children: []CST{
 						{
 							value: "char",
-							children: []cst{
+							children: []CST{
 								{
 									value: "a",
 								},
@@ -43,7 +43,7 @@ func TestOneOrMoreEvaluate(t *testing.T) {
 						},
 						{
 							value: "char",
-							children: []cst{
+							children: []CST{
 								{
 									value: "a",
 								},
@@ -54,7 +54,7 @@ func TestOneOrMoreEvaluate(t *testing.T) {
 						},
 						{
 							value: "char",
-							children: []cst{
+							children: []CST{
 								{
 									value: "a",
 								},
@@ -79,12 +79,12 @@ func TestOneOrMoreEvaluate(t *testing.T) {
 				},
 			},
 			expectedResult: Result{
-				CST: cst{
+				CST: CST{
 					value: "one_or_more",
-					children: []cst{
+					children: []CST{
 						{
 							value: "char",
-							children: []cst{
+							children: []CST{
 								{
 									value: "a",
 								},
@@ -95,7 +95,7 @@ func TestOneOrMoreEvaluate(t *testing.T) {
 						},
 						{
 							value: "char",
-							children: []cst{
+							children: []CST{
 								{
 									value: "a",
 								},
@@ -106,7 +106,7 @@ func TestOneOrMoreEvaluate(t *testing.T) {
 						},
 						{
 							value: "char",
-							children: []cst{
+							children: []CST{
 								{
 									value: "a",
 								},
@@ -131,12 +131,12 @@ func TestOneOrMoreEvaluate(t *testing.T) {
 				},
 			},
 			expectedResult: Result{
-				CST: cst{
+				CST: CST{
 					value: "one_or_more",
-					children: []cst{
+					children: []CST{
 						{
 							value: "char",
-							children: []cst{
+							children: []CST{
 								{
 									value: "a",
 								},
@@ -147,7 +147,7 @@ func TestOneOrMoreEvaluate(t *testing.T) {
 						},
 						{
 							value: "char",
-							children: []cst{
+							children: []CST{
 								{
 									value: "a",
 								},
@@ -190,7 +190,7 @@ func TestOneOrMoreEvaluate(t *testing.T) {
 		t.Run(name, func(t *testing.T) {
 			ctx := NewContext(test.input)
 
-			output, err := test.expr.Evaluate(ctx, 0)
+			output, err := test.expr.Evaluate(ctx)
 
 			assert.Equal(t, test.expectedResult.CST, output.CST)
 

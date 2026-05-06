@@ -6,13 +6,13 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestZeroOrMoreType(t *testing.T) {
+func TestZeroOrMore_Type(t *testing.T) {
 	expr := ZeroOrMore{}
 
 	assert.Equal(t, ZeroOrMoreExpression, expr.Type())
 }
 
-func TestZeroOrMoreEvaluate(t *testing.T) {
+func TestZeroOrMore_Evaluate(t *testing.T) {
 	tests := map[string]struct {
 		input          string
 		expr           Expression
@@ -27,8 +27,9 @@ func TestZeroOrMoreEvaluate(t *testing.T) {
 				},
 			},
 			expectedResult: Result{
-				CST: cst{
-					value: "zero_or_more",
+				CST: CST{
+					value:    "zero_or_more",
+					children: make([]CST, 0),
 					label: label{
 						expression: true,
 					},
@@ -44,12 +45,12 @@ func TestZeroOrMoreEvaluate(t *testing.T) {
 				},
 			},
 			expectedResult: Result{
-				CST: cst{
+				CST: CST{
 					value: "zero_or_more",
-					children: []cst{
+					children: []CST{
 						{
 							value: "char",
-							children: []cst{
+							children: []CST{
 								{
 									value: "a",
 								},
@@ -60,7 +61,7 @@ func TestZeroOrMoreEvaluate(t *testing.T) {
 						},
 						{
 							value: "char",
-							children: []cst{
+							children: []CST{
 								{
 									value: "a",
 								},
@@ -71,7 +72,7 @@ func TestZeroOrMoreEvaluate(t *testing.T) {
 						},
 						{
 							value: "char",
-							children: []cst{
+							children: []CST{
 								{
 									value: "a",
 								},
@@ -96,12 +97,12 @@ func TestZeroOrMoreEvaluate(t *testing.T) {
 				},
 			},
 			expectedResult: Result{
-				CST: cst{
+				CST: CST{
 					value: "zero_or_more",
-					children: []cst{
+					children: []CST{
 						{
 							value: "char",
-							children: []cst{
+							children: []CST{
 								{
 									value: "a",
 								},
@@ -112,7 +113,7 @@ func TestZeroOrMoreEvaluate(t *testing.T) {
 						},
 						{
 							value: "char",
-							children: []cst{
+							children: []CST{
 								{
 									value: "a",
 								},
@@ -123,7 +124,7 @@ func TestZeroOrMoreEvaluate(t *testing.T) {
 						},
 						{
 							value: "char",
-							children: []cst{
+							children: []CST{
 								{
 									value: "a",
 								},
@@ -148,12 +149,12 @@ func TestZeroOrMoreEvaluate(t *testing.T) {
 				},
 			},
 			expectedResult: Result{
-				CST: cst{
+				CST: CST{
 					value: "zero_or_more",
-					children: []cst{
+					children: []CST{
 						{
 							value: "char",
-							children: []cst{
+							children: []CST{
 								{
 									value: "a",
 								},
@@ -164,7 +165,7 @@ func TestZeroOrMoreEvaluate(t *testing.T) {
 						},
 						{
 							value: "char",
-							children: []cst{
+							children: []CST{
 								{
 									value: "a",
 								},
@@ -189,9 +190,9 @@ func TestZeroOrMoreEvaluate(t *testing.T) {
 				},
 			},
 			expectedResult: Result{
-				CST: cst{
+				CST: CST{
 					value:    "zero_or_more",
-					children: []cst(nil),
+					children: make([]CST, 0),
 					label: label{
 						expression: true,
 					},
@@ -205,7 +206,7 @@ func TestZeroOrMoreEvaluate(t *testing.T) {
 		t.Run(name, func(t *testing.T) {
 			ctx := NewContext(test.input)
 
-			output, err := test.expr.Evaluate(ctx, 0)
+			output, err := test.expr.Evaluate(ctx)
 
 			assert.Equal(t, test.expectedResult.CST, output.CST)
 

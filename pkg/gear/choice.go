@@ -8,13 +8,17 @@ func (c *Choice) Type() ExpressionType {
 	return ChoiceExpression
 }
 
-func (c *Choice) Evaluate(ctx *Context, pos uint) (Result, error) {
+func (c *Choice) Evaluate(ctx *Context) (Result, error) {
+	if ctx.pos >= uint(len(ctx.input)) {
+		return Result{}, ErrEndOfInput
+	}
+
 	for i, expr := range c.Value {
 		current_ctx := ctx.Clone()
 
-		artifact := NewArtifact(current_ctx.Rule(), i, current_ctx.Depth())
+		artifact := NewArtifact(current_ctx.rule, i, current_ctx.depth)
 
-		history := current_ctx.History()
+		history := current_ctx.history
 
 		if history.Prod(artifact) {
 			continue
@@ -22,9 +26,7 @@ func (c *Choice) Evaluate(ctx *Context, pos uint) (Result, error) {
 
 		history.Preserve(artifact)
 
-		current_ctx.SetHistory(history)
-
-		result, err := expr.Evaluate(current_ctx, pos)
+		result, err := expr.Evaluate(current_ctx)
 		if err != nil {
 			continue
 		}
@@ -35,11 +37,11 @@ func (c *Choice) Evaluate(ctx *Context, pos uint) (Result, error) {
 				Expression: true,
 			}),
 		})
+
 		tree.Add(result.CST)
 
 		return Result{
-			CST:  tree,
-			Next: result.Next,
+			CST: tree,
 		}, nil
 	}
 

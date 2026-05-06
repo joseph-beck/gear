@@ -8,14 +8,12 @@ func (c *Char) Type() ExpressionType {
 	return CharExpression
 }
 
-func (c *Char) Evaluate(ctx *Context, pos uint) (Result, error) {
-	input := ctx.Input()
-
-	if pos >= uint(len(input)) {
+func (c *Char) Evaluate(ctx *Context) (Result, error) {
+	if ctx.pos >= uint(len(ctx.input)) {
 		return Result{}, ErrEndOfInput
 	}
 
-	if rune(input[pos]) != c.Value {
+	if rune(ctx.input[ctx.pos]) != c.Value {
 		return Result{}, ErrFailedToMatch
 	}
 
@@ -25,14 +23,17 @@ func (c *Char) Evaluate(ctx *Context, pos uint) (Result, error) {
 			Expression: true,
 		}),
 	})
+
 	tree.Add(NewCST(CSTParam{
 		Value: string(c.Value),
 	}))
 
 	result := Result{
-		Next: pos + 1,
-		CST:  tree,
+		CST: tree,
 	}
+
+	ctx.pos++
+	ctx.history.Clear()
 
 	return result, nil
 }

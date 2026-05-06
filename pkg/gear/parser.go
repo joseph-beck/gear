@@ -9,7 +9,7 @@ type ParserParam struct {
 }
 
 type ParserResult struct {
-	CST       cst
+	CST       CST
 	Remaining string
 }
 
@@ -45,12 +45,12 @@ func (p *Parser) Parse(input string, rule string) (ParserResult, error) {
 		Value: rule,
 	}
 
-	res, err := named.Evaluate(ctx, 0)
+	res, err := named.Evaluate(ctx)
 	if err != nil {
 		return ParserResult{}, err
 	}
 
-	remaining := input[res.Next:]
+	remaining := input[ctx.pos:]
 
 	return ParserResult{
 		CST:       res.CST,

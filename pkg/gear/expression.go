@@ -6,6 +6,8 @@ const (
 	EmptyExpression ExpressionType = iota
 	CharExpression
 	ChoiceExpression
+	NotExpression
+	OptionalExpression
 	SequenceExpression
 	ZeroOrMoreExpression
 	OneOrMoreExpression
@@ -14,12 +16,11 @@ const (
 
 type Expression interface {
 	Type() ExpressionType
-	Evaluate(*Context, uint) (Result, error)
+	Evaluate(*Context) (Result, error)
 }
 
 type Result struct {
-	Next uint
-	CST  cst
+	CST CST
 }
 
 var (

@@ -8,43 +8,25 @@ func (z *ZeroOrMore) Type() ExpressionType {
 	return ZeroOrMoreExpression
 }
 
-func (z *ZeroOrMore) Evaluate(ctx *Context, pos uint) (Result, error) {
-	if !ctx.Seeding() {
-		if r, err, ok := ctx.Packrat().Get(z, pos); ok {
-			return r, err
-		}
-	}
-
-	tree := NewCST(CSTParam{
-		Value: "zero_or_more",
-		Label: NewLabel(LabelParam{
-			Expression: true,
-		}),
-	})
-	current := pos
+func (z *ZeroOrMore) Evaluate(ctx *Context) (Result, error) {
+	children := make([]CST, 0)
 
 	for {
-		r, err := z.Value.Evaluate(ctx, current)
+		result, err := z.Value.Evaluate(ctx)
 		if err != nil {
 			break
 		}
 
-		if r.Next == current {
-			break
-		}
-
-		tree.Add(r.CST)
-		current = r.Next
+		children = append(children, result.CST)
 	}
 
-	result := Result{
-		Next: current,
-		CST:  tree,
-	}
-
-	if !ctx.Seeding() {
-		ctx.Packrat().Put(z, pos, result, nil)
-	}
-
-	return result, nil
+	return Result{
+		CST: CST{
+			value:    "zero_or_more",
+			children: children,
+			label: label{
+				expression: true,
+			},
+		},
+	}, nil
 }
