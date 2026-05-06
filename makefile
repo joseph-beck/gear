@@ -66,6 +66,17 @@ bench:
 fmt:
 	@gofmt -l .
 
+## lint: runs linters on the codebase
+.PHONY: lint
+lint:
+	@golangci-lint run
+
+## lint-fix: applies supported formatter and linter fixes
+.PHONY: lint-fix
+lint-fix:
+	@golangci-lint fmt
+	@golangci-lint run --fix
+
 ## info: get info about the build environment, go version, packages, etc.
 .PHONY: info
 info:
