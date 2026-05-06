@@ -10,7 +10,7 @@ func TestParser_Parse(t *testing.T) {
 	tests := map[string]struct {
 		input          string
 		rule           string
-		grammar        *Grammar
+		grammar        Grammar
 		expectedResult ParserResult
 		expectedError  error
 	}{
@@ -24,7 +24,7 @@ func TestParser_Parse(t *testing.T) {
 		"error failed to match": {
 			input: "abc",
 			rule:  "rule",
-			grammar: func() *Grammar {
+			grammar: func() Grammar {
 				g := NewGrammar()
 
 				r := NewRule("rule", &Char{
@@ -41,7 +41,7 @@ func TestParser_Parse(t *testing.T) {
 		"error end of input": {
 			input: "",
 			rule:  "rule",
-			grammar: func() *Grammar {
+			grammar: func() Grammar {
 				g := NewGrammar()
 
 				r := NewRule("rule", &Char{
@@ -58,7 +58,7 @@ func TestParser_Parse(t *testing.T) {
 		"match char rule": {
 			input: "a",
 			rule:  "rule_a",
-			grammar: func() *Grammar {
+			grammar: func() Grammar {
 				g := NewGrammar()
 
 				r := NewRule("rule_a", &Char{
@@ -96,7 +96,7 @@ func TestParser_Parse(t *testing.T) {
 		"match char rule with remaining b": {
 			input: "ab",
 			rule:  "rule_a",
-			grammar: func() *Grammar {
+			grammar: func() Grammar {
 				g := NewGrammar()
 
 				r := NewRule("rule_a", &Char{
@@ -134,7 +134,7 @@ func TestParser_Parse(t *testing.T) {
 		"match digit rule": {
 			input: "123",
 			rule:  "digit",
-			grammar: func() *Grammar {
+			grammar: func() Grammar {
 				g := NewGrammar()
 
 				digit := NewRule("digit", &Choice{

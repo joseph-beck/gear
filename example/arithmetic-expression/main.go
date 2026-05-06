@@ -134,7 +134,6 @@ func main() {
 	})
 
 	result, err := parser.Parse("1+(2*3)", "arithmetic_expression")
-
 	if err != nil {
 		panic(err)
 	}

@@ -5,7 +5,7 @@ type Parser struct {
 }
 
 type ParserParam struct {
-	Grammar *Grammar
+	Grammar Grammar
 }
 
 type ParserResult struct {
@@ -15,15 +15,16 @@ type ParserResult struct {
 
 func New(param ...ParserParam) Parser {
 	if len(param) == 0 {
+		grammar := NewGrammar()
 
 		return Parser{
-			grammar: NewGrammar(),
+			grammar: &grammar,
 		}
 	}
 
 	p := param[0]
 	return Parser{
-		grammar: p.Grammar,
+		grammar: &p.Grammar,
 	}
 }
 

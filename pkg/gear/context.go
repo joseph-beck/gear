@@ -11,24 +11,32 @@ type Context struct {
 }
 
 func NewContext(input string) *Context {
+	history := NewHistory()
+	grammar := NewGrammar()
+	packrat := NewPackrat()
+
 	return &Context{
 		input:   input,
 		pos:     0,
-		grammar: NewGrammar(),
-		packrat: NewPackrat(),
-		history: &History{},
+		grammar: &grammar,
+		packrat: &packrat,
+		history: &history,
 		rule:    "",
 		depth:   0,
 	}
 }
 
 func (ctx *Context) Clone() *Context {
+	grammar := ctx.grammar.Clone()
+	packrat := ctx.packrat.Clone()
+	history := ctx.history.Clone()
+
 	return &Context{
 		input:   ctx.input,
 		pos:     ctx.pos,
-		grammar: ctx.grammar,
-		packrat: ctx.packrat,
-		history: ctx.history,
+		grammar: &grammar,
+		packrat: &packrat,
+		history: &history,
 		rule:    ctx.rule,
 		depth:   ctx.depth,
 	}

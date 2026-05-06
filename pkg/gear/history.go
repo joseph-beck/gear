@@ -2,6 +2,28 @@ package gear
 
 import "fmt"
 
+type Artifact struct {
+	rule  string
+	index int
+	depth int
+}
+
+func NewArtifact(rule string, index int, depth int) Artifact {
+	return Artifact{
+		rule:  rule,
+		index: index,
+		depth: depth,
+	}
+}
+
+func (a Artifact) Equal(other Artifact) bool {
+	return a.rule == other.rule && a.index == other.index && a.depth == other.depth
+}
+
+func (a Artifact) String() string {
+	return fmt.Sprintf("%s, %d, %d", a.rule, a.index, a.depth)
+}
+
 type History []Artifact
 
 func NewHistory() History {
@@ -31,26 +53,4 @@ func (h *History) Prod(artifact Artifact) bool {
 	}
 
 	return false
-}
-
-type Artifact struct {
-	rule  string
-	index int
-	depth int
-}
-
-func NewArtifact(rule string, index int, depth int) Artifact {
-	return Artifact{
-		rule:  rule,
-		index: index,
-		depth: depth,
-	}
-}
-
-func (a Artifact) Equal(other Artifact) bool {
-	return a.rule == other.rule && a.index == other.index && a.depth == other.depth
-}
-
-func (a Artifact) String() string {
-	return fmt.Sprintf("%s, %d, %d", a.rule, a.index, a.depth)
 }
