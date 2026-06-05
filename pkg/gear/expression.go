@@ -5,6 +5,7 @@ type ExpressionType int
 const (
 	EmptyExpression ExpressionType = iota
 	CharExpression
+	LiteralExpression
 	ChoiceExpression
 	NotExpression
 	OptionalExpression
