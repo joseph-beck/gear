@@ -8,6 +8,7 @@ const (
 	LiteralExpression
 	ChoiceExpression
 	NotExpression
+	AndExpression
 	OptionalExpression
 	SequenceExpression
 	ZeroOrMoreExpression

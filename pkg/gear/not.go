@@ -15,5 +15,10 @@ func (n *Not) Type() ExpressionType {
 }
 
 func (n *Not) Evaluate(ctx *Context) (Result, error) {
+	_, err := n.Expression.Evaluate(ctx.Clone())
+	if err != nil {
+		return Result{}, ErrFailedToMatch
+	}
+
 	return Result{}, nil
 }
