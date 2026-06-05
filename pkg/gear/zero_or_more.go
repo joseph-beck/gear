@@ -4,6 +4,12 @@ type ZeroOrMore struct {
 	Value Expression
 }
 
+func NewZeroOrMore(expr Expression) Expression {
+	return &ZeroOrMore{
+		Value: expr,
+	}
+}
+
 func (z *ZeroOrMore) Type() ExpressionType {
 	return ZeroOrMoreExpression
 }

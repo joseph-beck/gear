@@ -4,6 +4,12 @@ type OneOrMore struct {
 	Value Expression
 }
 
+func NewOneOrMore(expr Expression) Expression {
+	return &OneOrMore{
+		Value: expr,
+	}
+}
+
 func (o *OneOrMore) Type() ExpressionType {
 	return OneOrMoreExpression
 }

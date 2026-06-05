@@ -4,6 +4,12 @@ type Literal struct {
 	Value string
 }
 
+func NewLiteral(value string) Expression {
+	return &Literal{
+		Value: value,
+	}
+}
+
 func (l *Literal) Type() ExpressionType {
 	return LiteralExpression
 }

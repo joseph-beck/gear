@@ -4,6 +4,12 @@ type NamedRule struct {
 	Value string
 }
 
+func NewNamedRule(value string) Expression {
+	return &NamedRule{
+		Value: value,
+	}
+}
+
 func (n *NamedRule) Type() ExpressionType {
 	return NamedRuleExpression
 }

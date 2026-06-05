@@ -4,6 +4,12 @@ type Choice struct {
 	Value []Expression
 }
 
+func NewChoice(value []Expression) Expression {
+	return &Choice{
+		Value: value,
+	}
+}
+
 func (c *Choice) Type() ExpressionType {
 	return ChoiceExpression
 }

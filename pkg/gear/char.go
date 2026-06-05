@@ -4,6 +4,12 @@ type Char struct {
 	Value rune
 }
 
+func NewChar(value rune) Expression {
+	return &Char{
+		Value: value,
+	}
+}
+
 func (c *Char) Type() ExpressionType {
 	return CharExpression
 }
