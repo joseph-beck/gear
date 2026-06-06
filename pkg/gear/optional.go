@@ -33,7 +33,7 @@ func (o *Optional) Evaluate(ctx *Context) (Result, error) {
 		return result, nil
 	}
 
-	ctx = clonedCtx
+	ctx.Update(clonedCtx)
 
 	result.CST.Add(r.CST)
 
