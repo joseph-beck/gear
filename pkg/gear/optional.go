@@ -15,5 +15,27 @@ func (o *Optional) Type() ExpressionType {
 }
 
 func (o *Optional) Evaluate(ctx *Context) (Result, error) {
-	return Result{}, nil
+	tree := NewCST(CSTParam{
+		Value:    "optional",
+		Children: []CST{},
+		Label: NewLabel(LabelParam{
+			Expression: true,
+		}),
+	})
+
+	result := Result{
+		CST: tree,
+	}
+
+	clonedCtx := ctx.Clone()
+	r, err := o.Expression.Evaluate(clonedCtx)
+	if err != nil {
+		return result, nil
+	}
+
+	ctx = clonedCtx
+
+	result.CST.Add(r.CST)
+
+	return result, nil
 }
