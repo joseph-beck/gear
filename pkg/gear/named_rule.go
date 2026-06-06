@@ -20,7 +20,6 @@ func (n *NamedRule) Evaluate(ctx *Context) (Result, error) {
 		return Result{}, ErrRuleNotFound
 	}
 
-	ctx.depth++
 	ctx.rule = rule.Name
 
 	res, err := rule.Expression.Evaluate(ctx)

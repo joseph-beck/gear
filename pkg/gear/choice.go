@@ -47,6 +47,8 @@ func (c *Choice) Evaluate(ctx *Context) (Result, error) {
 
 		ctx.Update(currentCtx)
 
+		ctx.depth++
+
 		return Result{
 			CST: tree,
 		}, nil
