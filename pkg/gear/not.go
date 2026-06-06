@@ -16,9 +16,20 @@ func (n *Not) Type() ExpressionType {
 
 func (n *Not) Evaluate(ctx *Context) (Result, error) {
 	_, err := n.Expression.Evaluate(ctx.Clone())
-	if err != nil {
+	if err == nil {
 		return Result{}, ErrFailedToMatch
 	}
 
-	return Result{}, nil
+	tree := NewCST(CSTParam{
+		Value: "not",
+		Label: NewLabel(LabelParam{
+			Expression: true,
+		}),
+	})
+
+	result := Result{
+		CST: tree,
+	}
+
+	return result, nil
 }

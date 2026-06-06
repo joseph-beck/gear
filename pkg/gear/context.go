@@ -41,3 +41,7 @@ func (ctx *Context) Clone() *Context {
 		depth:   ctx.depth,
 	}
 }
+
+func (ctx *Context) Remaining() string {
+	return ctx.input[ctx.pos:]
+}
