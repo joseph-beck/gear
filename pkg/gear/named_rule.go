@@ -15,16 +15,6 @@ func (n *NamedRule) Type() ExpressionType {
 }
 
 func (n *NamedRule) Evaluate(ctx *Context) (Result, error) {
-	memo, ok := ctx.packrat.Get(PackratKey{
-		rule: n.Value,
-		pos:  ctx.pos,
-	})
-	if ok {
-		res := memo.Clone()
-
-		return res.result, res.err
-	}
-
 	rule, ok := ctx.grammar.Get(n.Value)
 	if !ok {
 		return Result{}, ErrRuleNotFound
