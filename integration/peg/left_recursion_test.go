@@ -9,15 +9,14 @@ import (
 
 func TestDirectLeftRecursion(t *testing.T) {
 	tests := map[string]struct {
-		input             string
-		rule              string
-		grammar           gear.Grammar
-		expectedResult    gear.ParserResult
-		expectedRemaining string
-		expectedError     error
+		input          string
+		rule           string
+		grammar        gear.Grammar
+		expectedResult gear.ParserResult
+		expectedError  error
 	}{
 		"simple direct left recursion": {
-			input: "1+1",
+			input: "1+1+1",
 			rule:  "expr",
 			grammar: gear.NewGrammar(
 				gear.GrammarParam{
@@ -28,7 +27,7 @@ func TestDirectLeftRecursion(t *testing.T) {
 									[]gear.Expression{
 										gear.NewNamedRule("expr"),
 										gear.NewChar('+'),
-										gear.NewNamedRule("digit"),
+										gear.NewNamedRule("expr"),
 									},
 								),
 								gear.NewNamedRule("digit"),
@@ -47,8 +46,8 @@ func TestDirectLeftRecursion(t *testing.T) {
 					Value: "expr",
 					Children: []gear.CST{
 						gear.NewCST(gear.CSTParam{
-							Value: "choice",
-
+							Value:    "choice",
+							Children: []gear.CST{},
 							Label: gear.NewLabel(gear.LabelParam{
 								Expression: true,
 							}),
@@ -58,15 +57,69 @@ func TestDirectLeftRecursion(t *testing.T) {
 						Expression: true,
 					}),
 				}),
+				Remaining: "",
+			},
+			expectedError: nil,
+		},
+		"multiple direct left recursion": {
+			input: "1+1+1",
+			rule:  "expr",
+			grammar: gear.NewGrammar(
+				gear.GrammarParam{
+					Rules: []gear.Rule{
+						gear.NewRule("expr", gear.NewChoice([]gear.Expression{
+							gear.NewSequence(
+								[]gear.Expression{
+									gear.NewNamedRule("expr"),
+									gear.NewChar('*'),
+									gear.NewNamedRule("expr"),
+								},
+							),
+							gear.NewSequence(
+								[]gear.Expression{
+									gear.NewNamedRule("expr"),
+									gear.NewChar('+'),
+									gear.NewNamedRule("expr"),
+								},
+							),
+							gear.NewNamedRule("digit"),
+						})),
+						gear.NewRule("digit", gear.NewChoice(
+							[]gear.Expression{
+								gear.NewChar('1'),
+							},
+						)),
+					},
+				},
+			),
+			expectedResult: gear.ParserResult{
+				CST: gear.NewCST(gear.CSTParam{
+					Value: "expr",
+					Children: []gear.CST{
+						gear.NewCST(gear.CSTParam{
+							Value:    "choice",
+							Children: []gear.CST{},
+							Label: gear.NewLabel(gear.LabelParam{
+								Expression: true,
+							}),
+						}),
+					},
+					Label: gear.NewLabel(gear.LabelParam{
+						Expression: true,
+					}),
+				}),
+				Remaining: "",
 			},
 			expectedError: nil,
 		},
 		"rule not found": {
-			input:          "1+1",
-			rule:           "expr",
-			grammar:        gear.NewGrammar(),
-			expectedResult: gear.ParserResult{},
-			expectedError:  gear.ErrRuleNotFound,
+			input:   "1+1",
+			rule:    "expr",
+			grammar: gear.NewGrammar(),
+			expectedResult: gear.ParserResult{
+				Remaining: "1+1",
+			},
+			expectedError: gear.ErrRuleNotFound,
 		},
 	}
 
@@ -76,9 +129,11 @@ func TestDirectLeftRecursion(t *testing.T) {
 				Grammar: test.grammar,
 			})
 
-			_, err := parser.Parse(test.input, test.rule)
+			result, err := parser.Parse(test.input, test.rule)
 
 			// assert.Equal(t, test.expectedResult.CST, output.CST)
+
+			assert.Equal(t, test.expectedResult.Remaining, result.Remaining)
 
 			assert.Equal(t, test.expectedError, err)
 		})
