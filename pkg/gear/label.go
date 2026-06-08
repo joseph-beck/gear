@@ -21,3 +21,11 @@ func NewLabel(param ...LabelParam) label {
 		expression: p.Expression,
 	}
 }
+
+func (l label) Hidden() bool {
+	return l.hidden
+}
+
+func (l label) Expression() bool {
+	return l.expression
+}

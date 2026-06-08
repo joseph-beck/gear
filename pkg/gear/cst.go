@@ -29,3 +29,15 @@ func NewCST(param ...CSTParam) CST {
 func (c *CST) Add(cst CST) {
 	c.children = append(c.children, cst)
 }
+
+func (c CST) Value() string {
+	return c.value
+}
+
+func (c CST) Children() []CST {
+	return c.children
+}
+
+func (c CST) Label() label {
+	return c.label
+}

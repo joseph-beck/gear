@@ -46,14 +46,272 @@ func TestDirectLeftRecursion(t *testing.T) {
 					Value: "expr",
 					Children: []gear.CST{
 						gear.NewCST(gear.CSTParam{
-							Value:    "choice",
-							Children: []gear.CST{},
+							Value: "choice",
+							Children: []gear.CST{
+								gear.NewCST(gear.CSTParam{
+									Value: "sequence",
+									Children: []gear.CST{
+										gear.NewCST(gear.CSTParam{
+											Value: "expr",
+											Children: []gear.CST{
+												gear.NewCST(gear.CSTParam{
+													Value: "choice",
+													Children: []gear.CST{
+														gear.NewCST(gear.CSTParam{
+															Value: "digit",
+															Children: []gear.CST{
+																gear.NewCST(gear.CSTParam{
+																	Value: "choice",
+																	Children: []gear.CST{
+																		gear.NewCST(gear.CSTParam{
+																			Value: "char",
+																			Children: []gear.CST{
+																				gear.NewCST(gear.CSTParam{
+																					Value:    "1",
+																					Children: nil,
+																					Label: gear.NewLabel(
+																						gear.LabelParam{
+																							Hidden:     false,
+																							Expression: false,
+																						},
+																					),
+																				}),
+																			},
+																			Label: gear.NewLabel(gear.LabelParam{
+																				Hidden:     false,
+																				Expression: true,
+																			}),
+																		}),
+																	},
+																	Label: gear.NewLabel(gear.LabelParam{
+																		Hidden:     false,
+																		Expression: true,
+																	}),
+																}),
+															},
+															Label: gear.NewLabel(gear.LabelParam{
+																Hidden:     false,
+																Expression: true,
+															}),
+														}),
+													},
+													Label: gear.NewLabel(gear.LabelParam{
+														Hidden:     false,
+														Expression: true,
+													}),
+												}),
+											},
+											Label: gear.NewLabel(gear.LabelParam{
+												Hidden:     false,
+												Expression: true,
+											}),
+										}),
+										gear.NewCST(gear.CSTParam{
+											Value: "char",
+											Children: []gear.CST{
+												gear.NewCST(gear.CSTParam{
+													Value:    "+",
+													Children: nil,
+													Label: gear.NewLabel(gear.LabelParam{
+														Hidden:     false,
+														Expression: false,
+													}),
+												}),
+											},
+											Label: gear.NewLabel(gear.LabelParam{
+												Hidden:     false,
+												Expression: true,
+											}),
+										}),
+										gear.NewCST(gear.CSTParam{
+											Value: "expr",
+											Children: []gear.CST{
+												gear.NewCST(gear.CSTParam{
+													Value: "choice",
+													Children: []gear.CST{
+														gear.NewCST(gear.CSTParam{
+															Value: "sequence",
+															Children: []gear.CST{
+																gear.NewCST(gear.CSTParam{
+																	Value: "expr",
+																	Children: []gear.CST{
+																		gear.NewCST(gear.CSTParam{
+																			Value: "choice",
+																			Children: []gear.CST{
+																				gear.NewCST(gear.CSTParam{
+																					Value: "digit",
+																					Children: []gear.CST{
+																						gear.NewCST(gear.CSTParam{
+																							Value: "choice",
+																							Children: []gear.CST{
+																								gear.NewCST(
+																									gear.CSTParam{
+																										Value: "char",
+																										Children: []gear.CST{
+																											gear.NewCST(
+																												gear.CSTParam{
+																													Value:    "1",
+																													Children: nil,
+																													Label: gear.NewLabel(
+																														gear.LabelParam{
+																															Hidden:     false,
+																															Expression: false,
+																														},
+																													),
+																												},
+																											),
+																										},
+																										Label: gear.NewLabel(
+																											gear.LabelParam{
+																												Hidden:     false,
+																												Expression: true,
+																											},
+																										),
+																									},
+																								),
+																							},
+																							Label: gear.NewLabel(
+																								gear.LabelParam{
+																									Hidden:     false,
+																									Expression: true,
+																								},
+																							),
+																						}),
+																					},
+																					Label: gear.NewLabel(
+																						gear.LabelParam{
+																							Hidden:     false,
+																							Expression: true,
+																						},
+																					),
+																				}),
+																			},
+																			Label: gear.NewLabel(gear.LabelParam{
+																				Hidden:     false,
+																				Expression: true,
+																			}),
+																		}),
+																	},
+																	Label: gear.NewLabel(gear.LabelParam{
+																		Hidden:     false,
+																		Expression: true,
+																	}),
+																}),
+																gear.NewCST(gear.CSTParam{
+																	Value: "char",
+																	Children: []gear.CST{
+																		gear.NewCST(gear.CSTParam{
+																			Value:    "+",
+																			Children: nil,
+																			Label: gear.NewLabel(gear.LabelParam{
+																				Hidden:     false,
+																				Expression: false,
+																			}),
+																		}),
+																	},
+																	Label: gear.NewLabel(gear.LabelParam{
+																		Hidden:     false,
+																		Expression: true,
+																	}),
+																}),
+																gear.NewCST(gear.CSTParam{
+																	Value: "expr",
+																	Children: []gear.CST{
+																		gear.NewCST(gear.CSTParam{
+																			Value: "choice",
+																			Children: []gear.CST{
+																				gear.NewCST(gear.CSTParam{
+																					Value: "digit",
+																					Children: []gear.CST{
+																						gear.NewCST(gear.CSTParam{
+																							Value: "choice",
+																							Children: []gear.CST{
+																								gear.NewCST(
+																									gear.CSTParam{
+																										Value: "char",
+																										Children: []gear.CST{
+																											gear.NewCST(
+																												gear.CSTParam{
+																													Value:    "1",
+																													Children: nil,
+																													Label: gear.NewLabel(
+																														gear.LabelParam{
+																															Hidden:     false,
+																															Expression: false,
+																														},
+																													),
+																												},
+																											),
+																										},
+																										Label: gear.NewLabel(
+																											gear.LabelParam{
+																												Hidden:     false,
+																												Expression: true,
+																											},
+																										),
+																									},
+																								),
+																							},
+																							Label: gear.NewLabel(
+																								gear.LabelParam{
+																									Hidden:     false,
+																									Expression: true,
+																								},
+																							),
+																						}),
+																					},
+																					Label: gear.NewLabel(
+																						gear.LabelParam{
+																							Hidden:     false,
+																							Expression: true,
+																						},
+																					),
+																				}),
+																			},
+																			Label: gear.NewLabel(gear.LabelParam{
+																				Hidden:     false,
+																				Expression: true,
+																			}),
+																		}),
+																	},
+																	Label: gear.NewLabel(gear.LabelParam{
+																		Hidden:     false,
+																		Expression: true,
+																	}),
+																}),
+															},
+															Label: gear.NewLabel(gear.LabelParam{
+																Hidden:     false,
+																Expression: true,
+															}),
+														}),
+													},
+													Label: gear.NewLabel(gear.LabelParam{
+														Hidden:     false,
+														Expression: true,
+													}),
+												}),
+											},
+											Label: gear.NewLabel(gear.LabelParam{
+												Hidden:     false,
+												Expression: true,
+											}),
+										}),
+									},
+									Label: gear.NewLabel(gear.LabelParam{
+										Hidden:     false,
+										Expression: true,
+									}),
+								}),
+							},
 							Label: gear.NewLabel(gear.LabelParam{
+								Hidden:     false,
 								Expression: true,
 							}),
 						}),
 					},
 					Label: gear.NewLabel(gear.LabelParam{
+						Hidden:     false,
 						Expression: true,
 					}),
 				}),
@@ -97,14 +355,272 @@ func TestDirectLeftRecursion(t *testing.T) {
 					Value: "expr",
 					Children: []gear.CST{
 						gear.NewCST(gear.CSTParam{
-							Value:    "choice",
-							Children: []gear.CST{},
+							Value: "choice",
+							Children: []gear.CST{
+								gear.NewCST(gear.CSTParam{
+									Value: "sequence",
+									Children: []gear.CST{
+										gear.NewCST(gear.CSTParam{
+											Value: "expr",
+											Children: []gear.CST{
+												gear.NewCST(gear.CSTParam{
+													Value: "choice",
+													Children: []gear.CST{
+														gear.NewCST(gear.CSTParam{
+															Value: "digit",
+															Children: []gear.CST{
+																gear.NewCST(gear.CSTParam{
+																	Value: "choice",
+																	Children: []gear.CST{
+																		gear.NewCST(gear.CSTParam{
+																			Value: "char",
+																			Children: []gear.CST{
+																				gear.NewCST(gear.CSTParam{
+																					Value:    "1",
+																					Children: nil,
+																					Label: gear.NewLabel(
+																						gear.LabelParam{
+																							Hidden:     false,
+																							Expression: false,
+																						},
+																					),
+																				}),
+																			},
+																			Label: gear.NewLabel(gear.LabelParam{
+																				Hidden:     false,
+																				Expression: true,
+																			}),
+																		}),
+																	},
+																	Label: gear.NewLabel(gear.LabelParam{
+																		Hidden:     false,
+																		Expression: true,
+																	}),
+																}),
+															},
+															Label: gear.NewLabel(gear.LabelParam{
+																Hidden:     false,
+																Expression: true,
+															}),
+														}),
+													},
+													Label: gear.NewLabel(gear.LabelParam{
+														Hidden:     false,
+														Expression: true,
+													}),
+												}),
+											},
+											Label: gear.NewLabel(gear.LabelParam{
+												Hidden:     false,
+												Expression: true,
+											}),
+										}),
+										gear.NewCST(gear.CSTParam{
+											Value: "char",
+											Children: []gear.CST{
+												gear.NewCST(gear.CSTParam{
+													Value:    "+",
+													Children: nil,
+													Label: gear.NewLabel(gear.LabelParam{
+														Hidden:     false,
+														Expression: false,
+													}),
+												}),
+											},
+											Label: gear.NewLabel(gear.LabelParam{
+												Hidden:     false,
+												Expression: true,
+											}),
+										}),
+										gear.NewCST(gear.CSTParam{
+											Value: "expr",
+											Children: []gear.CST{
+												gear.NewCST(gear.CSTParam{
+													Value: "choice",
+													Children: []gear.CST{
+														gear.NewCST(gear.CSTParam{
+															Value: "sequence",
+															Children: []gear.CST{
+																gear.NewCST(gear.CSTParam{
+																	Value: "expr",
+																	Children: []gear.CST{
+																		gear.NewCST(gear.CSTParam{
+																			Value: "choice",
+																			Children: []gear.CST{
+																				gear.NewCST(gear.CSTParam{
+																					Value: "digit",
+																					Children: []gear.CST{
+																						gear.NewCST(gear.CSTParam{
+																							Value: "choice",
+																							Children: []gear.CST{
+																								gear.NewCST(
+																									gear.CSTParam{
+																										Value: "char",
+																										Children: []gear.CST{
+																											gear.NewCST(
+																												gear.CSTParam{
+																													Value:    "1",
+																													Children: nil,
+																													Label: gear.NewLabel(
+																														gear.LabelParam{
+																															Hidden:     false,
+																															Expression: false,
+																														},
+																													),
+																												},
+																											),
+																										},
+																										Label: gear.NewLabel(
+																											gear.LabelParam{
+																												Hidden:     false,
+																												Expression: true,
+																											},
+																										),
+																									},
+																								),
+																							},
+																							Label: gear.NewLabel(
+																								gear.LabelParam{
+																									Hidden:     false,
+																									Expression: true,
+																								},
+																							),
+																						}),
+																					},
+																					Label: gear.NewLabel(
+																						gear.LabelParam{
+																							Hidden:     false,
+																							Expression: true,
+																						},
+																					),
+																				}),
+																			},
+																			Label: gear.NewLabel(gear.LabelParam{
+																				Hidden:     false,
+																				Expression: true,
+																			}),
+																		}),
+																	},
+																	Label: gear.NewLabel(gear.LabelParam{
+																		Hidden:     false,
+																		Expression: true,
+																	}),
+																}),
+																gear.NewCST(gear.CSTParam{
+																	Value: "char",
+																	Children: []gear.CST{
+																		gear.NewCST(gear.CSTParam{
+																			Value:    "+",
+																			Children: nil,
+																			Label: gear.NewLabel(gear.LabelParam{
+																				Hidden:     false,
+																				Expression: false,
+																			}),
+																		}),
+																	},
+																	Label: gear.NewLabel(gear.LabelParam{
+																		Hidden:     false,
+																		Expression: true,
+																	}),
+																}),
+																gear.NewCST(gear.CSTParam{
+																	Value: "expr",
+																	Children: []gear.CST{
+																		gear.NewCST(gear.CSTParam{
+																			Value: "choice",
+																			Children: []gear.CST{
+																				gear.NewCST(gear.CSTParam{
+																					Value: "digit",
+																					Children: []gear.CST{
+																						gear.NewCST(gear.CSTParam{
+																							Value: "choice",
+																							Children: []gear.CST{
+																								gear.NewCST(
+																									gear.CSTParam{
+																										Value: "char",
+																										Children: []gear.CST{
+																											gear.NewCST(
+																												gear.CSTParam{
+																													Value:    "1",
+																													Children: nil,
+																													Label: gear.NewLabel(
+																														gear.LabelParam{
+																															Hidden:     false,
+																															Expression: false,
+																														},
+																													),
+																												},
+																											),
+																										},
+																										Label: gear.NewLabel(
+																											gear.LabelParam{
+																												Hidden:     false,
+																												Expression: true,
+																											},
+																										),
+																									},
+																								),
+																							},
+																							Label: gear.NewLabel(
+																								gear.LabelParam{
+																									Hidden:     false,
+																									Expression: true,
+																								},
+																							),
+																						}),
+																					},
+																					Label: gear.NewLabel(
+																						gear.LabelParam{
+																							Hidden:     false,
+																							Expression: true,
+																						},
+																					),
+																				}),
+																			},
+																			Label: gear.NewLabel(gear.LabelParam{
+																				Hidden:     false,
+																				Expression: true,
+																			}),
+																		}),
+																	},
+																	Label: gear.NewLabel(gear.LabelParam{
+																		Hidden:     false,
+																		Expression: true,
+																	}),
+																}),
+															},
+															Label: gear.NewLabel(gear.LabelParam{
+																Hidden:     false,
+																Expression: true,
+															}),
+														}),
+													},
+													Label: gear.NewLabel(gear.LabelParam{
+														Hidden:     false,
+														Expression: true,
+													}),
+												}),
+											},
+											Label: gear.NewLabel(gear.LabelParam{
+												Hidden:     false,
+												Expression: true,
+											}),
+										}),
+									},
+									Label: gear.NewLabel(gear.LabelParam{
+										Hidden:     false,
+										Expression: true,
+									}),
+								}),
+							},
 							Label: gear.NewLabel(gear.LabelParam{
+								Hidden:     false,
 								Expression: true,
 							}),
 						}),
 					},
 					Label: gear.NewLabel(gear.LabelParam{
+						Hidden:     false,
 						Expression: true,
 					}),
 				}),
@@ -117,6 +633,13 @@ func TestDirectLeftRecursion(t *testing.T) {
 			rule:    "expr",
 			grammar: gear.NewGrammar(),
 			expectedResult: gear.ParserResult{
+				CST: gear.NewCST(gear.CSTParam{
+					Value: "",
+					Label: gear.NewLabel(gear.LabelParam{
+						Hidden:     false,
+						Expression: false,
+					}),
+				}),
 				Remaining: "1+1",
 			},
 			expectedError: gear.ErrRuleNotFound,
@@ -131,7 +654,7 @@ func TestDirectLeftRecursion(t *testing.T) {
 
 			result, err := parser.Parse(test.input, test.rule)
 
-			// assert.Equal(t, test.expectedResult.CST, output.CST)
+			assert.Equal(t, test.expectedResult.CST, result.CST)
 
 			assert.Equal(t, test.expectedResult.Remaining, result.Remaining)
 
@@ -148,7 +671,20 @@ func TestIndirectLeftRecursion(t *testing.T) {
 		expectedResult gear.ParserResult
 		expectedError  error
 	}{
-		"simple indirect left recursion": {
+		"rule not found": {
+			input:   "1+1",
+			rule:    "expr",
+			grammar: gear.NewGrammar(),
+			expectedResult: gear.ParserResult{
+				CST: gear.NewCST(gear.CSTParam{
+					Value: "",
+					Label: gear.NewLabel(gear.LabelParam{
+						Hidden:     false,
+						Expression: false,
+					}),
+				}),
+				Remaining: "1+1",
+			},
 			expectedError: gear.ErrRuleNotFound,
 		},
 	}
