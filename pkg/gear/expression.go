@@ -5,8 +5,10 @@ type ExpressionType int
 const (
 	EmptyExpression ExpressionType = iota
 	CharExpression
+	LiteralExpression
 	ChoiceExpression
 	NotExpression
+	AndExpression
 	OptionalExpression
 	SequenceExpression
 	ZeroOrMoreExpression

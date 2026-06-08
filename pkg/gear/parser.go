@@ -32,7 +32,10 @@ func (p *Parser) Parse(input string, rule string) (ParserResult, error) {
 	_, ok := p.grammar.Get(rule)
 
 	if !ok {
-		return ParserResult{}, ErrRuleNotFound
+		return ParserResult{
+			CST:       CST{},
+			Remaining: input,
+		}, ErrRuleNotFound
 	}
 
 	ctx := NewContext(input)
@@ -47,7 +50,7 @@ func (p *Parser) Parse(input string, rule string) (ParserResult, error) {
 		return ParserResult{}, err
 	}
 
-	remaining := input[ctx.pos:]
+	remaining := ctx.Remaining()
 
 	return ParserResult{
 		CST:       res.CST,

@@ -3,6 +3,10 @@ package gear
 type Empty struct {
 }
 
+func NewEmpty() Expression {
+	return &Empty{}
+}
+
 func (e Empty) Type() ExpressionType {
 	return EmptyExpression
 }

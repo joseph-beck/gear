@@ -4,6 +4,12 @@ type Choice struct {
 	Value []Expression
 }
 
+func NewChoice(value []Expression) Expression {
+	return &Choice{
+		Value: value,
+	}
+}
+
 func (c *Choice) Type() ExpressionType {
 	return ChoiceExpression
 }
@@ -14,11 +20,10 @@ func (c *Choice) Evaluate(ctx *Context) (Result, error) {
 	}
 
 	for i, expr := range c.Value {
-		current_ctx := ctx.Clone()
+		currentCtx := ctx.Clone()
 
-		artifact := NewArtifact(current_ctx.rule, i, current_ctx.depth)
-
-		history := current_ctx.history
+		artifact := NewArtifact(currentCtx.rule, i, currentCtx.depth)
+		history := currentCtx.history
 
 		if history.Prod(artifact) {
 			continue
@@ -26,7 +31,7 @@ func (c *Choice) Evaluate(ctx *Context) (Result, error) {
 
 		history.Preserve(artifact)
 
-		result, err := expr.Evaluate(current_ctx)
+		result, err := expr.Evaluate(currentCtx)
 		if err != nil {
 			continue
 		}
@@ -39,6 +44,10 @@ func (c *Choice) Evaluate(ctx *Context) (Result, error) {
 		})
 
 		tree.Add(result.CST)
+
+		ctx.Update(currentCtx)
+
+		ctx.depth++
 
 		return Result{
 			CST: tree,

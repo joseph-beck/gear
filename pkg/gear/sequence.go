@@ -4,6 +4,12 @@ type Sequence struct {
 	Value []Expression
 }
 
+func NewSequence(value []Expression) Expression {
+	return &Sequence{
+		Value: value,
+	}
+}
+
 func (s *Sequence) Type() ExpressionType {
 	return SequenceExpression
 }

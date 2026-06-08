@@ -41,3 +41,15 @@ func (ctx *Context) Clone() *Context {
 		depth:   ctx.depth,
 	}
 }
+
+func (ctx *Context) Update(other *Context) {
+	ctx.pos = other.pos
+	ctx.packrat = other.packrat
+	ctx.history = other.history
+	ctx.rule = other.rule
+	ctx.depth = other.depth
+}
+
+func (ctx *Context) Remaining() string {
+	return ctx.input[ctx.pos:]
+}

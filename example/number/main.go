@@ -10,45 +10,31 @@ func main() {
 	g := gear.NewGrammar(
 		gear.GrammarParam{
 			Rules: []gear.Rule{
-				gear.NewRule("digit", &gear.Choice{
-					Value: []gear.Expression{
-						&gear.Char{
-							Value: '0',
-						},
-						&gear.Char{
-							Value: '1',
-						},
-						&gear.Char{
-							Value: '2',
-						},
-						&gear.Char{
-							Value: '3',
-						},
-						&gear.Char{
-							Value: '4',
-						},
-						&gear.Char{
-							Value: '5',
-						},
-						&gear.Char{
-							Value: '6',
-						},
-						&gear.Char{
-							Value: '7',
-						},
-						&gear.Char{
-							Value: '8',
-						},
-						&gear.Char{
-							Value: '9',
-						},
+				gear.NewRule("digit", gear.NewChoice(
+					[]gear.Expression{
+						gear.NewChar('0'),
+						gear.NewChar('1'),
+						gear.NewChar('2'),
+						gear.NewChar('3'),
+						gear.NewChar('4'),
+						gear.NewChar('5'),
+						gear.NewChar('6'),
+						gear.NewChar('7'),
+						gear.NewChar('8'),
+						gear.NewChar('9'),
 					},
-				}),
-				gear.NewRule("number", &gear.OneOrMore{
-					Value: &gear.NamedRule{
-						Value: "digit",
+				)),
+				gear.NewRule("number", gear.NewChoice(
+					[]gear.Expression{
+						gear.NewSequence(
+							[]gear.Expression{
+								gear.NewOptional(gear.NewNamedRule("number")),
+								gear.NewNamedRule("digit"),
+							},
+						),
+						gear.NewNamedRule("digit"),
 					},
-				}),
+				)),
 			},
 		},
 	)

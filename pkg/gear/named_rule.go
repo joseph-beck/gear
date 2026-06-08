@@ -4,27 +4,22 @@ type NamedRule struct {
 	Value string
 }
 
+func NewNamedRule(value string) Expression {
+	return &NamedRule{
+		Value: value,
+	}
+}
+
 func (n *NamedRule) Type() ExpressionType {
 	return NamedRuleExpression
 }
 
 func (n *NamedRule) Evaluate(ctx *Context) (Result, error) {
-	memo, ok := ctx.packrat.Get(PackratKey{
-		rule: n.Value,
-		pos:  ctx.pos,
-	})
-	if ok {
-		res := memo.Clone()
-
-		return res.result, res.err
-	}
-
 	rule, ok := ctx.grammar.Get(n.Value)
 	if !ok {
 		return Result{}, ErrRuleNotFound
 	}
 
-	ctx.depth++
 	ctx.rule = rule.Name
 
 	res, err := rule.Expression.Evaluate(ctx)
